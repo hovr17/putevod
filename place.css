@@ -1008,7 +1008,7 @@
   }
 
   .dropdown {
-    max-height: 14vh; 
+    max-height: 25vh; 
     margin-inline: 2vh;
     margin-top: 4vh;
     padding-top: 1.5vh;
@@ -1147,5 +1147,6 @@ padding-top: 2vh;
     }
     
 }
+
 
 
