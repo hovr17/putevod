@@ -1,0 +1,178 @@
+/* ============================================
+   BASE STYLES (from categories.css)
+   ============================================ */
+.container {
+    background: url('backgrounds/bg_about_project.jpg') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    
+    /* Динамическая высота */
+    height: 100dvh;
+    height: 100vh; /* Fallback */
+    
+    padding: 0;
+    padding-top: 5vh;
+    
+    /* Отступ для безопасной зоны (iPhone Home Indicator) */
+    padding-bottom: env(safe-area-inset-bottom);
+    
+    overflow: hidden;
+}
+
+/* Кнопка назад */
+.back-button {
+    position: absolute;
+    top: 3vh;
+    left: 3vw;
+    width: min(60px, 9vmin);
+    height: min(30px, 5vmin);
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+    z-index: 10;
+    text-decoration: none;
+}
+
+.back-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* ============================================
+   ABOUT PROJECT SPECIFIC STYLES
+   ============================================ */
+.about-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 20px;
+    margin-top: 5vh;
+    margin-bottom: 4vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.about-text {
+    font-family: 'Crooker', sans-serif;
+    font-size: clamp(18px, 4vmin, 28px);
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+    color: white;
+    width: 90%;
+    max-width: 600px;
+
+    font-weight: 100;
+}
+
+.about-text p {
+    margin-bottom: 3vh;
+}
+
+/* Активная ссылка на email */
+.about-text .email-link {
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 0.5vh;
+}
+
+.about-text .email-link:hover,
+.about-text .email-link:active {
+    opacity: 0.8;
+    transform: translateY(-1px);
+    text-decoration-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Убираем стандартный синий цвет посещенных ссылок */
+.about-text .email-link:visited {
+    color: white;
+}
+/* ============================================
+   MOBILE VIEWPORT FIX (from categories.css)
+   ============================================ */
+@media (max-width: 1080px) and (orientation: portrait) {
+    body.is-mobile .container {
+        height: 100svh; /* Fallback до загрузки JS */
+        padding-bottom: 0; /* JS точно вычисляет видимую область */
+    }
+}
+
+/* ============================================
+   TABLET ADAPTATION
+   ============================================ */
+@media (min-width: 768px) and (max-width: 1080px) {
+    .about-content {
+        margin-top: 5vh;
+    }
+    .about-title {
+        font-size: clamp(36px, 6vmin, 60px);
+        margin-bottom: 6vh;
+    }
+    .about-text {
+        font-size: clamp(20px, 3vmin, 28px);
+        line-height: 1.2;
+    }
+}
+
+/* ============================================
+   DESKTOP ADAPTATION (from categories.css)
+   ============================================ */
+@media (min-width: 1081px) {
+    .container {
+        padding-top: 4vh;
+    }
+    
+    .back-button {
+        top: min(40px, 5vh);
+        left: min(20px, 3vw);
+        width: min(60px, 6vmin);
+        height: min(30px, 3vmin);
+    }
+    
+    .about-content {
+        margin-top: 5vh;
+        max-width: 700px;
+        gap: 2vh;
+    }
+    
+    .about-title {
+        font-size: clamp(35px, 4vmin, 55px);
+        margin-bottom: 5vh;
+    }
+    
+    .about-text {
+        font-size: clamp(18px, 2vmin, 24px);
+        line-height: 1.2;
+    }
+}
+
+/* ============================================
+   SMALL HEIGHT SCREENS
+   ============================================ */
+@media (max-height: 450px) {
+    .about-content {
+        margin-top: 12vh;
+    }
+    .about-title {
+        margin-bottom: 3vh;
+    }
+}
+
+/* ============================================
+   SAFE AREA SUPPORT (iPhone notch)
+   ============================================ */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .about-content {
+        padding-top: env(safe-area-inset-top);
+    }
+}

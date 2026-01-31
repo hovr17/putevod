@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Путеводитель по Суздалю</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="place.css">
+
+  <base target="_self">
+</head>
+<body>
+  <!-- Стрелки навигации -->
+  <div class="temple-nav-arrows" id="templeNavArrows">
+    <button class="temple-nav-arrow temple-prev-arrow" id="templePrevArrow">
+      <div class="arrow-icon arrow-prev"></div>
+    </button>
+    <button class="temple-nav-arrow temple-next-arrow" id="templeNextArrow">
+      <div class="arrow-icon arrow-next"></div>
+    </button>
+  </div>
+
+  <div class="container mode-intro" id="frame">
+    <a href="categories.html" class="back-button" id="backBtn">
+      <div class="back-icon"></div>
+    </a>
+
+    <div class="video-background" id="videoPoster"></div>
+    
+    <!-- ⚠️ ПУСТОЙ SRC, заполняется скриптом -->
+    <video class="temple-video" id="bgVideo" muted playsinline webkit-playsinline preload="auto" autoplay loop></video>
+    
+    <div class="overlay-gradient"></div>
+
+    <div class="screen">
+      <div class="scroll-zone" id="scrollZone">
+        <div class="top-spacer"></div>
+
+        <div class="title-block" id="titleBlock">
+          <h1></h1>
+          <div class="entry-note">
+            <span></span>
+            <div class="small-btn" id="paidBtn">
+              <div class="open-icon"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-details" id="heroDetails">
+          <div class="details-header">подробнее:</div>
+          <div class="photo-wrapper"></div>
+        </div>
+
+        <div id="dropdownsContainer"></div>
+      </div>
+    </div>
+
+    <div class="bottom-shadow"></div>
+  </div>
+
+  <!-- Скрипты функционала -->
+     <script src="js/categories/museum_places.js"></script>
+  <script src="js/categories/religious_places.js"></script>
+   <script src="js/categories/nature_places.js"></script>
+  <script src="js/categories/entertainment_places.js"></script>
+  <script src="js/core/categories_config.js"></script>
+  <script src="js/core/pages_manager.js"></script>
+  <script src="js/core/spa_router.js"></script>
+  <script src="js/core/place_menu.js"></script>
+
+  <!-- ИНТЕГРИРОВАННЫЙ СКРИПТ VISUAL VIEWPORT -->
+  <script>
+      (function() {
+          const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
+                           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          if (!isMobile) return;
+          
+          document.body.classList.add('is-mobile');
+          
+          const container = document.querySelector('.container');
+          const vv = window.visualViewport;
+          
+          if (!vv || !container) return;
+          
+          function updateViewport() {
+              // Обрезаем контейнер ровно по границе видимой области (без панелей инструментов)
+              container.style.height = vv.height + 'px';
+          }
+          
+          vv.addEventListener('resize', updateViewport);
+          window.addEventListener('orientationchange', () => {
+              setTimeout(updateViewport, 100);
+          });
+          
+          updateViewport();
+          window.addEventListener('load', updateViewport);
+      })();
+  </script>
+</body>
+</html>

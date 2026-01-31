@@ -1,0 +1,226 @@
+/* ИСПРАВЛЕННЫЙ ФУТЕ */
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #a4a4a4;
+    z-index: 1000;
+    transform: translateY(100%);
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden; /* Убираем прокрутку */
+    
+    /* ✅ ИСПРАВЛЕНИЕ 1: Отступ снизу для зоны видимости (Home Indicator / Browser Bar) */
+    padding-bottom: env(safe-area-inset-bottom);
+    box-sizing: border-box;
+}
+
+.footer.active {
+    transform: translateY(0);
+}
+
+.footer-content {
+    width: 90%;
+    max-width: 800px;
+    padding: clamp(10px, 3vh, 30px) clamp(10px, 3vw, 30px) clamp(20px, 6vh, 60px);
+    display: flex;
+    flex-direction: column;
+    
+    /* ИЗМЕНЕНИЕ: Убираем space-between, теперь элементы идут друг за другом */
+    justify-content: flex-start; 
+    
+    height: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+/* --- СТИЛИ ВЕРХНЕЙ ЧАСТИ (СОХРАНЕНЫ, НО АДАПТИРОВАНЫ) --- */
+
+.footer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: clamp(15px, 3vh, 30px);
+    flex-shrink: 0;
+    height: auto;
+    position: relative;
+}
+
+.footer-link {
+    font-family: 'Crooker', sans-serif;
+    font-size: clamp(18px, 4vh, 28px);
+    color: #ffffff;
+    font-weight: 100;
+    line-height: 1.1;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: opacity 0.3s;
+    align-self: flex-start;
+    margin-top: 0;
+    padding-top: clamp(10px, 3vh, 40px);
+    white-space: nowrap;
+}
+
+.footer-link:hover {
+    opacity: 0.7;
+}
+
+/* ✅ ИСПРАВЛЕНИЕ 3: ЛОГО уменьшается при сужении экрана */
+.footer-logo {
+    position: absolute;
+    transform: translateY(-50%);
+    right: 40%;
+    
+    /* Вместо 50vh используем clamp, чтобы лого сжималось, когда экран становится маленьким */
+    /* clamp(минимум, идеал, максимум). Идеал 35vh вместо 50vh, чтобы оставить место тексту снизу */
+    width: clamp(150px, 35vh, 450px); 
+    height: auto;
+    opacity: 0.2;
+    pointer-events: none;
+    
+    /* padding-top убираем, так как размер задан width clamp */
+    padding-top: 0; 
+    margin-top:18vh;
+}
+
+/* ✅ ИСПРАВЛЕНИЕ 4: ЛИНИЯ отодвигается от верха гибко */
+.footer-separator {
+    height: 1px;
+    background-color: #ffffff;
+    opacity: 0.2;
+    flex-shrink: 0;
+    
+    /* ИЗМЕНЕНИЕ 1: Убираем margin-top от верха (было clamp(10px, 30vh, 700px)) */
+    margin-top: auto; /* <--- Это прижимает линию (и текст под ней) к низу экрана */
+    
+    /* ИЗМЕНЕНИЕ 2: Фиксированное расстояние до текста под линией */
+    margin-bottom: 3vh; /* <--- ВОТ ЗДЕСЬ регулируем расстояние до текста */
+}
+
+/* --- СТИЛИ НИЖНЕГО ТЕКСТА (ВСЕГДА ВИДЕН) --- */
+
+.footer-text-container {
+    font-family: 'Crooker', sans-serif;
+    font-weight: 100;
+    text-align: center;
+    opacity: 0.5;
+    
+    /* ИЗМЕНЕНИЕ: Убираем margin-top: auto, так как теперь позицию задает линия */
+    margin-top: 0; 
+    
+    padding-bottom: clamp(20px, 5vh, 50px); 
+    flex-shrink: 0;
+}
+
+
+.footer-disclaimer {
+    font-size: clamp(12px, 1.2vh, 20px);
+    line-height: 1.4;
+    margin-bottom: clamp(20px, 4vh, 40px);
+    color: white;
+    font-weight: 100;
+    letter-spacing: 0.02em;
+}
+
+.footer-copy-info {
+    font-size: clamp(12px, 1.2vh, 20px);
+    line-height: 1.4;
+    margin-bottom: clamp(5px, 1vh, 10px);
+    color: white;
+    font-weight: 100;
+    letter-spacing: 0.02em;
+}
+
+.footer-copyright {
+    font-size: clamp(12px, 1.2vh, 20px);
+    color: white;
+    font-weight: 100;
+    letter-spacing: 0.02em;
+}
+
+/* --- МЕДИА-ЗАПРОСЫ (СОХРАНЕНЫ) --- */
+
+@media (max-width: 1080px) {
+    .footer {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: pan-y;
+    }
+    
+    .footer-logo {
+        /* На мобильных делаем лого еще меньше, чтобы гарантированно влезало */
+        width: clamp(120px, 25vh, 250px); 
+    }
+}
+
+.footer-content {
+    user-select: none;
+}
+
+.footer-link {
+    user-select: auto;
+}
+
+@media (max-width: 650px) {
+    .footer-link {
+        font-size: clamp(10px, 2vh, 30px);
+        padding-top: clamp(5px, 2vh, 20px);
+    }
+    
+    .footer-logo {
+        right: -15%;
+        /* Размер лого адаптивно подстраивается */
+    }
+    
+    .footer-disclaimer,
+    .footer-copy-info,
+    .footer-copyright {
+        font-size: clamp(10px, 1.5vh, 16px);
+    }
+}
+
+@media (min-width: 651px) {
+    .footer-link {
+        font-size: clamp(10px, 2vh, 30px);
+        padding-top: clamp(5px, 2vh, 20px);
+    }
+    
+    .footer-logo {
+        right: -10%;
+        /* Размер лого адаптивно подстраивается */
+    }
+    
+    .footer-disclaimer,
+    .footer-copy-info,
+    .footer-copyright {
+        font-size: clamp(10px, 1.5vh, 16px);
+    }
+}
+
+@media (min-width: 1081px) {
+    .footer {
+        border-radius: 0 0 30px 30px;
+        overflow: hidden;
+    }
+    
+    .footer-content {
+        padding: clamp(10px, 2vh, 20px) clamp(10px, 2vw, 20px) clamp(15px, 4vh, 30px);
+    }
+    
+    .footer-logo {
+        right: -12%;
+         margin-top:25vh;
+    }
+}
+
+
+
+
+
+
+
+

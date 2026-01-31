@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О проекте - Путеводитель по Суздалю</title>
+    <link rel="stylesheet" href="common.css">
+
+    <link rel="stylesheet" href="about_project.css">
+
+
+</head>
+<body>
+    <!-- Скрипт корректировки viewport для мобильных (без панелей инструментов) -->
+    <script>
+        (function() {
+            const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
+                             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (!isMobile) return;
+            
+            document.body.classList.add('is-mobile');
+            
+            const container = document.querySelector('.container');
+            const vv = window.visualViewport;
+            
+            if (!vv || !container) return;
+            
+            function updateViewport() {
+                container.style.height = vv.height + 'px';
+            }
+            
+            vv.addEventListener('resize', updateViewport);
+            window.addEventListener('orientationchange', () => {
+                setTimeout(updateViewport, 100);
+            });
+            
+            updateViewport();
+            window.addEventListener('load', updateViewport);
+        })();
+    </script>
+
+    <div class="container">
+        <!-- Кнопка назад -->
+        <!-- Было: <a href="categories.html" class="back-button"> -->
+<a href="#" class="back-button" onclick="goBack(event)">
+    <img src="ui/back_button.svg" alt="Назад">
+</a>
+
+        <!-- Контент страницы О проекте -->
+        <div class="about-content">
+            <div class="about-text">
+                <p>Это «Путеводитель». Здесь Собрано больше 50 достопримечательностей Суздаля.</p>
+                <p>мы готовы добавить бесплатно любое место, которое интересно туристу.</p>
+                <p>Найти Путеводитель можно не только через поисковик. Для быстрого и легкого доступа мы предоставляем тейбл-тенты и брошюры с qr-кодом на Путеводитель всем желающим. От ресторанов и отелей до сувенирных магазинов. Теперь ваши гости с легкостью смогут узнать о городе много нового. </p>
+                <p>по любым вопросам пишите-&gt <a href="mailto:suzdal@putevoditel.com" class="email-link">suzdal@putevoditel.com</a></p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    function goBack(e) {
+        e.preventDefault();
+        
+        // Если есть история назад - идем туда
+        if (window.history.length > 1 && document.referrer) {
+            window.history.back();
+        } else {
+            // Если прямой заход (без истории) - на categories
+            window.location.href = 'categories.html';
+        }
+    }
+    
+    // Альтернатива: можно показать анимацию возврата как в SPA
+    // Добавляем класс для стилизации активного состояния
+    document.querySelector('.back-button').addEventListener('touchstart', function() {
+        this.style.opacity = '0.7';
+    });
+    document.querySelector('.back-button').addEventListener('touchend', function() {
+        this.style.opacity = '1';
+    });
+</script>
+</body>
+</html>
