@@ -234,7 +234,7 @@ const MUSEUM_PLACES = {
        'museum_voskovih_figur': {
         title: 'Музей восковых фигур',
         heading: 'Музей восковых фигур',
-        headingSize: 'clamp(28px, 9vw, 56px)',
+        headingSize: 'clamp(28px, 10vw, 56px)',
         video: { src: 'videos/museum_places/museum_voskovih_figur.mp4', poster: null },
          paidEntry: { text: 'вход платный', enabled: true },
         photoButtons: [
@@ -297,4 +297,5 @@ const MUSEUM_PLACES = {
     },
 
 };
+
 
