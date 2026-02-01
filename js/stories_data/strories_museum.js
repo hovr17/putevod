@@ -743,10 +743,6 @@ window.storiesData = {
       {
         src: 'stories_content/museum_places/museum_vrema_steklo/vnutri_museum/10.jpg',
         caption: ''
-      },
-      {
-        src: 'stories_content/museum_places/museum_vrema_steklo/vnutri_museum/11.jpg',
-        caption: ''
       }
     ]
   },
@@ -840,4 +836,5 @@ window.storiesData = {
       }
     ]
   }
+
 };
