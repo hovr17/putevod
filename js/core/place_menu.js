@@ -8,18 +8,46 @@ let isHorizontalSwipe = false;
 const SWIPE_THRESHOLD = 50;
 
 // =============================================================================
-// SWIPE HINT SYSTEM (Подсказка свайпа после бездействия)
-// =============================================================================
-// =============================================================================
-// SWIPE HINT SYSTEM (Подсказка свайпа с видео следующей страницы)
+// SWIPE HINT SYSTEM (Подсказка свайпа с лимитом на 3 страницы)
 // =============================================================================
 let inactivityTimer = null;
-const INACTIVITY_DELAY = 7000; // 7 секунд
+const INACTIVITY_DELAY = 5000; // 5 секунд (изменено с 7)
 let isHintShowing = false;
-let hintVideoElement = null; // Ссылка на видео для остановки
+let hintVideoElement = null;
+let pagesOpenedCount = 0; // Счетчик открытых страниц
+const MAX_PAGES_FOR_HINT = 3; // Показывать подсказку только первые 3 страницы
+let hasShownHintOnCurrentPage = false; // Флаг: показывали ли уже на текущей странице
 
 /**
- * Запускает таймер бездействия
+ * Проверяет, должна ли показываться подсказка
+ */
+function shouldShowHint() {
+    return pagesOpenedCount < MAX_PAGES_FOR_HINT;
+}
+
+/**
+ * Увеличивает счетчик при открытии новой страницы
+ */
+function incrementPageCounter() {
+    // Проверяем, не открывали ли мы уже эту страницу (через sessionStorage)
+    const currentPageId = window.spaRouter?.currentPlaceId;
+    const viewedPages = JSON.parse(sessionStorage.getItem('viewedPages') || '[]');
+    
+    if (currentPageId && !viewedPages.includes(currentPageId)) {
+        viewedPages.push(currentPageId);
+        sessionStorage.setItem('viewedPages', JSON.stringify(viewedPages));
+        pagesOpenedCount = viewedPages.length;
+        console.log('📄 Новая страница открыта, всего уникальных:', pagesOpenedCount);
+    } else {
+        pagesOpenedCount = viewedPages.length;
+    }
+    
+    // Сбрасываем флаг для новой страницы
+    hasShownHintOnCurrentPage = false;
+}
+
+/**
+ * Запускает таймер бездействия (только если лимит не исчерпан)
  */
 function startInactivityTimer() {
     if (inactivityTimer) {
@@ -27,7 +55,8 @@ function startInactivityTimer() {
         inactivityTimer = null;
     }
     
-    if (mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
+    // Не показываем если: меню открыто, идет анимация, лимит исчерпан, уже показывали на этой странице
+    if (mode === 'details' || isAnimating || window.spaRouter?.isAnimating || !shouldShowHint() || hasShownHintOnCurrentPage) {
         return;
     }
     
@@ -52,14 +81,17 @@ function resetInactivityTimer() {
         hideSwipeHint();
     }
     
-    startInactivityTimer();
+    // Перезапускаем только если еще не показывали на этой странице
+    if (!hasShownHintOnCurrentPage) {
+        startInactivityTimer();
+    }
 }
 
 /**
  * Показывает анимацию-подсказку со следующей страницей
  */
 function showSwipeHint() {
-    if (isHintShowing || mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
+    if (isHintShowing || mode === 'details' || isAnimating || window.spaRouter?.isAnimating || !shouldShowHint()) {
         return;
     }
     
@@ -104,7 +136,6 @@ function showSwipeHint() {
         
         // Обработка ошибок загрузки
         video.onerror = () => {
-            // Если видео не загрузилось, показываем постер
             if (nextConfig.video.poster) {
                 preview.innerHTML = '';
                 const img = document.createElement('img');
@@ -119,10 +150,7 @@ function showSwipeHint() {
         preview.appendChild(video);
         hintVideoElement = video;
         
-        // Принудительно запускаем воспроизведение
-        video.play().catch(() => {
-            // Автоплей заблокирован, оставляем poster
-        });
+        video.play().catch(() => {});
     } else if (nextConfig.video?.poster) {
         const img = document.createElement('img');
         img.src = nextConfig.video.poster;
@@ -131,7 +159,6 @@ function showSwipeHint() {
         img.style.objectFit = 'cover';
         preview.appendChild(img);
     } else {
-        // Фолбек - темный фон с названием
         preview.style.background = 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)';
         preview.style.display = 'flex';
         preview.style.alignItems = 'center';
@@ -145,11 +172,12 @@ function showSwipeHint() {
     }
     
     isHintShowing = true;
+    hasShownHintOnCurrentPage = true; // Отмечаем, что показали на этой странице
     frame.classList.add('swipe-hint-active');
     
-    console.log('💡 Показана подсказка свайпа с видео:', nextPlaceId);
+    console.log('💡 Показана подсказка свайпа (страница ' + (pagesOpenedCount + 1) + ' из ' + MAX_PAGES_FOR_HINT + '):', nextPlaceId);
     
-    // Автоматически убираем через 1.6s (2 цикла анимации)
+    // Автоматически убираем через 1.6s
     setTimeout(() => {
         hideSwipeHint();
     }, 1600);
@@ -166,7 +194,6 @@ function hideSwipeHint() {
         frame.classList.remove('swipe-hint-active');
     }
     
-    // Останавливаем видео чтобы не тратить ресурсы
     if (hintVideoElement) {
         hintVideoElement.pause();
         hintVideoElement.src = '';
@@ -174,12 +201,11 @@ function hideSwipeHint() {
         hintVideoElement = null;
     }
     
-    // Удаляем контейнер полностью
     const preview = document.querySelector('.next-page-preview');
     if (preview) {
         setTimeout(() => {
             preview.remove();
-        }, 300); // Небольшая задержка для плавности
+        }, 300);
     }
     
     isHintShowing = false;
@@ -207,7 +233,10 @@ function setupInactivityTracking() {
             }
             hideSwipeHint();
         } else {
-            startInactivityTimer();
+            // При возвращении на вкладку проверяем, нужно ли перезапустить
+            if (!hasShownHintOnCurrentPage && shouldShowHint()) {
+                startInactivityTimer();
+            }
         }
     });
     
@@ -355,20 +384,17 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
 
     // Управление таймером бездействия (SWIPE HINT)
     if (newMode === 'details') {
-        // Меню открыто - останавливаем таймер подсказки
         if (inactivityTimer) {
             clearTimeout(inactivityTimer);
             inactivityTimer = null;
         }
         hideSwipeHint();
     } else {
-        // Меню закрыто - запускаем таймер
+        // При закрытии меню запускаем таймер только если подсказка еще не показывалась
         startInactivityTimer();
     }
 
-    // === ИЗМЕНЕНИЕ: Управление тегами <br> ===
     adjustTitleBreaks(newMode);
-    // =========================================
 
     if (newMode === 'details') {
         sessionStorage.setItem('menuState', 'open');
@@ -383,7 +409,6 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
     const addressDrop = document.getElementById('addressDrop');
     const usefulDrop = document.getElementById('usefulDrop');
     
-    // Применяем стили к videoPoster (белый фон)
     if (videoPoster) {
         if (newMode === 'details') {
             videoPoster.style.setProperty('background', 'white', 'important');
@@ -407,7 +432,6 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
         
         if (bgVideo) bgVideo.pause();
         
-        // Создаем белую полосу снизу если нужно
         let bottomStripe = document.getElementById('videoBottomStripe');
         if (!bottomStripe && videoPoster) {
             bottomStripe = document.createElement('div');
@@ -430,7 +454,6 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
                 usefulDrop.classList.add("open");
                 sessionStorage.setItem('usefulDropdownState', 'open');
                 
-                // 🆕 Автоматическая прокрутка до самого низа
                 if (scrollToBottom) {
                     cleanupRegistry.setTimeout(() => {
                         if (scrollZone) {
@@ -439,7 +462,7 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
                                 behavior: 'smooth'
                             });
                         }
-                    }, 300); // Задержка для завершения анимации раскрытия дропдауна
+                    }, 300);
                 }
             }, 1);
         }
@@ -454,7 +477,6 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
         
         scrollZone?.classList.add('animating');
         
-        // Удаляем белую полосу снизу
         const bottomStripe = document.getElementById('videoBottomStripe');
         if (bottomStripe) bottomStripe.remove();
         
@@ -734,30 +756,23 @@ function setupKeyboardHandlers() {
 }
 
 // =============================================================================
-// УПРАВЛЕНИЕ <br> В ЗАГОЛОВКЕ (НОВАЯ ФУНКЦИЯ)
+// УПРАВЛЕНИЕ <br> В ЗАГОЛОВКЕ
 // =============================================================================
 
 function adjustTitleBreaks(currentMode) {
     const h1 = document.querySelector('.title-block h1');
     if (!h1) return;
 
-    // 1. Сохраняем оригинальный HTML заголовка, если это первый запуск
     if (!h1.dataset.originalHtml) {
         h1.dataset.originalHtml = h1.innerHTML;
-    } 
-    // Если произошел переход на другую страницу (SPA) и заголовок изменился, обновляем оригинал
-    else if (h1.dataset.originalHtml !== h1.innerHTML && currentMode === 'intro') {
+    } else if (h1.dataset.originalHtml !== h1.innerHTML && currentMode === 'intro') {
         h1.dataset.originalHtml = h1.innerHTML;
     }
 
-    // 2. Логика показа/скрытия
     if (currentMode === 'details') {
-        // Меню открыто: удаляем <br> в начале строки (от 1 до 2 штук)
         let html = h1.dataset.originalHtml;
-        // Регулярка ищет <br> только в самом начале текста, не трогая переносы по центру
         h1.innerHTML = html.replace(/^\s*(<br\s*\/?>\s*){1,2}/, '');
     } else {
-        // Меню закрыто: возвращаем заголовок как был (с <br>)
         h1.innerHTML = h1.dataset.originalHtml;
     }
 }
@@ -771,6 +786,9 @@ window.initializeMenu = function() {
     
     cleanupRegistry.clear();
     isAnimating = false;
+    
+    // Увеличиваем счетчик при инициализации (новая страница загружена)
+    incrementPageCounter();
     
     if (isYandexBrowser()) {
         document.body.classList.add('yandex-browser');
@@ -789,7 +807,6 @@ window.initializeMenu = function() {
     const scrollZone = document.getElementById('scrollZone');
     const usefulDrop = document.getElementById('usefulDrop');
     
-    // Применение начального состояния без анимации
     if (shouldOpenMenu) {
         document.body.classList.add('no-transition');
         
@@ -819,7 +836,6 @@ window.initializeMenu = function() {
         }, 10);
     }
     
-    // Применение классов
     if (frame) {
         if (shouldOpenMenu) {
             frame.classList.remove('mode-intro');
@@ -830,7 +846,6 @@ window.initializeMenu = function() {
         }
     }
     
-    // Управление видео
     if (bgVideo) {
         bgVideo.muted = true;
         bgVideo.setAttribute('muted', '');
@@ -850,17 +865,14 @@ window.initializeMenu = function() {
         }
     }
     
-    // !!! КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: Белый фон при открытом меню !!!
     if (videoPoster) {
         if (shouldOpenMenu) {
-            // Применяем стили как в CSS .mode-details .video-background
             videoPoster.style.setProperty('background', 'white', 'important');
             videoPoster.style.setProperty('display', 'block', 'important');
             videoPoster.style.setProperty('transition', 'none', 'important');
             videoPoster.style.setProperty('opacity', '1', 'important');
             videoPoster.style.setProperty('visibility', 'visible', 'important');
             
-            // Создаем белую полосу снизу (аналог ::after из CSS)
             let bottomStripe = document.getElementById('videoBottomStripe');
             if (!bottomStripe) {
                 bottomStripe = document.createElement('div');
@@ -878,18 +890,15 @@ window.initializeMenu = function() {
                 videoPoster.appendChild(bottomStripe);
             }
             
-            console.log('🎨 VideoPoster: БЕЛЫЙ ФОН ВКЛЮЧЕН (возврат с открытым меню)');
+            console.log('🎨 VideoPoster: БЕЛЫЙ ФОН ВКЛЮЧЕН');
         } else {
-            // Скрываем фон для режима intro
             videoPoster.style.setProperty('background', 'transparent', 'important');
             videoPoster.style.setProperty('display', 'none', 'important');
             
-            // Удаляем белую полосу
             const bottomStripe = document.getElementById('videoBottomStripe');
             if (bottomStripe) bottomStripe.remove();
         }
         
-        // Принудительный reflow
         void videoPoster.offsetHeight;
     }
     
@@ -898,7 +907,6 @@ window.initializeMenu = function() {
         scrollZone.style.pointerEvents = "auto";
     }
     
-    // Восстанавливаем состояние dropdown
     const savedDropdownState = sessionStorage.getItem('usefulDropdownState');
     if (savedDropdownState === 'open' && usefulDrop) {
         usefulDrop.classList.add("open");
@@ -910,20 +918,20 @@ window.initializeMenu = function() {
     setupSwipeHandlers();
     setupKeyboardHandlers();
     setupVideoGuards();
-    
-    // 🆕 ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ ПОДСКАЗКИ СВАЙПА
     setupInactivityTracking();
-    if (!shouldOpenMenu) {
+    
+    // Запускаем таймер только если меню закрыто и лимит не исчерпан
+    if (!shouldOpenMenu && shouldShowHint()) {
         startInactivityTimer();
+        console.log('⏱️ Таймер подсказки запущен (страница ' + (pagesOpenedCount) + ' из ' + MAX_PAGES_FOR_HINT + ')');
+    } else if (!shouldShowHint()) {
+        console.log('🚫 Подсказка отключена (лимит ' + MAX_PAGES_FOR_HINT + ' страниц исчерпан)');
     }
     
     updateNavigationVisibility();
-
-    // === ИЗМЕНЕНИЕ: Управление тегами <br> ===
     adjustTitleBreaks(mode);
-    // ==========================================
     
-    console.log('✅ Меню инициализировано:', shouldOpenMenu ? 'открыто (белый фон активен)' : 'закрыто');
+    console.log('✅ Меню инициализировано:', shouldOpenMenu ? 'открыто' : 'закрыто');
 };
 
 // =============================================================================
@@ -969,7 +977,7 @@ window.addEventListener('popstate', () => {
     cleanupRegistry.setTimeout(window.initializeMenu, 100);
 });
 
-if (window.spaRouter){
+if (window.spaRouter) {
     if (window.spaRouter.navigate) {
         const originalNavigate = window.spaRouter.navigate;
         window.spaRouter.navigate = function(...args) {
