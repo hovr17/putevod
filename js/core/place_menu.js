@@ -159,7 +159,7 @@ function showSwipeHint() {
         preview.style.alignItems = 'center';
         preview.style.justifyContent = 'center';
         preview.style.color = 'white';
-        preview.style.fontFamily = 'Zametka, sans-serif';
+        preview.style.fontFamily = 'Zametka', sans-serif;
         preview.style.fontSize = '2vw';
         preview.style.textAlign = 'center';
         preview.style.padding = '1vw';
@@ -372,6 +372,292 @@ function updateNavigationVisibility() {
 }
 
 // =============================================================================
+// ОБРАБОТЧИКИ СВАЙПОВ И НАЖАТИЙ (TAP NAVIGATION)
+// =============================================================================
+
+function setupSwipeHandlers() {
+    const scrollZone = document.getElementById('scrollZone');
+    if (!scrollZone) return;
+    
+    let isSwipeInProgress = false;
+    let initialScrollTop = 0;
+    
+    function onTouchStart(e) {
+        if (isAnimating || window.spaRouter?.isAnimating) return;
+        
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isHorizontalSwipe = false;
+        isSwipeInProgress = false;
+        initialScrollTop = scrollZone.scrollTop;
+    }
+    
+    function onTouchMove(e) {
+        if (!touchStartX || !touchStartY || isAnimating || window.spaRouter?.isAnimating) return;
+        
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        const deltaX = touchX - touchStartX;
+        const deltaY = touchY - touchStartY;
+        
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
+            isHorizontalSwipe = true;
+            isSwipeInProgress = true;
+            
+            if (e.cancelable) e.preventDefault();
+        }
+        
+        if (mode === "details" && deltaY > 0 && !isHorizontalSwipe && initialScrollTop <= 0) {
+            if (e.cancelable) e.preventDefault();
+        }
+    }
+    
+    function onTouchEnd(e) {
+        if (!touchStartX || !touchStartY || isAnimating || window.spaRouter?.isAnimating) return;
+        
+        const touchX = e.changedTouches[0].clientX;
+        const touchY = e.changedTouches[0].clientY;
+        
+        const deltaX = touchX - touchStartX;
+        const deltaY = touchY - touchStartY;
+        
+        const isVerticalSwipe = Math.abs(deltaY) > Math.abs(deltaX);
+        
+        if (mode === "details" && deltaY > 30 && isVerticalSwipe && !isHorizontalSwipe) {
+            const scrollTop = scrollZone.scrollTop;
+            const swipeStartedAtTop = touchStartY < window.innerHeight * 0.25;
+            
+            if (scrollTop <= 0 || swipeStartedAtTop) {
+                if (e.cancelable) e.preventDefault();
+                setMode("intro");
+                console.log('⬇️ Свайп вниз - закрытие меню');
+            }
+        } else if (mode === "intro" && deltaY < -30 && isVerticalSwipe && !isHorizontalSwipe) {
+            if (e.cancelable) e.preventDefault();
+            setMode("details");
+            console.log('⬆️ Свайп вверх - открытие меню');
+        } else if (isHorizontalSwipe && Math.abs(deltaX) > SWIPE_THRESHOLD && isSwipeInProgress) {
+            e.preventDefault();
+            
+            const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
+            if (order.length <= 1) {
+                console.log('🎯 В категории только одна страница, свайп не работает');
+                touchStartX = null;
+                touchStartY = null;
+                isHorizontalSwipe = false;
+                isSwipeInProgress = false;
+                return;
+            }
+            
+            if (deltaX > 0) {
+                console.log('➡️ Свайп вправо, переход к предыдущей странице');
+                navigateToPrevPlace();
+            } else {
+                console.log('⬅️ Свайп влево, переход к следующей странице');
+                navigateToNextPlace();
+            }
+        }
+        
+        touchStartX = null;
+        touchStartY = null;
+        isHorizontalSwipe = false;
+        isSwipeInProgress = false;
+    }
+    
+    function onWheel(e) {
+        if (isAnimating) {
+            if (e.cancelable) e.preventDefault();
+            return;
+        }
+        
+        if (mode === "intro" && e.deltaY > 10) {
+            if (e.cancelable) e.preventDefault();
+            setMode("details");
+        } else if (mode === "details" && scrollZone.scrollTop <= 0 && e.deltaY < -10) {
+            if (e.cancelable) e.preventDefault();
+            setMode("intro");
+        }
+    }
+    
+    scrollZone.addEventListener("touchstart", onTouchStart, { passive: true });
+    scrollZone.addEventListener("touchmove", onTouchMove, { passive: false });
+    scrollZone.addEventListener("touchend", onTouchEnd, { passive: false });
+    scrollZone.addEventListener("wheel", onWheel, { passive: false });
+    
+    cleanupRegistry.add(() => {
+        scrollZone.removeEventListener("touchstart", onTouchStart);
+        scrollZone.removeEventListener("touchmove", onTouchMove);
+        scrollZone.removeEventListener("touchend", onTouchEnd);
+        scrollZone.removeEventListener("wheel", onWheel);
+    });
+}
+
+// =============================================================================
+// НАВИГАЦИЯ КЛИКАМИ ПО ЭКРАНУ (МОБИЛЬНЫЕ)
+// =============================================================================
+
+function setupMobileTapNavigation() {
+    const handler = function(e) {
+        // 1. Только для мобильных (ширина <= 1080px)
+        if (window.innerWidth > 1080) return;
+
+        // 2. Не в режиме деталей (меню закрыто)
+        if (mode === 'details') return;
+
+        // 3. Не во время анимации
+        if (isAnimating || window.spaRouter?.isAnimating) return;
+
+        // 4. Проверяем, не кликнул ли пользователь по интерактивному элементу
+        const target = e.target;
+        // Список исключений: ссылки, кнопки, дропдауны, фото-карточки, стрелки
+        if (target.closest('a, button, .dropdown, .photo-card, .nav-arrow, .temple-nav-arrow, #paidBtn, .entry-note')) {
+            return;
+        }
+
+        // 5. Логика определения половины экрана
+        const clickX = e.clientX;
+        const screenWidth = window.innerWidth;
+        const halfWidth = screenWidth / 2;
+
+        if (clickX < halfWidth) {
+            // Левая половина -> Предыдущая страница
+            console.log('👆 Tap: Left Side (Prev)');
+            if (typeof window.navigateToPrevPlace === 'function') {
+                window.navigateToPrevPlace();
+            }
+        } else {
+            // Правая половина -> Следующая страница
+            console.log('👆 Tap: Right Side (Next)');
+            if (typeof window.navigateToNextPlace === 'function') {
+                window.navigateToNextPlace();
+            }
+        }
+    };
+
+    // Используем capture phase, чтобы перехватить клики раньше, если нужно,
+    // но в данном случае bubble (default) тоже подойдет.
+    document.addEventListener('click', handler, true);
+    
+    cleanupRegistry.add(() => {
+        document.removeEventListener('click', handler, true);
+    });
+}
+
+// =============================================================================
+// ДРОПДАУНЫ И КНОПКИ
+// =============================================================================
+
+function initializeDropdownsAndButtons() {
+    console.log('📋 Инициализация дропдаунов и кнопок...');
+    
+    const paidBtn = document.getElementById('paidBtn');
+    const addressDrop = document.getElementById('addressDrop');
+    const usefulDrop = document.getElementById('usefulDrop');
+    const entryNote = document.querySelector(".entry-note");
+    
+    function createDropdownHandler(dropdown) {
+        return function(e) {
+            e.stopPropagation();
+            if (isAnimating) return;
+            dropdown.classList.toggle("open");
+            console.log('Дропдаун:', dropdown.id, dropdown.classList.contains('open') ? 'открыт' : 'закрыт');
+        };
+    }
+    
+    if (addressDrop) {
+        const arrow = addressDrop.querySelector(".dropdown-arrow");
+        if (arrow) {
+            const handler = createDropdownHandler(addressDrop);
+            arrow.addEventListener("click", handler);
+            cleanupRegistry.add(() => arrow.removeEventListener("click", handler));
+        }
+    }
+    
+    if (usefulDrop) {
+        const arrow = usefulDrop.querySelector(".dropdown-arrow");
+        if (arrow) {
+            const handler = createDropdownHandler(usefulDrop);
+            arrow.addEventListener("click", handler);
+            cleanupRegistry.add(() => arrow.removeEventListener("click", handler));
+        }
+    }
+    
+    const globalClickHandler = function(e) {
+        if (!e.target.closest('.dropdown')) {
+            if (addressDrop) addressDrop.classList.remove("open");
+            if (usefulDrop) usefulDrop.classList.remove("open");
+        }
+    };
+    
+    document.addEventListener('click', globalClickHandler);
+    cleanupRegistry.add(() => document.removeEventListener('click', globalClickHandler));
+    
+    if (paidBtn) {
+        const paidHandler = () => {
+            console.log('Клик на paidBtn');
+            setMode("details", { expandUseful: true, scrollToBottom: true });
+        };
+        paidBtn.addEventListener('click', paidHandler);
+        cleanupRegistry.add(() => paidBtn.removeEventListener('click', paidHandler));
+    }
+    
+    if (entryNote) {
+        const entryHandler = (e) => {
+            if (!e.target.closest("#paidBtn")) {
+                console.log('Клик на entryNote');
+                setMode("details", { expandUseful: true, scrollToBottom: true });
+            }
+        };
+        entryNote.addEventListener('click', entryHandler);
+        cleanupRegistry.add(() => entryNote.removeEventListener('click', entryHandler));
+    }
+}
+
+// =============================================================================
+// КЛАВИАТУРА (для ПК)
+// =============================================================================
+
+function setupKeyboardHandlers() {
+    function onKeyDown(e) {
+        if (e.key === 'Escape' && mode === 'details') {
+            setMode('intro');
+        }
+    }
+    
+    document.addEventListener('keydown', onKeyDown);
+    cleanupRegistry.add(() => document.removeEventListener('keydown', onKeyDown));
+}
+
+// =============================================================================
+// УПРАВЛЕНИЕ <br> В ЗАГОЛОВКЕ (НОВАЯ ФУНКЦИЯ)
+// =============================================================================
+
+function adjustTitleBreaks(currentMode) {
+    const h1 = document.querySelector('.title-block h1');
+    if (!h1) return;
+
+    // 1. Сохраняем оригинальный HTML заголовка, если это первый запуск
+    if (!h1.dataset.originalHtml) {
+        h1.dataset.originalHtml = h1.innerHTML;
+    } 
+    // Если произошел переход на другую страницу (SPA) и заголовок изменился, обновляем оригинал
+    else if (h1.dataset.originalHtml !== h1.innerHTML && currentMode === 'intro') {
+        h1.dataset.originalHtml = h1.innerHTML;
+    }
+
+    // 2. Логика показа/скрытия
+    if (currentMode === 'details') {
+        // Меню открыто: удаляем <br> в начале строки (от 1 до 2 штук)
+        let html = h1.dataset.originalHtml;
+        // Регулярка ищет <br> только в самом начале текста, не трогая переносы по центру
+        h1.innerHTML = html.replace(/^\s*(<br\s*\/?>\s*){1,2}/, '');
+    } else {
+        // Меню закрыто: возвращаем заголовок как был (с <br>)
+        h1.innerHTML = h1.dataset.originalHtml;
+    }
+}
+
+// =============================================================================
 // ОСНОВНАЯ ЛОГИКА МЕНЮ
 // =============================================================================
 
@@ -557,241 +843,6 @@ function setupVideoGuards() {
 }
 
 // =============================================================================
-// ОБРАБОТЧИКИ СВАЙПОВ И СКРОЛЛА
-// =============================================================================
-
-function setupSwipeHandlers() {
-    const scrollZone = document.getElementById('scrollZone');
-    if (!scrollZone) return;
-    
-    let isSwipeInProgress = false;
-    let initialScrollTop = 0;
-    
-    function onTouchStart(e) {
-        if (isAnimating || window.spaRouter?.isAnimating) return;
-        
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-        isHorizontalSwipe = false;
-        isSwipeInProgress = false;
-        initialScrollTop = scrollZone.scrollTop;
-    }
-    
-    function onTouchMove(e) {
-        if (!touchStartX || !touchStartY || isAnimating || window.spaRouter?.isAnimating) return;
-        
-        const touchX = e.touches[0].clientX;
-        const touchY = e.touches[0].clientY;
-        const deltaX = touchX - touchStartX;
-        const deltaY = touchY - touchStartY;
-        
-        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
-            isHorizontalSwipe = true;
-            isSwipeInProgress = true;
-            
-            if (e.cancelable) e.preventDefault();
-        }
-        
-        if (mode === "details" && deltaY > 0 && !isHorizontalSwipe && initialScrollTop <= 0) {
-            if (e.cancelable) e.preventDefault();
-        }
-    }
-    
-    function onTouchEnd(e) {
-        if (!touchStartX || !touchStartY || isAnimating || window.spaRouter?.isAnimating) return;
-        
-        const touchX = e.changedTouches[0].clientX;
-        const touchY = e.changedTouches[0].clientY;
-        
-        const deltaX = touchX - touchStartX;
-        const deltaY = touchY - touchStartY;
-        
-        const isVerticalSwipe = Math.abs(deltaY) > Math.abs(deltaX);
-        
-        if (mode === "details" && deltaY > 30 && isVerticalSwipe && !isHorizontalSwipe) {
-            const scrollTop = scrollZone.scrollTop;
-            const swipeStartedAtTop = touchStartY < window.innerHeight * 0.25;
-            
-            if (scrollTop <= 0 || swipeStartedAtTop) {
-                if (e.cancelable) e.preventDefault();
-                setMode("intro");
-                console.log('⬇️ Свайп вниз - закрытие меню');
-            }
-        } else if (mode === "intro" && deltaY < -30 && isVerticalSwipe && !isHorizontalSwipe) {
-            if (e.cancelable) e.preventDefault();
-            setMode("details");
-            console.log('⬆️ Свайп вверх - открытие меню');
-        } else if (isHorizontalSwipe && Math.abs(deltaX) > SWIPE_THRESHOLD && isSwipeInProgress) {
-            e.preventDefault();
-            
-            const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
-            if (order.length <= 1) {
-                console.log('🎯 В категории только одна страница, свайп не работает');
-                touchStartX = null;
-                touchStartY = null;
-                isHorizontalSwipe = false;
-                isSwipeInProgress = false;
-                return;
-            }
-            
-            if (deltaX > 0) {
-                console.log('➡️ Свайп вправо, переход к предыдущей странице');
-                navigateToPrevPlace();
-            } else {
-                console.log('⬅️ Свайп влево, переход к следующей странице');
-                navigateToNextPlace();
-            }
-        }
-        
-        touchStartX = null;
-        touchStartY = null;
-        isHorizontalSwipe = false;
-        isSwipeInProgress = false;
-    }
-    
-    function onWheel(e) {
-        if (isAnimating) {
-            if (e.cancelable) e.preventDefault();
-            return;
-        }
-        
-        if (mode === "intro" && e.deltaY > 10) {
-            if (e.cancelable) e.preventDefault();
-            setMode("details");
-        } else if (mode === "details" && scrollZone.scrollTop <= 0 && e.deltaY < -10) {
-            if (e.cancelable) e.preventDefault();
-            setMode("intro");
-        }
-    }
-    
-    scrollZone.addEventListener("touchstart", onTouchStart, { passive: true });
-    scrollZone.addEventListener("touchmove", onTouchMove, { passive: false });
-    scrollZone.addEventListener("touchend", onTouchEnd, { passive: false });
-    scrollZone.addEventListener("wheel", onWheel, { passive: false });
-    
-    cleanupRegistry.add(() => {
-        scrollZone.removeEventListener("touchstart", onTouchStart);
-        scrollZone.removeEventListener("touchmove", onTouchMove);
-        scrollZone.removeEventListener("touchend", onTouchEnd);
-        scrollZone.removeEventListener("wheel", onWheel);
-    });
-}
-
-// =============================================================================
-// ДРОПДАУНЫ И КНОПКИ
-// =============================================================================
-
-function initializeDropdownsAndButtons() {
-    console.log('📋 Инициализация дропдаунов и кнопок...');
-    
-    const paidBtn = document.getElementById('paidBtn');
-    const addressDrop = document.getElementById('addressDrop');
-    const usefulDrop = document.getElementById('usefulDrop');
-    const entryNote = document.querySelector(".entry-note");
-    
-    function createDropdownHandler(dropdown) {
-        return function(e) {
-            e.stopPropagation();
-            if (isAnimating) return;
-            dropdown.classList.toggle("open");
-            console.log('Дропдаун:', dropdown.id, dropdown.classList.contains('open') ? 'открыт' : 'закрыт');
-        };
-    }
-    
-    if (addressDrop) {
-        const arrow = addressDrop.querySelector(".dropdown-arrow");
-        if (arrow) {
-            const handler = createDropdownHandler(addressDrop);
-            arrow.addEventListener("click", handler);
-            cleanupRegistry.add(() => arrow.removeEventListener("click", handler));
-        }
-    }
-    
-    if (usefulDrop) {
-        const arrow = usefulDrop.querySelector(".dropdown-arrow");
-        if (arrow) {
-            const handler = createDropdownHandler(usefulDrop);
-            arrow.addEventListener("click", handler);
-            cleanupRegistry.add(() => arrow.removeEventListener("click", handler));
-        }
-    }
-    
-    const globalClickHandler = function(e) {
-        if (!e.target.closest('.dropdown')) {
-            if (addressDrop) addressDrop.classList.remove("open");
-            if (usefulDrop) usefulDrop.classList.remove("open");
-        }
-    };
-    
-    document.addEventListener('click', globalClickHandler);
-    cleanupRegistry.add(() => document.removeEventListener('click', globalClickHandler));
-    
-    if (paidBtn) {
-        const paidHandler = () => {
-            console.log('Клик на paidBtn');
-            setMode("details", { expandUseful: true, scrollToBottom: true });
-        };
-        paidBtn.addEventListener('click', paidHandler);
-        cleanupRegistry.add(() => paidBtn.removeEventListener('click', paidHandler));
-    }
-    
-    if (entryNote) {
-        const entryHandler = (e) => {
-            if (!e.target.closest("#paidBtn")) {
-                console.log('Клик на entryNote');
-                setMode("details", { expandUseful: true, scrollToBottom: true });
-            }
-        };
-        entryNote.addEventListener('click', entryHandler);
-        cleanupRegistry.add(() => entryNote.removeEventListener('click', entryHandler));
-    }
-}
-
-// =============================================================================
-// КЛАВИАТУРА (для ПК)
-// =============================================================================
-
-function setupKeyboardHandlers() {
-    function onKeyDown(e) {
-        if (e.key === 'Escape' && mode === 'details') {
-            setMode('intro');
-        }
-    }
-    
-    document.addEventListener('keydown', onKeyDown);
-    cleanupRegistry.add(() => document.removeEventListener('keydown', onKeyDown));
-}
-
-// =============================================================================
-// УПРАВЛЕНИЕ <br> В ЗАГОЛОВКЕ (НОВАЯ ФУНКЦИЯ)
-// =============================================================================
-
-function adjustTitleBreaks(currentMode) {
-    const h1 = document.querySelector('.title-block h1');
-    if (!h1) return;
-
-    // 1. Сохраняем оригинальный HTML заголовка, если это первый запуск
-    if (!h1.dataset.originalHtml) {
-        h1.dataset.originalHtml = h1.innerHTML;
-    } 
-    // Если произошел переход на другую страницу (SPA) и заголовок изменился, обновляем оригинал
-    else if (h1.dataset.originalHtml !== h1.innerHTML && currentMode === 'intro') {
-        h1.dataset.originalHtml = h1.innerHTML;
-    }
-
-    // 2. Логика показа/скрытия
-    if (currentMode === 'details') {
-        // Меню открыто: удаляем <br> в начале строки (от 1 до 2 штук)
-        let html = h1.dataset.originalHtml;
-        // Регулярка ищет <br> только в самом начале текста, не трогая переносы по центру
-        h1.innerHTML = html.replace(/^\s*(<br\s*\/?>\s*){1,2}/, '');
-    } else {
-        // Меню закрыто: возвращаем заголовок как был (с <br>)
-        h1.innerHTML = h1.dataset.originalHtml;
-    }
-}
-
-// =============================================================================
 // ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ
 // =============================================================================
 
@@ -953,6 +1004,10 @@ window.initializeMenu = function() {
     
     initializeDropdownsAndButtons();
     setupSwipeHandlers();
+    
+    // 🆕 НАСТРОЙКА НАВИГАЦИИ КЛИКАМИ ПО ЭКРАНУ
+    setupMobileTapNavigation();
+    
     setupKeyboardHandlers();
     setupVideoGuards();
     
