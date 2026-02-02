@@ -10,23 +10,29 @@ const SWIPE_THRESHOLD = 50;
 // =============================================================================
 // SWIPE HINT SYSTEM (Подсказка свайпа после бездействия)
 // =============================================================================
+
 // =============================================================================
 // SWIPE HINT SYSTEM (Подсказка свайпа с видео следующей страницы)
 // =============================================================================
+
 let inactivityTimer = null;
-const INACTIVITY_DELAY = 5000; // ИЗМЕНЕНО: 5 секунд (было 7)
+const INACTIVITY_DELAY = 5000; // 5 секунд (было 7)
 let isHintShowing = false;
 let hintVideoElement = null; // Ссылка на видео для остановки
 
-// === НОВАЯ ЛОГИКА: Счетчик открытых страниц ===
-let pagesOpenedCount = 0;
-const PEEK_PAGES_LIMIT = 3; // Показывать эффект, пока открыто меньше 3 новых страниц
-let hasInitializedOnce = false; // Флаг для отслеживания первой загрузки
+// Счетчик для условия "показывать пока пользователь не откроет 3 новые страницы"
+let pagesViewedCount = 0;
+let lastKnownPlaceId = null;
 
 /**
  * Запускает таймер бездействия
  */
 function startInactivityTimer() {
+    // !!! ИЗМЕНЕНИЕ: Если открыто 3 и более страниц, не запускаем таймер (подсказка отключена) !!!
+    if (pagesViewedCount >= 3) {
+        return;
+    }
+
     if (inactivityTimer) {
         clearTimeout(inactivityTimer);
         inactivityTimer = null;
@@ -35,13 +41,7 @@ function startInactivityTimer() {
     if (mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
         return;
     }
-
-    // === НОВАЯ ЛОГИКА: Проверка лимита страниц ===
-    // Если уже открыто 3 или более новых страниц, не показываем подсказку
-    if (pagesOpenedCount >= PEEK_PAGES_LIMIT) {
-        return;
-    }
-
+    
     const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
     if (!order || order.length <= 1) return;
     
@@ -70,8 +70,8 @@ function resetInactivityTimer() {
  * Показывает анимацию-подсказку со следующей страницей
  */
 function showSwipeHint() {
-    // === НОВАЯ ЛОГИКА: Двойная проверка перед показом ===
-    if (pagesOpenedCount >= PEEK_PAGES_LIMIT) return;
+    // Дополнительная проверка счетчика на всякий случай
+    if (pagesViewedCount >= 3) return;
 
     if (isHintShowing || mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
         return;
@@ -783,19 +783,18 @@ function adjustTitleBreaks(currentMode) {
 window.initializeMenu = function() {
     console.log('🔄 Инициализация меню...');
     
-    // === НОВАЯ ЛОГИКА: Счетчик открытых страниц ===
-    // Увеличиваем счетчик, если это не самая первая инициализация при загрузке скрипта
-    if (hasInitializedOnce) {
-        pagesOpenedCount++;
-        console.log(`📖 Открыто новых страниц: ${pagesOpenedCount} (Лимит: ${PEEK_PAGES_LIMIT})`);
-    } else {
-        hasInitializedOnce = true;
-    }
-    // ===============================================
-
     cleanupRegistry.clear();
     isAnimating = false;
-    
+
+    // !!! НОВАЯ ЛОГИКА: Подсчет открытых страниц !!!
+    const currentPlaceId = window.spaRouter?.currentPlaceId;
+    if (currentPlaceId && currentPlaceId !== lastKnownPlaceId) {
+        lastKnownPlaceId = currentPlaceId;
+        pagesViewedCount++;
+        console.log(`🔢 Счетчик страниц: ${pagesViewedCount}/3`);
+    }
+    // ==============================================
+
     if (isYandexBrowser()) {
         document.body.classList.add('yandex-browser');
         console.log('🔧 Обнаружен Яндекс.Браузер');
