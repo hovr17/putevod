@@ -1152,79 +1152,95 @@ padding-top: 2vh;
    SWIPE HINT ANIMATION (Подсказка свайпа после 7 сек бездействия)
    ========================================================================== */
 
+/* =============================================================================
+   SWIPE HINT ANIMATION (Подсказка свайпа с видео следующей страницы)
+   ========================================================================== */
+
 @keyframes swipeHintSlide {
   0%, 100% { 
     transform: translateX(0); 
   }
   50% { 
-    transform: translateX(-15vw); 
+    transform: translateX(-12vw); 
   }
 }
 
-@keyframes hintGlow {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
-}
-
 .swipe-hint-active {
-  animation: swipeHintSlide 0.7s ease-in-out 2; /* Два цикла движения */
-  pointer-events: none !important; /* Блокируем взаимодействие во время подсказки */
+  animation: swipeHintSlide 0.8s ease-in-out 2; /* Два цикла движения */
+  position: relative;
 }
 
-/* Псевдо-элемент справа, имитирующий следующую страницу */
-.swipe-hint-active::after {
-  content: '';
+/* Контейнер для превью следующей страницы */
+.next-page-preview {
   position: absolute;
   top: 0;
-  right: -15vw;
-  width: 15vw;
+  left: 100%; /* Позиционируем справа от frame */
+  width: 12vw;
   height: 100%;
-  background: linear-gradient(to left, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
-  z-index: 999;
-  animation: hintGlow 0.7s ease-in-out 2;
-  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: #000;
 }
 
-/* Индикатор стрелки на градиенте */
-.swipe-hint-active::before {
+.next-page-preview video,
+.next-page-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Показываем preview только во время анимации */
+.swipe-hint-active .next-page-preview {
+  opacity: 1;
+}
+
+/* Стрелка-индикатор поверх видео (опционально, можно убрать) */
+.next-page-preview::after {
   content: '→';
   position: absolute;
   top: 50%;
-  right: -12vw;
-  transform: translateY(-50%);
-  font-size: 8vw;
-  color: rgba(255,255,255,0.8);
-  z-index: 1000;
-  animation: hintGlow 0.7s ease-in-out 2;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4vw;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  z-index: 2;
   pointer-events: none;
+  animation: pulseArrow 0.8s ease-in-out infinite;
+}
+
+@keyframes pulseArrow {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
 }
 
 /* Для десктопа уменьшаем амплитуду */
 @media (min-width: 1081px) {
   @keyframes swipeHintSlide {
     0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-6vw); }
+    50% { transform: translateX(-5vw); }
   }
   
-  .swipe-hint-active::after {
-    right: -6vw;
-    width: 6vw;
+  .next-page-preview {
+    width: 5vw;
+    left: 100%;
   }
   
-  .swipe-hint-active::before {
-    right: -4.5vw;
-    font-size: 3vw;
+  .next-page-preview::after {
+    font-size: 2vw;
   }
 }
 
-/* Отключаем на мобильных в landscape (слишком мало места) */
+/* Отключаем на мобильных в landscape */
 @media (max-height: 500px) and (max-width: 1080px) {
   .swipe-hint-active {
     animation: none !important;
   }
-  .swipe-hint-active::after,
-  .swipe-hint-active::before {
+  .next-page-preview {
     display: none !important;
   }
 }
+
