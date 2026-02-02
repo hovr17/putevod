@@ -13,12 +13,6 @@ const SWIPE_THRESHOLD = 50;
 // =============================================================================
 // SWIPE HINT SYSTEM (Подсказка свайпа с видео следующей страницы)
 // =============================================================================
-// =============================================================================
-// SWIPE HINT SYSTEM (Подсказка свайпа с предзагруженным видео)
-// =============================================================================
-// =============================================================================
-// SWIPE HINT SYSTEM (Подсказка свайпа с видео следующей страницы)
-// =============================================================================
 let inactivityTimer = null;
 const INACTIVITY_DELAY = 7000; // 7 секунд
 let isHintShowing = false;
@@ -223,6 +217,55 @@ function setupInactivityTracking() {
             document.removeEventListener(event, resetHandler);
         });
     });
+}
+
+// =============================================================================
+// СИСТЕМА ОЧИСТКИ (для SPA)
+// =============================================================================
+
+const cleanupRegistry = {
+    handlers: [],
+    observers: [],
+    timeouts: [],
+    
+    add(handler) {
+        this.handlers.push(handler);
+    },
+    
+    clear() {
+        this.handlers.forEach(fn => {
+            try { fn(); } catch(e) { console.error('Cleanup error:', e); }
+        });
+        this.handlers = [];
+        
+        this.observers.forEach(obs => {
+            try { obs.disconnect(); } catch(e) {}
+        });
+        this.observers = [];
+        
+        this.timeouts.forEach(id => clearTimeout(id));
+        this.timeouts = [];
+        
+        console.log('🧹 Cleanup выполнен');
+    },
+    
+    setTimeout(fn, delay) {
+        const id = setTimeout(fn, delay);
+        this.timeouts.push(id);
+        return id;
+    },
+    
+    observe(observer) {
+        this.observers.push(observer);
+    }
+};
+
+// =============================================================================
+// МИНИМАЛЬНАЯ ПРОВЕРКА БРАУЗЕРА
+// =============================================================================
+
+function isYandexBrowser() {
+    return /YaBrowser/i.test(navigator.userAgent);
 }
 
 // =============================================================================
@@ -926,7 +969,7 @@ window.addEventListener('popstate', () => {
     cleanupRegistry.setTimeout(window.initializeMenu, 100);
 });
 
-if (window.spaRouter) {
+if (window.spaRouter){
     if (window.spaRouter.navigate) {
         const originalNavigate = window.spaRouter.navigate;
         window.spaRouter.navigate = function(...args) {
@@ -949,9 +992,3 @@ window.reinitMenu = function() {
 };
 
 console.log('✅ place_menu.js полностью загружен');
-
-
-
-
-
-
