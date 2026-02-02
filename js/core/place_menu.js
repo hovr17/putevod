@@ -28,6 +28,11 @@ let lastKnownPlaceId = null;
  * Запускает таймер бездействия
  */
 function startInactivityTimer() {
+    // !!! ИЗМЕНЕНИЕ: Эффект только для мобильных (ширина <= 1080px) !!!
+    if (window.innerWidth > 1080) {
+        return;
+    }
+
     // !!! ИЗМЕНЕНИЕ: Если открыто 3 и более страниц, полностью останавливаем цикл !!!
     if (pagesViewedCount >= 3) {
         return;
@@ -70,6 +75,9 @@ function resetInactivityTimer() {
  * Показывает анимацию-подсказку со следующей страницей
  */
 function showSwipeHint() {
+    // Проверка на мобильные устройства (дополнительная защита)
+    if (window.innerWidth > 1080) return;
+    
     // Проверка условия перед показом
     if (pagesViewedCount >= 3) return;
 
