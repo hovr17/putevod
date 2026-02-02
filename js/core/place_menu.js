@@ -8,56 +8,37 @@ let isHorizontalSwipe = false;
 const SWIPE_THRESHOLD = 50;
 
 // =============================================================================
+// SWIPE HINT SYSTEM (Подсказка свайпа после бездействия)
+// =============================================================================
+
+// =============================================================================
 // SWIPE HINT SYSTEM (Подсказка свайпа с видео следующей страницы)
 // =============================================================================
+
 let inactivityTimer = null;
 const INACTIVITY_DELAY = 5000; // 5 секунд
 let isHintShowing = false;
-let hintVideoElement = null;
+let hintVideoElement = null; // Ссылка на видео для остановки
 
-// 🆕 НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ОТСЛЕЖИВАНИЯ СТРАНИЦ
-let pageViewCounter = parseInt(sessionStorage.getItem('pageViewCounter') || '0');
-const PAGES_BEFORE_HINT = 3;
-let isFirstInitialization = true;
-
-/**
- * Увеличивает счетчик просмотренных страниц
- */
-function incrementPageViewCounter() {
-    // Пропускаем первую инициализацию (первую загрузку страницы)
-    if (isFirstInitialization) {
-        isFirstInitialization = false;
-        console.log('📊 Первичная загрузка страницы, счетчик не увеличен');
-        return;
-    }
-    
-    pageViewCounter++;
-    sessionStorage.setItem('pageViewCounter', pageViewCounter);
-    console.log(`📊 Страниц просмотрено: ${pageViewCounter}/${PAGES_BEFORE_HINT}`);
-    
-    // Если достигли лимита и меню закрыто, запускаем таймер
-    if (pageViewCounter >= PAGES_BEFORE_HINT && mode === 'intro') {
-        console.log('✅ Достигнут лимит страниц, таймер подсказки активен');
-        startInactivityTimer();
-    }
-}
+// Счетчик для условия "показывать пока пользователь не откроет 3 новые страницы"
+let pagesViewedCount = 0;
+let lastKnownPlaceId = null;
 
 /**
  * Запускает таймер бездействия
  */
 function startInactivityTimer() {
+    // !!! ИЗМЕНЕНИЕ: Если открыто 3 и более страниц, полностью останавливаем цикл !!!
+    if (pagesViewedCount >= 3) {
+        return;
+    }
+
     if (inactivityTimer) {
         clearTimeout(inactivityTimer);
         inactivityTimer = null;
     }
     
     if (mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
-        return;
-    }
-    
-    // 🆕 ПРОВЕРКА: показываем подсказку только если просмотрено достаточно страниц
-    if (pageViewCounter < PAGES_BEFORE_HINT) {
-        console.log(`⏳ Недостаточно страниц для подсказки: ${pageViewCounter}/${PAGES_BEFORE_HINT}`);
         return;
     }
     
@@ -70,7 +51,7 @@ function startInactivityTimer() {
 }
 
 /**
- * Сбрасывает таймер и убирает подсказку
+ * Сбрасывает таймер и убирает подсказку при активности пользователя
  */
 function resetInactivityTimer() {
     if (inactivityTimer) {
@@ -82,16 +63,16 @@ function resetInactivityTimer() {
         hideSwipeHint();
     }
     
-    // 🆕 ПЕРЕЗАПУСКАЕМ ТАЙМЕР ТОЛЬКО ЕСЛИ УСЛОВИЯ ВСЁ ЕЩЁ ВЫПОЛНЕНЫ
-    if (pageViewCounter >= PAGES_BEFORE_HINT && mode === 'intro') {
-        startInactivityTimer();
-    }
+    startInactivityTimer();
 }
 
 /**
  * Показывает анимацию-подсказку со следующей страницей
  */
 function showSwipeHint() {
+    // Проверка условия перед показом
+    if (pagesViewedCount >= 3) return;
+
     if (isHintShowing || mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
         return;
     }
@@ -182,9 +163,16 @@ function showSwipeHint() {
     
     console.log('💡 Показана подсказка свайпа с видео:', nextPlaceId);
     
-    // Автоматически убираем через 1.6s (2 цикла анимации)
+    // !!! ИЗМЕНЕНИЕ ЛОГИКИ ЦИКЛА !!!
+    // Автоматически убираем через 1.6s и ПЕРЕЗАПУСКАЕМ таймер
     setTimeout(() => {
         hideSwipeHint();
+        
+        // Запускаем таймер заново, чтобы подсказка появилась снова через 5 сек
+        // (если лимит страниц еще не достигнут)
+        if (pagesViewedCount < 3) {
+            startInactivityTimer();
+        }
     }, 1600);
 }
 
@@ -216,11 +204,6 @@ function hideSwipeHint() {
     }
     
     isHintShowing = false;
-    
-    // 🆕 СБРАСЫВАЕМ СЧЕТЧИК ПОСЛЕ ПОКАЗА ПОДСКАЗКИ
-    pageViewCounter = 0;
-    sessionStorage.setItem('pageViewCounter', '0');
-    console.log('🔄 Счетчик страниц сброшен после показа подсказки');
 }
 
 /**
@@ -245,10 +228,7 @@ function setupInactivityTracking() {
             }
             hideSwipeHint();
         } else {
-            // 🆕 ПРОВЕРЯЕМ УСЛОВИЯ ПРИ ВОЗВРАЩЕНИИ ВО ВКЛАДКУ
-            if (pageViewCounter >= PAGES_BEFORE_HINT && mode === 'intro') {
-                startInactivityTimer();
-            }
+            startInactivityTimer();
         }
     });
     
@@ -403,10 +383,8 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
         }
         hideSwipeHint();
     } else {
-        // Меню закрыто - запускаем таймер, если условия выполнены
-        if (pageViewCounter >= PAGES_BEFORE_HINT) {
-            startInactivityTimer();
-        }
+        // Меню закрыто - запускаем таймер
+        startInactivityTimer();
     }
 
     // === ИЗМЕНЕНИЕ: Управление тегами <br> ===
@@ -812,12 +790,25 @@ function adjustTitleBreaks(currentMode) {
 window.initializeMenu = function() {
     console.log('🔄 Инициализация меню...');
     
-    // 🆕 ИНКРЕМЕНТИРУЕМ СЧЕТЧИК (кроме первого раза)
-    incrementPageViewCounter();
-    
     cleanupRegistry.clear();
     isAnimating = false;
-    
+
+    // !!! НОВАЯ ЛОГИКА: Подсчет открытых страниц !!!
+    const currentPlaceId = window.spaRouter?.currentPlaceId;
+    if (currentPlaceId && currentPlaceId !== lastKnownPlaceId) {
+        lastKnownPlaceId = currentPlaceId;
+        pagesViewedCount++;
+        console.log(`🔢 Счетчик страниц: ${pagesViewedCount}/3`);
+        
+        // Если счетчик достиг 3, убедимся, что текущий таймер остановлен
+        if (pagesViewedCount >= 3 && inactivityTimer) {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = null;
+            hideSwipeHint();
+        }
+    }
+    // ==============================================
+
     if (isYandexBrowser()) {
         document.body.classList.add('yandex-browser');
         console.log('🔧 Обнаружен Яндекс.Браузер');
@@ -959,9 +950,7 @@ window.initializeMenu = function() {
     
     // 🆕 ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ ПОДСКАЗКИ СВАЙПА
     setupInactivityTracking();
-    
-    // 🆕 ЗАПУСКАЕМ ТАЙМЕР ТОЛЬКО ЕСЛИ УСЛОВИЯ ВЫПОЛНЕНЫ
-    if (!shouldOpenMenu && pageViewCounter >= PAGES_BEFORE_HINT) {
+    if (!shouldOpenMenu) {
         startInactivityTimer();
     }
     
@@ -972,7 +961,6 @@ window.initializeMenu = function() {
     // ==========================================
     
     console.log('✅ Меню инициализировано:', shouldOpenMenu ? 'открыто (белый фон активен)' : 'закрыто');
-    console.log(`📊 Текущий счетчик страниц: ${pageViewCounter}/${PAGES_BEFORE_HINT}`);
 };
 
 // =============================================================================
