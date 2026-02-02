@@ -16,95 +16,16 @@ const SWIPE_THRESHOLD = 50;
 // =============================================================================
 // SWIPE HINT SYSTEM (Подсказка свайпа с предзагруженным видео)
 // =============================================================================
+// =============================================================================
+// SWIPE HINT SYSTEM (Подсказка свайпа с видео следующей страницы)
+// =============================================================================
 let inactivityTimer = null;
 const INACTIVITY_DELAY = 7000; // 7 секунд
 let isHintShowing = false;
-let hintVideoElement = null;
-let preloadedNextVideo = null; // Кэш предзагруженного видео
-let nextPageConfig = null; // Конфиг следующей страницы
+let hintVideoElement = null; // Ссылка на видео для остановки
 
 /**
- * Получает конфиг следующей страницы
- */
-function getNextPageConfig() {
-    const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
-    if (!order || order.length <= 1) return null;
-    
-    const currentIndex = order.indexOf(window.spaRouter?.currentPlaceId);
-    const nextIndex = (currentIndex + 1) % order.length;
-    const nextPlaceId = order[nextIndex];
-    
-    return {
-        config: getPlaceConfig(nextPlaceId, window.spaRouter?.currentCategory),
-        placeId: nextPlaceId
-    };
-}
-
-/**
- * Предзагружает видео следующей страницы
- */
-function preloadNextPageVideo() {
-    // Очищаем предыдущее предзагруженное видео
-    if (preloadedNextVideo) {
-        preloadedNextVideo.pause();
-        preloadedNextVideo.src = '';
-        preloadedNextVideo.load();
-        preloadedNextVideo = null;
-    }
-    
-    const nextData = getNextPageConfig();
-    if (!nextData || !nextData.config) return;
-    
-    nextPageConfig = nextData.config;
-    
-    // Если нет видео, но есть постер - просто кэшируем постер
-    if (!nextPageConfig.video?.src && nextPageConfig.video?.poster) {
-        const img = new Image();
-        img.src = nextPageConfig.video.poster;
-        return;
-    }
-    
-    if (!nextPageConfig.video?.src) return;
-    
-    // Создаем скрытое видео для предзагрузки
-    const video = document.createElement('video');
-    video.src = nextPageConfig.video.src;
-    video.muted = true;
-    video.preload = 'auto';
-    video.playsInline = true;
-    video.style.position = 'absolute';
-    video.style.opacity = '0';
-    video.style.pointerEvents = 'none';
-    video.style.width = '1px';
-    video.style.height = '1px';
-    
-    // Ждем достаточной загрузки данных
-    video.onloadeddata = () => {
-        console.log('✅ Видео следующей страницы предзагружено:', nextData.placeId);
-        preloadedNextVideo = video;
-    };
-    
-    video.onerror = () => {
-        console.warn('⚠️ Не удалось предзагрузить видео, будет использован poster');
-        preloadedNextVideo = null;
-    };
-    
-    // Начинаем загрузку
-    video.load();
-    
-    // Добавляем в DOM для гарантии загрузки
-    document.body.appendChild(video);
-    
-    // Удаляем из DOM через секунду (данные останутся в кэше браузера)
-    setTimeout(() => {
-        if (video.parentNode) {
-            video.parentNode.removeChild(video);
-        }
-    }, 1000);
-}
-
-/**
- * Запускает таймер бездействия + предзагрузку
+ * Запускает таймер бездействия
  */
 function startInactivityTimer() {
     if (inactivityTimer) {
@@ -118,9 +39,6 @@ function startInactivityTimer() {
     
     const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
     if (!order || order.length <= 1) return;
-    
-    // Сразу начинаем предзагрузку следующей страницы
-    preloadNextPageVideo();
     
     inactivityTimer = setTimeout(() => {
         showSwipeHint();
@@ -140,12 +58,11 @@ function resetInactivityTimer() {
         hideSwipeHint();
     }
     
-    // Перезапускаем с новой предзагрузкой (на случай смены страницы)
     startInactivityTimer();
 }
 
 /**
- * Показывает анимацию-подсказку с готовым видео
+ * Показывает анимацию-подсказку со следующей страницей
  */
 function showSwipeHint() {
     if (isHintShowing || mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
@@ -153,34 +70,36 @@ function showSwipeHint() {
     }
     
     const frame = document.getElementById('frame');
-    if (!frame || frame.classList.contains('mode-details')) return;
+    if (!frame) return;
     
-    // Получаем актуальный конфиг (мог смениться пока грузилось)
-    const nextData = getNextPageConfig();
-    if (!nextData || !nextData.config) return;
+    if (frame.classList.contains('mode-details')) return;
     
-    const config = nextData.config;
+    // Получаем следующую страницу
+    const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
+    const currentIndex = order.indexOf(window.spaRouter?.currentPlaceId);
+    const nextIndex = (currentIndex + 1) % order.length;
+    const nextPlaceId = order[nextIndex];
+    const nextConfig = getPlaceConfig(nextPlaceId, window.spaRouter?.currentCategory);
     
-    // Создаем контейнер превью
+    if (!nextConfig) return;
+    
+    // Создаем или получаем контейнер превью
     let preview = frame.querySelector('.next-page-preview');
     if (!preview) {
         preview = document.createElement('div');
         preview.className = 'next-page-preview';
         frame.appendChild(preview);
     }
+    
+    // Очищаем предыдущее содержимое
     preview.innerHTML = '';
     hintVideoElement = null;
     
-    // Используем предзагруженное видео если оно есть и подходит
-    const usePreloaded = preloadedNextVideo && 
-                        nextPageConfig && 
-                        nextPageConfig.video?.src === config.video?.src;
-    
-    if (usePreloaded) {
-        // Клонируем предзагруженное видео
+    // Заполняем видео или постер следующей страницы
+    if (nextConfig.video?.src) {
         const video = document.createElement('video');
-        video.src = config.video.src;
-        video.poster = config.video.poster || '';
+        video.src = nextConfig.video.src;
+        video.poster = nextConfig.video.poster || '';
         video.muted = true;
         video.loop = true;
         video.playsInline = true;
@@ -189,65 +108,61 @@ function showSwipeHint() {
         video.style.height = '100%';
         video.style.objectFit = 'cover';
         
-        // Важно: начинаем с текущего времени предзагруженного видео
-        if (preloadedNextVideo.currentTime > 0) {
-            video.currentTime = preloadedNextVideo.currentTime;
-        }
+        // Обработка ошибок загрузки
+        video.onerror = () => {
+            // Если видео не загрузилось, показываем постер
+            if (nextConfig.video.poster) {
+                preview.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = nextConfig.video.poster;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                preview.appendChild(img);
+            }
+        };
         
         preview.appendChild(video);
         hintVideoElement = video;
         
-        // Запускаем воспроизведение
-        video.play().catch(() => {});
-        
-        console.log('💡 Показана подсказка с предзагруженным видео');
-    } else if (config.video?.src) {
-        // Fallback: создаем новое видео (будет задержка)
-        const video = document.createElement('video');
-        video.src = config.video.src;
-        video.poster = config.video.poster || '';
-        video.muted = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.autoplay = true;
-        video.style.width = '100%';
-        video.style.height = '100%';
-        video.style.objectFit = 'cover';
-        
-        preview.appendChild(video);
-        hintVideoElement = video;
-        
-        video.play().catch(() => {});
-        
-        console.log('⚠️ Показана подсказка без предзагрузки (будет задержка)');
-    } else if (config.video?.poster) {
-        // Только постер
+        // Принудительно запускаем воспроизведение
+        video.play().catch(() => {
+            // Автоплей заблокирован, оставляем poster
+        });
+    } else if (nextConfig.video?.poster) {
         const img = document.createElement('img');
-        img.src = config.video.poster;
+        img.src = nextConfig.video.poster;
         img.style.width = '100%';
         img.style.height = '100%';
         img.style.objectFit = 'cover';
         preview.appendChild(img);
     } else {
-        // Фолбек
+        // Фолбек - темный фон с названием
         preview.style.background = 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)';
         preview.style.display = 'flex';
         preview.style.alignItems = 'center';
         preview.style.justifyContent = 'center';
-        preview.innerHTML = '<span style="color:white;font-size:3vw;opacity:0.5">→</span>';
+        preview.style.color = 'white';
+        preview.style.fontFamily = 'Zametka, sans-serif';
+        preview.style.fontSize = '2vw';
+        preview.style.textAlign = 'center';
+        preview.style.padding = '1vw';
+        preview.innerHTML = '<span style="opacity:0.6">→</span>';
     }
     
     isHintShowing = true;
     frame.classList.add('swipe-hint-active');
     
-    // Автоочистка
+    console.log('💡 Показана подсказка свайпа с видео:', nextPlaceId);
+    
+    // Автоматически убираем через 1.6s (2 цикла анимации)
     setTimeout(() => {
         hideSwipeHint();
     }, 1600);
 }
 
 /**
- * Скрывает подсказку
+ * Скрывает подсказку и останавливает видео
  */
 function hideSwipeHint() {
     if (!isHintShowing) return;
@@ -257,23 +172,21 @@ function hideSwipeHint() {
         frame.classList.remove('swipe-hint-active');
     }
     
+    // Останавливаем видео чтобы не тратить ресурсы
     if (hintVideoElement) {
         hintVideoElement.pause();
+        hintVideoElement.src = '';
+        hintVideoElement.load();
         hintVideoElement = null;
     }
     
+    // Удаляем контейнер полностью
     const preview = document.querySelector('.next-page-preview');
     if (preview) {
-        setTimeout(() => preview.remove(), 300);
+        setTimeout(() => {
+            preview.remove();
+        }, 300); // Небольшая задержка для плавности
     }
-    
-    // Очищаем предзагруженное видео
-    if (preloadedNextVideo) {
-        preloadedNextVideo.pause();
-        preloadedNextVideo.src = '';
-        preloadedNextVideo = null;
-    }
-    nextPageConfig = null;
     
     isHintShowing = false;
 }
@@ -310,14 +223,6 @@ function setupInactivityTracking() {
             document.removeEventListener(event, resetHandler);
         });
     });
-}
-
-// =============================================================================
-// МИНИМАЛЬНАЯ ПРОВЕРКА БРАУЗЕРА
-// =============================================================================
-
-function isYandexBrowser() {
-    return /YaBrowser/i.test(navigator.userAgent);
 }
 
 // =============================================================================
@@ -1044,6 +949,7 @@ window.reinitMenu = function() {
 };
 
 console.log('✅ place_menu.js полностью загружен');
+
 
 
 
