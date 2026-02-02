@@ -683,7 +683,7 @@ html {
   .stories-label {
     font-size: 3.2vh;
     top: 3vh;
-    z-index: 100;
+    z-index: 20 !important; 
     padding-left: 0.5vh;
     position: absolute;
   }
@@ -803,7 +803,7 @@ html {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1020;
+      z-index: 50 !important;
     display: none;
     cursor: pointer;
     pointer-events: auto;
@@ -1026,6 +1026,7 @@ html {
     padding-bottom: 20px !important; /* Отступ текста от низа */
   }
 }
+
 
 
 
