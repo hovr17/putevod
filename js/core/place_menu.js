@@ -10,31 +10,29 @@ const SWIPE_THRESHOLD = 50;
 // =============================================================================
 // SWIPE HINT SYSTEM (Подсказка свайпа после бездействия)
 // =============================================================================
+// =============================================================================
+// SWIPE HINT SYSTEM (Подсказка свайпа с видео следующей страницы)
+// =============================================================================
 let inactivityTimer = null;
 const INACTIVITY_DELAY = 7000; // 7 секунд
 let isHintShowing = false;
+let hintVideoElement = null; // Ссылка на видео для остановки
 
 /**
  * Запускает таймер бездействия
  */
 function startInactivityTimer() {
-    // Очищаем предыдущий таймер
     if (inactivityTimer) {
         clearTimeout(inactivityTimer);
         inactivityTimer = null;
     }
     
-    // Не запускаем, если:
-    // - Меню открыто (details)
-    // - Идет анимация перехода
-    // - Нет следующей страницы (всего 1 страница в категории)
     if (mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
         return;
     }
     
-    // Проверяем, есть ли страницы для свайпа
     const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
-    if (!order || order.length <= 1) return; // Только одна страница - не показываем подсказку
+    if (!order || order.length <= 1) return;
     
     inactivityTimer = setTimeout(() => {
         showSwipeHint();
@@ -50,17 +48,15 @@ function resetInactivityTimer() {
         inactivityTimer = null;
     }
     
-    // Убираем анимацию подсказки, если она активна
     if (isHintShowing) {
         hideSwipeHint();
     }
     
-    // Перезапускаем таймер снова
     startInactivityTimer();
 }
 
 /**
- * Показывает анимацию-подсказку свайпа
+ * Показывает анимацию-подсказку со следующей страницей
  */
 function showSwipeHint() {
     if (isHintShowing || mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
@@ -70,22 +66,97 @@ function showSwipeHint() {
     const frame = document.getElementById('frame');
     if (!frame) return;
     
-    // Проверяем еще раз, что мы в режиме intro
     if (frame.classList.contains('mode-details')) return;
+    
+    // Получаем следующую страницу
+    const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
+    const currentIndex = order.indexOf(window.spaRouter?.currentPlaceId);
+    const nextIndex = (currentIndex + 1) % order.length;
+    const nextPlaceId = order[nextIndex];
+    const nextConfig = getPlaceConfig(nextPlaceId, window.spaRouter?.currentCategory);
+    
+    if (!nextConfig) return;
+    
+    // Создаем или получаем контейнер превью
+    let preview = frame.querySelector('.next-page-preview');
+    if (!preview) {
+        preview = document.createElement('div');
+        preview.className = 'next-page-preview';
+        frame.appendChild(preview);
+    }
+    
+    // Очищаем предыдущее содержимое
+    preview.innerHTML = '';
+    hintVideoElement = null;
+    
+    // Заполняем видео или постер следующей страницы
+    if (nextConfig.video?.src) {
+        const video = document.createElement('video');
+        video.src = nextConfig.video.src;
+        video.poster = nextConfig.video.poster || '';
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.autoplay = true;
+        video.style.width = '100%';
+        video.style.height = '100%';
+        video.style.objectFit = 'cover';
+        
+        // Обработка ошибок загрузки
+        video.onerror = () => {
+            // Если видео не загрузилось, показываем постер
+            if (nextConfig.video.poster) {
+                preview.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = nextConfig.video.poster;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                preview.appendChild(img);
+            }
+        };
+        
+        preview.appendChild(video);
+        hintVideoElement = video;
+        
+        // Принудительно запускаем воспроизведение
+        video.play().catch(() => {
+            // Автоплей заблокирован, оставляем poster
+        });
+    } else if (nextConfig.video?.poster) {
+        const img = document.createElement('img');
+        img.src = nextConfig.video.poster;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        preview.appendChild(img);
+    } else {
+        // Фолбек - темный фон с названием
+        preview.style.background = 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)';
+        preview.style.display = 'flex';
+        preview.style.alignItems = 'center';
+        preview.style.justifyContent = 'center';
+        preview.style.color = 'white';
+        preview.style.fontFamily = 'Zametka, sans-serif';
+        preview.style.fontSize = '2vw';
+        preview.style.textAlign = 'center';
+        preview.style.padding = '1vw';
+        preview.innerHTML = '<span style="opacity:0.6">→</span>';
+    }
     
     isHintShowing = true;
     frame.classList.add('swipe-hint-active');
     
-    console.log('💡 Показана подсказка свайпа (7 сек бездействия)');
+    console.log('💡 Показана подсказка свайпа с видео:', nextPlaceId);
     
-    // Автоматически убираем класс после окончания анимации (1.4s = 2 цикла по 0.7s)
+    // Автоматически убираем через 1.6s (2 цикла анимации)
     setTimeout(() => {
         hideSwipeHint();
-    }, 1400);
+    }, 1600);
 }
 
 /**
- * Скрывает подсказку
+ * Скрывает подсказку и останавливает видео
  */
 function hideSwipeHint() {
     if (!isHintShowing) return;
@@ -94,14 +165,30 @@ function hideSwipeHint() {
     if (frame) {
         frame.classList.remove('swipe-hint-active');
     }
+    
+    // Останавливаем видео чтобы не тратить ресурсы
+    if (hintVideoElement) {
+        hintVideoElement.pause();
+        hintVideoElement.src = '';
+        hintVideoElement.load();
+        hintVideoElement = null;
+    }
+    
+    // Удаляем контейнер полностью
+    const preview = document.querySelector('.next-page-preview');
+    if (preview) {
+        setTimeout(() => {
+            preview.remove();
+        }, 300); // Небольшая задержка для плавности
+    }
+    
     isHintShowing = false;
 }
 
 /**
- * Настраивает отслеживание активности пользователя
+ * Настраивает отслеживание активности
  */
 function setupInactivityTracking() {
-    // События, которые считаются активностью и сбрасывают таймер
     const events = ['touchstart', 'touchmove', 'click', 'scroll', 'keydown', 'wheel'];
     
     const resetHandler = () => {
@@ -112,21 +199,18 @@ function setupInactivityTracking() {
         document.addEventListener(event, resetHandler, { passive: true });
     });
     
-    // При уходе с вкладки останавливаем таймер
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-            // Вкладка неактивна - очищаем таймер
             if (inactivityTimer) {
                 clearTimeout(inactivityTimer);
                 inactivityTimer = null;
             }
+            hideSwipeHint();
         } else {
-            // Вернулись на вкладку - запускаем заново
             startInactivityTimer();
         }
     });
     
-    // Добавляем очистку в registry
     cleanupRegistry.add(() => {
         if (inactivityTimer) clearTimeout(inactivityTimer);
         events.forEach(event => {
@@ -134,11 +218,6 @@ function setupInactivityTracking() {
         });
     });
 }
-
-// =============================================================================
-// СИСТЕМА ОЧИСТКИ (для SPA)
-// =============================================================================
-
 const cleanupRegistry = {
     handlers: [],
     observers: [],
@@ -908,6 +987,7 @@ window.reinitMenu = function() {
 };
 
 console.log('✅ place_menu.js полностью загружен');
+
 
 
 
