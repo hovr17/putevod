@@ -8,6 +8,134 @@ let isHorizontalSwipe = false;
 const SWIPE_THRESHOLD = 50;
 
 // =============================================================================
+// SWIPE HINT SYSTEM (Подсказка свайпа после бездействия)
+// =============================================================================
+let inactivityTimer = null;
+const INACTIVITY_DELAY = 7000; // 7 секунд
+let isHintShowing = false;
+
+/**
+ * Запускает таймер бездействия
+ */
+function startInactivityTimer() {
+    // Очищаем предыдущий таймер
+    if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = null;
+    }
+    
+    // Не запускаем, если:
+    // - Меню открыто (details)
+    // - Идет анимация перехода
+    // - Нет следующей страницы (всего 1 страница в категории)
+    if (mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
+        return;
+    }
+    
+    // Проверяем, есть ли страницы для свайпа
+    const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
+    if (!order || order.length <= 1) return; // Только одна страница - не показываем подсказку
+    
+    inactivityTimer = setTimeout(() => {
+        showSwipeHint();
+    }, INACTIVITY_DELAY);
+}
+
+/**
+ * Сбрасывает таймер и убирает подсказку
+ */
+function resetInactivityTimer() {
+    if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = null;
+    }
+    
+    // Убираем анимацию подсказки, если она активна
+    if (isHintShowing) {
+        hideSwipeHint();
+    }
+    
+    // Перезапускаем таймер снова
+    startInactivityTimer();
+}
+
+/**
+ * Показывает анимацию-подсказку свайпа
+ */
+function showSwipeHint() {
+    if (isHintShowing || mode === 'details' || isAnimating || window.spaRouter?.isAnimating) {
+        return;
+    }
+    
+    const frame = document.getElementById('frame');
+    if (!frame) return;
+    
+    // Проверяем еще раз, что мы в режиме intro
+    if (frame.classList.contains('mode-details')) return;
+    
+    isHintShowing = true;
+    frame.classList.add('swipe-hint-active');
+    
+    console.log('💡 Показана подсказка свайпа (7 сек бездействия)');
+    
+    // Автоматически убираем класс после окончания анимации (1.4s = 2 цикла по 0.7s)
+    setTimeout(() => {
+        hideSwipeHint();
+    }, 1400);
+}
+
+/**
+ * Скрывает подсказку
+ */
+function hideSwipeHint() {
+    if (!isHintShowing) return;
+    
+    const frame = document.getElementById('frame');
+    if (frame) {
+        frame.classList.remove('swipe-hint-active');
+    }
+    isHintShowing = false;
+}
+
+/**
+ * Настраивает отслеживание активности пользователя
+ */
+function setupInactivityTracking() {
+    // События, которые считаются активностью и сбрасывают таймер
+    const events = ['touchstart', 'touchmove', 'click', 'scroll', 'keydown', 'wheel'];
+    
+    const resetHandler = () => {
+        resetInactivityTimer();
+    };
+    
+    events.forEach(event => {
+        document.addEventListener(event, resetHandler, { passive: true });
+    });
+    
+    // При уходе с вкладки останавливаем таймер
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            // Вкладка неактивна - очищаем таймер
+            if (inactivityTimer) {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = null;
+            }
+        } else {
+            // Вернулись на вкладку - запускаем заново
+            startInactivityTimer();
+        }
+    });
+    
+    // Добавляем очистку в registry
+    cleanupRegistry.add(() => {
+        if (inactivityTimer) clearTimeout(inactivityTimer);
+        events.forEach(event => {
+            document.removeEventListener(event, resetHandler);
+        });
+    });
+}
+
+// =============================================================================
 // СИСТЕМА ОЧИСТКИ (для SPA)
 // =============================================================================
 
@@ -140,6 +268,19 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
     console.log('Смена режима с', mode, 'на', newMode);
     isAnimating = true;
     mode = newMode;
+
+    // Управление таймером бездействия (SWIPE HINT)
+    if (newMode === 'details') {
+        // Меню открыто - останавливаем таймер подсказки
+        if (inactivityTimer) {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = null;
+        }
+        hideSwipeHint();
+    } else {
+        // Меню закрыто - запускаем таймер
+        startInactivityTimer();
+    }
 
     // === ИЗМЕНЕНИЕ: Управление тегами <br> ===
     adjustTitleBreaks(newMode);
@@ -685,6 +826,13 @@ window.initializeMenu = function() {
     setupSwipeHandlers();
     setupKeyboardHandlers();
     setupVideoGuards();
+    
+    // 🆕 ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ ПОДСКАЗКИ СВАЙПА
+    setupInactivityTracking();
+    if (!shouldOpenMenu) {
+        startInactivityTimer();
+    }
+    
     updateNavigationVisibility();
 
     // === ИЗМЕНЕНИЕ: Управление тегами <br> ===
@@ -760,3 +908,6 @@ window.reinitMenu = function() {
 };
 
 console.log('✅ place_menu.js полностью загружен');
+
+
+
