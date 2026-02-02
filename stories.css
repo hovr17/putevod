@@ -922,8 +922,14 @@ html {
     max-width: 100vw !important;
   }
 
+   .stories-label {
+    z-index: 1030 !important; 
+  }
+
+  /* 2. СОСТОЯНИЕ: Оверлей открыт (текст раскрыт) */
+  /* Ставим z-index ниже, чем у оверлея (1020), чтобы подпись ПРЯТАЛАСЬ под ним */
   .stories-container.overlay-open .stories-label {
-    z-index: 1030 ;
+    z-index: 1015 !important;
   }
 }
 
@@ -1024,6 +1030,7 @@ html {
     padding-bottom: 20px !important; /* Отступ текста от низа */
   }
 }
+
 
 
 
