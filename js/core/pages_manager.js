@@ -22,24 +22,21 @@ class PagesManager {
         }
 
         // 1. Заголовок
-        const titleBlock = document.querySelector('.title-block h1');
-        if (titleBlock) {
-            titleBlock.innerHTML = this.config.heading || this.config.title || '';
-            
-            // 🆕 Индивидуальный размер шрифта (только для мобильных устройств)
-            // На ПК (>1080px) используются стандартные стили из CSS (clamp(28px, 5vmin, 62px))
-            const isDesktop = window.matchMedia('(min-width: 1081px)').matches;
-            
-            if (this.config.headingSize && !isDesktop) {
-                titleBlock.style.fontSize = this.config.headingSize;
-            } else {
-                // Сбрасываем inline-стиль, чтобы применились стандартные стили из CSS
-                titleBlock.style.fontSize = '';
-            }
-            
-            console.log('✅ Заголовок установлен:', titleBlock.innerHTML, 
-                this.config.headingSize && !isDesktop ? `(${this.config.headingSize})` : '(default CSS)');
-        }
+
+const titleBlock = document.querySelector('.title-block h1');
+if (titleBlock) {
+    titleBlock.innerHTML = this.config.heading || this.config.title || '';
+    
+    // 🆕 Индивидуальный размер шрифта
+    if (this.config.headingSize) {
+        titleBlock.style.fontSize = this.config.headingSize;
+    } else {
+        // Сбрасываем inline-стиль, чтобы применились стандартные стили из CSS
+        titleBlock.style.fontSize = '';
+    }
+    
+    console.log('✅ Заголовок установлен:', titleBlock.innerHTML, this.config.headingSize ? `(${this.config.headingSize})` : '(default)');
+}
 
         // 2. Видео (МОБИЛЬНАЯ ИНИЦИАЛИЗАЦИЯ)
         const bgVideo = document.getElementById('bgVideo');
@@ -102,58 +99,60 @@ class PagesManager {
         }
 
         // 4. Фото-кнопки
-        const photoWrapper = document.querySelector('.photo-wrapper');
-        if (photoWrapper) {
-            photoWrapper.innerHTML = '';
-            this.config.photoButtons?.forEach((btn, index) => {
-                const card = document.createElement('a');
-                card.className = 'photo-card';
-                card.href = btn.link || '#';
-                card.id = `photoCard${index + 1}`;
+        // 4. Фото-кнопки
+// 4. Фото-кнопки
+const photoWrapper = document.querySelector('.photo-wrapper');
+if (photoWrapper) {
+    photoWrapper.innerHTML = '';
+    this.config.photoButtons?.forEach((btn, index) => {
+        const card = document.createElement('a');
+        card.className = 'photo-card';
+        card.href = btn.link || '#';
+        card.id = `photoCard${index + 1}`;
+        
+        // ✅ СОХРАНЕНИЕ СОСТОЯНИЯ МЕНЮ ПРИ КЛИКЕ НА ФОТО
+        card.addEventListener('click', function(e) {
+            // Проверяем, что это переход на stories.html
+            if (this.href && this.href.includes('stories.html')) {
+                // Сохраняем текущее состояние меню
+                const frame = document.getElementById('frame');
+                const isMenuOpen = frame && frame.classList.contains('mode-details');
+                const usefulDrop = document.getElementById('usefulDrop');
+                const isDropdownOpen = usefulDrop && usefulDrop.classList.contains('open');
                 
-                // ✅ СОХРАНЕНИЕ СОСТОЯНИЯ МЕНЮ ПРИ КЛИКЕ НА ФОТО
-                card.addEventListener('click', function(e) {
-                    // Проверяем, что это переход на stories.html
-                    if (this.href && this.href.includes('stories.html')) {
-                        // Сохраняем текущее состояние меню
-                        const frame = document.getElementById('frame');
-                        const isMenuOpen = frame && frame.classList.contains('mode-details');
-                        const usefulDrop = document.getElementById('usefulDrop');
-                        const isDropdownOpen = usefulDrop && usefulDrop.classList.contains('open');
-                        
-                        if (isMenuOpen) {
-                            sessionStorage.setItem('menuState', 'open');
-                            console.log('💾 Сохранено: меню открыто');
-                        } else {
-                            sessionStorage.removeItem('menuState');
-                        }
-                        
-                        // Сохраняем состояние dropdown
-                        if (isDropdownOpen) {
-                            sessionStorage.setItem('usefulDropdownState', 'open');
-                            console.log('💾 Сохранено: dropdown открыт');
-                        } else {
-                            sessionStorage.removeItem('usefulDropdownState');
-                        }
-                    }
-                });
-                
-                if (btn.image) {
-                    card.style.backgroundImage = `url('${btn.image}')`;
-                    card.style.backgroundSize = 'cover';
-                    card.style.backgroundPosition = 'center';
-                    card.style.backgroundRepeat = 'no-repeat';
+                if (isMenuOpen) {
+                    sessionStorage.setItem('menuState', 'open');
+                    console.log('💾 Сохранено: меню открыто');
+                } else {
+                    sessionStorage.removeItem('menuState');
                 }
                 
-                const label = document.createElement('div');
-                label.className = 'photo-label';
-                label.textContent = btn.label || '';
-                card.appendChild(label);
-                photoWrapper.appendChild(card);
-                
-                console.log(`✅ Фото-кнопка ${index + 1}:`, btn.label);
-            });
+                // Сохраняем состояние dropdown
+                if (isDropdownOpen) {
+                    sessionStorage.setItem('usefulDropdownState', 'open');
+                    console.log('💾 Сохранено: dropdown открыт');
+                } else {
+                    sessionStorage.removeItem('usefulDropdownState');
+                }
+            }
+        });
+        
+        if (btn.image) {
+            card.style.backgroundImage = `url('${btn.image}')`;
+            card.style.backgroundSize = 'cover';
+            card.style.backgroundPosition = 'center';
+            card.style.backgroundRepeat = 'no-repeat';
         }
+        
+        const label = document.createElement('div');
+        label.className = 'photo-label';
+        label.textContent = btn.label || '';
+        card.appendChild(label);
+        photoWrapper.appendChild(card);
+        
+        console.log(`✅ Фото-кнопка ${index + 1}:`, btn.label);
+    });
+}
 
         // 5. Дропдауны
         this.createDropdowns();
@@ -161,28 +160,16 @@ class PagesManager {
         // 6. Title страницы
         document.title = this.config.title || '';
         
-        // 7. Инициализируем меню (для дропдаунов и свайпов)
+        // 7. Обновление счетчика места
+        this.updatePlaceCounter();
+
+        // 8. Инициализируем меню (для дропдаунов и свайпов)
         if (typeof window.initializeMenu === 'function') {
             setTimeout(() => {
                 window.initializeMenu();
             }, 100);
         }
-
         
-        updatePlaceCounter() {
-        if (!this.placeId || !this.category) return;
-        
-        const order = window.PAGE_ORDER_BY_CATEGORY?.[this.category] || [];
-        const currentIndex = order.indexOf(this.placeId);
-        
-        if (currentIndex !== -1) {
-            const counterEl = document.getElementById('placeCounter');
-            if (counterEl) {
-                counterEl.textContent = `${currentIndex + 1}/${order.length}`;
-                console.log(`📊 Счетчик обновлен: ${currentIndex + 1}/${order.length}`);
-            }
-        }
-    
         console.log('✅ Конфигурация применена полностью');
     }
 
@@ -265,10 +252,24 @@ class PagesManager {
         console.log('✅ Дропдаун Полезное создан');
     }
 
+    updatePlaceCounter() {
+        if (!this.placeId || !this.category) return;
+        
+        const order = window.PAGE_ORDER_BY_CATEGORY?.[this.category] || [];
+        const currentIndex = order.indexOf(this.placeId);
+        
+        if (currentIndex !== -1) {
+            const counterEl = document.getElementById('placeCounter');
+            if (counterEl) {
+                counterEl.textContent = `${currentIndex + 1}/${order.length}`;
+                console.log(`📊 Счетчик обновлен: ${currentIndex + 1}/${order.length}`);
+            }
+        }
+    }
+
     getPageConfig(placeId) {
         return PAGES_CONFIG[placeId];
     }
 }
 
 window.pagesManager = new PagesManager();
-
