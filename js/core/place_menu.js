@@ -21,7 +21,7 @@ let isHintShowing = false;
 let hintVideoElement = null; // Ссылка на видео для остановки
 
 // Счетчик для условия "показывать пока пользователь не откроет 3 новые страницы"
-// !!! ИЗМЕНЕНИЕ: Загружаем из sessionStorage, чтобы счетчик не сбрасывался при переходе на сторис !!!
+// !!! ИЗМЕНЕНИЕ: Загружаем из sessionStorage, чтобы счетчик сохранялся при переходах !!!
 let pagesViewedCount = parseInt(sessionStorage.getItem('pagesViewedCount') || '0', 10);
 let lastKnownPlaceId = sessionStorage.getItem('lastKnownPlaceId') || null;
 
@@ -36,6 +36,7 @@ function startInactivityTimer() {
 
     // !!! ИЗМЕНЕНИЕ: Если открыто 3 и более страниц, полностью останавливаем цикл !!!
     if (pagesViewedCount >= 3) {
+        console.log('🚫 Подсказка отключена: пользователь посмотрел 3 и более страниц');
         return;
     }
 
@@ -860,11 +861,11 @@ window.initializeMenu = function() {
         lastKnownPlaceId = currentPlaceId;
         pagesViewedCount++;
         
-        // Сохраняем в sessionStorage, чтобы пережить переход на stories.html
+        // Сохраняем в sessionStorage, чтобы пережить переход на stories.html или categories.html
         sessionStorage.setItem('lastKnownPlaceId', lastKnownPlaceId);
         sessionStorage.setItem('pagesViewedCount', pagesViewedCount.toString());
         
-        console.log(`🔢 Счетчик страниц: ${pagesViewedCount}/3`);
+        console.log(`🔢 Счетчик страниц: ${pagesViewedCount}/3 (Глобально)`);
         
         // Если счетчик достиг 3, убедимся, что текущий таймер остановлен
         if (pagesViewedCount >= 3 && inactivityTimer) {
