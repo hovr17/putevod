@@ -1244,3 +1244,46 @@ padding-top: 2vh;
   }
 }
 
+
+
+
+
+
+/* ===== СЧЕТЧИК МЕСТА В ПРАВОМ ВЕРХНЕМ УГЛУ ===== */
+.place-counter {
+  position: fixed;
+  top: 3vh;
+  right: 3vw;
+  z-index: 10;
+  font-family: 'Crooker', sans-serif;
+  font-size: clamp(16px, 4vmin, 24px);
+  font-weight: 100;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px 16px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  pointer-events: none;
+}
+
+/* На ПК адаптируем позицию под контейнер */
+@media (min-width: 1081px) {
+  .place-counter {
+    top: min(40px, 5vh);
+    right: calc(50% - min(325px, 45vh) + 20px);
+    font-size: clamp(14px, 1.5vmin, 20px);
+    padding: 6px 12px;
+  }
+}
+
+/* Скрываем в режиме details */
+.mode-details .place-counter {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mode-intro .place-counter {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
