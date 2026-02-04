@@ -21,8 +21,9 @@ let isHintShowing = false;
 let hintVideoElement = null; // Ссылка на видео для остановки
 
 // Счетчик для условия "показывать пока пользователь не откроет 3 новые страницы"
-let pagesViewedCount = 0;
-let lastKnownPlaceId = null;
+// !!! ИЗМЕНЕНИЕ: Загружаем из sessionStorage, чтобы счетчик не сбрасывался при переходе на сторис !!!
+let pagesViewedCount = parseInt(sessionStorage.getItem('pagesViewedCount') || '0', 10);
+let lastKnownPlaceId = sessionStorage.getItem('lastKnownPlaceId') || null;
 
 /**
  * Запускает таймер бездействия
@@ -852,11 +853,17 @@ window.initializeMenu = function() {
     cleanupRegistry.clear();
     isAnimating = false;
 
-    // !!! НОВАЯ ЛОГИКА: Подсчет открытых страниц !!!
+    // !!! НОВАЯ ЛОГИКА: Подсчет открытых страниц с сохранением в SessionStorage !!!
     const currentPlaceId = window.spaRouter?.currentPlaceId;
+    
     if (currentPlaceId && currentPlaceId !== lastKnownPlaceId) {
         lastKnownPlaceId = currentPlaceId;
         pagesViewedCount++;
+        
+        // Сохраняем в sessionStorage, чтобы пережить переход на stories.html
+        sessionStorage.setItem('lastKnownPlaceId', lastKnownPlaceId);
+        sessionStorage.setItem('pagesViewedCount', pagesViewedCount.toString());
+        
         console.log(`🔢 Счетчик страниц: ${pagesViewedCount}/3`);
         
         // Если счетчик достиг 3, убедимся, что текущий таймер остановлен
