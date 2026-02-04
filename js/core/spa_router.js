@@ -84,6 +84,8 @@ class SPARouter {
                 // 📱 ЗАГРУЗКА ВИДЕО (Без fetch, с обработкой сетевых ошибок)
                 this.loadVideoSafe();
 
+                window.pagesManager.updatePlaceCounter();
+
                 if (updateHistory) {
                     this.updateURL(placeId, category);
                 }
@@ -340,4 +342,5 @@ window.navigateToNextPlace = function() {
 
 document.addEventListener('DOMContentLoaded', () => {
     window.spaRouter.init();
+
 });
