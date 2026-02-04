@@ -167,7 +167,22 @@ class PagesManager {
                 window.initializeMenu();
             }, 100);
         }
+
         
+        updatePlaceCounter() {
+        if (!this.placeId || !this.category) return;
+        
+        const order = window.PAGE_ORDER_BY_CATEGORY?.[this.category] || [];
+        const currentIndex = order.indexOf(this.placeId);
+        
+        if (currentIndex !== -1) {
+            const counterEl = document.getElementById('placeCounter');
+            if (counterEl) {
+                counterEl.textContent = `${currentIndex + 1}/${order.length}`;
+                console.log(`📊 Счетчик обновлен: ${currentIndex + 1}/${order.length}`);
+            }
+        }
+    
         console.log('✅ Конфигурация применена полностью');
     }
 
@@ -256,3 +271,4 @@ class PagesManager {
 }
 
 window.pagesManager = new PagesManager();
+
