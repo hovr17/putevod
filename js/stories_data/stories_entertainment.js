@@ -53,7 +53,7 @@ window.storiesData = {
         caption: 'Чтобы приобрести еду, прикладываете ваш магнитный браслет. А когда будете выходить из аквапарка, оплатите счет на кассе.'
       },{
         src: 'stories_content/entertainment_places/aqua/vnutri/9.jpg',
-        caption: 'Акватерра. Русская баня, сауна, хаммам, ледяной водопад, снежная комната и другое.'
+        caption: 'Акватерра. Русская баня, сауна, хаммам, ледяной водопад, снежная комната и другое. *(фото - https://vk.ru/urururr)'
       },{
         src: 'stories_content/entertainment_places/aqua/vnutri/10.jpg',
         caption: 'Также в этой зоне есть один крытый бассейн и уличный.'
@@ -738,5 +738,6 @@ window.storiesData = {
   },
 
 };
+
 
 
