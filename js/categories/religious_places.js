@@ -188,7 +188,7 @@ const RELIGIOUS_PLACES = {
         photoButtons: [
             { label: 'Фото', image: 'stories_button_images/religious_places/Pyatneckiy/1.jpg', link: 'stories.html?cat=religious&place=Pyatneckiy.Photo' }
         ],
-        address: { text: 'ул. Кремлёвская, 4', link: 'https://yandex.ru/maps/-/CLa77V-u' },
+        address: { text: 'ул. Кремлёвская, 4', link: 'https://yandex.ru/maps/-/CPEGnBML' },
         usefulInfo: {
             enabled: false
         }
@@ -351,4 +351,5 @@ const RELIGIOUS_PLACES = {
     }
     
 };
+
 
