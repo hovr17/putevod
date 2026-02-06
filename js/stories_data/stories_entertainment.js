@@ -422,7 +422,7 @@ window.storiesData = {
         caption: 'Также здесь есть небольшой спортивный зал.'
       },
       {
-        src: 'stories_content/entertainment_places/arena/vnutri/5.jpg',
+        src: 'stories_content/entertainment_places/arena/vnutri/7.jpg',
         caption: ''
       }
     ]
@@ -738,6 +738,7 @@ window.storiesData = {
   },
 
 };
+
 
 
 
