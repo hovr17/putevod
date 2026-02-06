@@ -227,8 +227,8 @@ const ENTERTAINMENT_PLACES = {
         video: { src: 'videos/entertainment_places/arena.mp4', poster: null },
          paidEntry: { text: 'вход платный', enabled: true },
         photoButtons: [
-            { label: 'Арена снаружи', image: 'stories_button_images/entertainment_places/arena/1.jpg', link: 'stories.html?cat=entertainment&place=arena.vnutri' },
-            { label: 'Арена внутри', image: 'stories_button_images/entertainment_places/arena/2.jpg', link: 'stories.html?cat=entertainment&place=arena.snaruzhi' }
+              { label: 'Арена снаружи', image: 'stories_button_images/entertainment_places/arena/1.jpg', link: 'stories.html?cat=entertainment&place=arena.snaruzhi' },
+            { label: 'Арена внутри', image: 'stories_button_images/entertainment_places/arena/2.jpg', link: 'stories.html?cat=entertainment&place=arena.vnutri' }
         ],
         address: { text: 'ул. Коровники, 45А', link: 'https://yandex.ru/maps/-/CLUdFD~R' },
         usefulInfo: {
@@ -386,4 +386,5 @@ const ENTERTAINMENT_PLACES = {
 
 
 };
+
 
