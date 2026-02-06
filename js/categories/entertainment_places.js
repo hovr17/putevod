@@ -22,7 +22,7 @@ const ENTERTAINMENT_PLACES = {
 
         'rechniye_progulki': {
         title: 'Речные прогулки',
-        heading: 'Речные прогулки',
+        heading: 'Речные<br>прогулки',
         video: { src: 'videos/entertainment_places/rechniye_progulki.mp4', poster: null },
          paidEntry: { text: 'цены варьируются', enabled: true },
         photoButtons: [
@@ -100,7 +100,7 @@ const ENTERTAINMENT_PLACES = {
 
             'churovo_gorodiche': {
         title: 'Щурово городище',
-        heading: 'Щурово городище',
+        heading: 'Щурово<br>городище',
         video: { src: 'videos/entertainment_places/churovo_gorodiche.mp4', poster: null },
          paidEntry: { text: 'вход платный', enabled: true },
         photoButtons: [
@@ -164,7 +164,7 @@ const ENTERTAINMENT_PLACES = {
 
         'podvorye_masterov': {
         title: 'Подворье мастеров',
-        heading: 'Подворье мастеров',
+        heading: 'Подворье<br>мастеров',
         video: { src: 'videos/entertainment_places/podvorye_masterov.mp4', poster: null },
           paidEntry: null,
         photoButtons: [
@@ -180,7 +180,7 @@ const ENTERTAINMENT_PLACES = {
 
      'progulka_v_karete': {
         title: 'Прогулка в карете',
-        heading: 'Прогулка в карете',
+        heading: 'Прогулка<br>в карете',
         video: { src: 'videos/entertainment_places/progulka_v_karete.mp4', poster: null },
          paidEntry: { text: 'цены варьируются', enabled: true },
         photoButtons: [
@@ -337,7 +337,7 @@ const ENTERTAINMENT_PLACES = {
 
 'gorshechna': {
         title: 'Горшечня Коровиных',
-        heading: 'Горшечня Коровиных',
+        heading: 'Горшечня<br>Коровиных',
         video: { src: 'videos/entertainment_places/gorshechna.mp4', poster: null },
          paidEntry: { text: 'цены варьируются', enabled: true },
         photoButtons: [
@@ -382,5 +382,6 @@ const ENTERTAINMENT_PLACES = {
             ]
         }
     }
+
 
 };
