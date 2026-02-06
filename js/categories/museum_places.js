@@ -120,7 +120,7 @@ const MUSEUM_PLACES = {
 
     'dom_balzaminova': {
         title: 'Дом Бальзаминова',
-        heading: 'Дом Бальзаминова',
+        heading: 'Дом<br>Бальзаминова',
         video: { src: 'videos/museum_places/dom_balzaminova.mp4', poster: null },
          paidEntry: { text: 'вход платный', enabled: true },
         photoButtons: [
@@ -297,6 +297,7 @@ const MUSEUM_PLACES = {
     },
 
 };
+
 
 
 
