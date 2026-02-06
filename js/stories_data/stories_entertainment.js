@@ -490,7 +490,7 @@ window.storiesData = {
         caption: ''
       },
       {
-        src: 'stories_content/entertainment_places/neskuchniy_museum/chaynie_istorii/2.jpg',
+        src: 'stories_content/entertainment_places/neskuchniy_museum/chaynie_istorii/3.jpg',
         caption: ''
       }
     ]
@@ -738,4 +738,5 @@ window.storiesData = {
   },
 
 };
+
 
