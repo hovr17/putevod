@@ -106,27 +106,28 @@ window.storiesData = {
     name: 'Фото',
     images: [
       {
-        src: 'stories_content/entertainment_places/rechniye_progulki/photo/1.jpg',
+        src: 'stories_content/entertainment_places/arenda_katamaranov/photo/1.jpg',
         caption: 'Можно арендовать лодки, катамараны, SUP-борды и насладиться пейзажами Суздаля c реки Каменка.'
       },
       {
-        src: 'stories_content/entertainment_places/rechniye_progulki/photo/2.jpg',
+        src: 'stories_content/entertainment_places/arenda_katamaranov/photo/2.jpg',
         caption: ''
       },
       {
-        src: 'stories_content/entertainment_places/rechniye_progulki/photo/3.jpg',
+        src: 'stories_content/entertainment_places/arenda_katamaranov/photo/3.jpg',
         caption: 'Также можно прокатиться на ладье.'
       },
       {
-        src: 'stories_content/entertainment_places/rechniye_progulki/photo/4.jpg',
+        src: 'stories_content/entertainment_places/arenda_katamaranov/photo/4.jpg',
         caption: ''
       },
       {
-        src: 'stories_content/entertainment_places/rechniye_progulki/photo/5.jpg',
+        src: 'stories_content/entertainment_places/arenda_katamaranov/photo/5.jpg',
         caption: ''
       }
     ]
   },
+
 
 
 
@@ -736,4 +737,5 @@ window.storiesData = {
       }
     ]
   },
+
 };
