@@ -223,6 +223,7 @@ const ENTERTAINMENT_PLACES = {
     'arena': {
         title: 'Суздаль арена. Спорткомплекс',
         heading: 'Суздаль арена. Спорткомплекс',
+        headingSize: 'clamp(28px, 10vw, 56px)',
         video: { src: 'videos/entertainment_places/arena.mp4', poster: null },
          paidEntry: { text: 'вход платный', enabled: true },
         photoButtons: [
@@ -385,3 +386,4 @@ const ENTERTAINMENT_PLACES = {
 
 
 };
+
