@@ -241,7 +241,7 @@ const MUSEUM_PLACES = {
             { label: 'Внутри музея', image: 'stories_button_images/museum_places/museum_voskovih_figur/1.jpg', link: 'stories.html?cat=museum&place=museum_voskovih_figur.vnutri_museum' }
            
         ],
-        address: { text: 'Кремлёвская ул., 19', link: 'https://yandex.ru/maps/-/CLaeN-94' },
+         address: { text: 'Кремлёвская ул., 3', link: 'https://yandex.ru/maps/-/CLaZ4D5y' },
        usefulInfo: {
             enabled: true,
             content: [
@@ -297,6 +297,7 @@ const MUSEUM_PLACES = {
     },
 
 };
+
 
 
 
