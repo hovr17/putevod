@@ -455,7 +455,6 @@ window.storiesData = {
         src: 'stories_content/entertainment_places/neskuchniy_museum/traktirnie_istorii/2.jpg',
         caption: ''
       },
-      ,
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/traktirnie_istorii/3.jpg',
         caption: ''
@@ -739,3 +738,4 @@ window.storiesData = {
   },
 
 };
+
