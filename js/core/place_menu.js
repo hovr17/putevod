@@ -631,30 +631,33 @@ function setupKeyboardHandlers() {
 }
 
 // =============================================================================
-// УПРАВЛЕНИЕ <br> В ЗАГОЛОВКЕ (НОВАЯ ФУНКЦИЯ)
+// УПРАВЛЕНИЕ <br> В ЗАГОЛОВКЕ (ОБНОВЛЕННАЯ ЛОГИКА)
 // =============================================================================
 
 function adjustTitleBreaks(currentMode) {
     const h1 = document.querySelector('.title-block h1');
     if (!h1) return;
 
-    // 1. Сохраняем оригинальный HTML заголовка, если это первый запуск
+    const currentHtml = h1.innerHTML;
+
+    // 1. Если сохраненного оригинала нет — сохраняем текущий HTML как оригинал
     if (!h1.dataset.originalHtml) {
-        h1.dataset.originalHtml = h1.innerHTML;
+        h1.dataset.originalHtml = currentHtml;
     } 
-    // Если произошел переход на другую страницу (SPA) и заголовок изменился, обновляем оригинал
-    else if (h1.dataset.originalHtml !== h1.innerHTML && currentMode === 'intro') {
-        h1.dataset.originalHtml = h1.innerHTML;
+    // 2. Если текущий HTML отличается от сохраненного (значит, произошел переход на другую страницу в SPA),
+    // обновляем оригинал. Это работает даже если меню открыто, чтобы при закрытии показывался заголовок текущей страницы.
+    else if (h1.dataset.originalHtml !== currentHtml) {
+        h1.dataset.originalHtml = currentHtml;
     }
 
-    // 2. Логика показа/скрытия
+    // 3. Логика показа/скрытия <br>
     if (currentMode === 'details') {
-        // Меню открыто: удаляем <br> в начале строки (от 1 до 2 штук)
+        // Меню открыто: берем оригинал и удаляем <br> в начале строки (от 1 до 2 штук)
+        // Регулярка ищет <br> только в самом начале текста
         let html = h1.dataset.originalHtml;
-        // Регулярка ищет <br> только в самом начале текста, не трогая переносы по центру
         h1.innerHTML = html.replace(/^\s*(<br\s*\/?>\s*){1,2}/, '');
     } else {
-        // Меню закрыто: возвращаем заголовок как был (с <br>)
+        // Меню закрыто: возвращаем заголовок в исходное состояние (с <br>)
         h1.innerHTML = h1.dataset.originalHtml;
     }
 }
@@ -684,11 +687,7 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
     }
 
     // === ИЗМЕНЕНИЕ: Управление тегами <br> ===
-    // Для details (открытие) - убираем <br> сразу
-    // Для intro (закрытие) - возвращаем <br> в конце анимации
-    if (newMode === 'details') {
-        adjustTitleBreaks(newMode);
-    }
+    adjustTitleBreaks(newMode);
     // =========================================
 
     if (newMode === 'details') {
@@ -794,12 +793,6 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
         cleanupRegistry.setTimeout(() => {
             scrollZone?.classList.remove('animating');
             isAnimating = false;
-            
-            // === ИЗМЕНЕНИЕ: Возвращаем <br> после завершения анимации закрытия ===
-            if (mode === 'intro') {
-                adjustTitleBreaks('intro');
-            }
-            // =====================================================================
         }, 500);
     }
 
