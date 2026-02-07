@@ -684,7 +684,11 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
     }
 
     // === ИЗМЕНЕНИЕ: Управление тегами <br> ===
-    adjustTitleBreaks(newMode);
+    // Для details (открытие) - убираем <br> сразу
+    // Для intro (закрытие) - возвращаем <br> в конце анимации
+    if (newMode === 'details') {
+        adjustTitleBreaks(newMode);
+    }
     // =========================================
 
     if (newMode === 'details') {
@@ -790,6 +794,12 @@ function setMode(newMode, { expandUseful = false, scrollToBottom = false } = {})
         cleanupRegistry.setTimeout(() => {
             scrollZone?.classList.remove('animating');
             isAnimating = false;
+            
+            // === ИЗМЕНЕНИЕ: Возвращаем <br> после завершения анимации закрытия ===
+            if (mode === 'intro') {
+                adjustTitleBreaks('intro');
+            }
+            // =====================================================================
         }, 500);
     }
 
