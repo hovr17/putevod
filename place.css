@@ -1357,10 +1357,7 @@ padding-top: 2vh;
     height: 4px;
   }
   
-  /* Опускаем кнопку "Назад" ниже полосок */
-  .back-button {
-    top: calc(min(40px, 5vh) + 35px) !important;
-  }
+
 }
 
 /* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
@@ -1369,10 +1366,7 @@ padding-top: 2vh;
     padding-top: max(12px, env(safe-area-inset-top));
   }
   
-  /* Опускаем кнопку "Назад" на мобильных */
-  .back-button {
-    top: calc(3vh + 30px) !important;
-  }
+
 }
 
 /* Скрываем полоски когда меню открыто */
@@ -1385,3 +1379,4 @@ padding-top: 2vh;
   opacity: 1;
   transition: opacity 0.3s ease;
 }
+
