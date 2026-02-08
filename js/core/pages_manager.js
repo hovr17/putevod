@@ -161,7 +161,7 @@ if (photoWrapper) {
         document.title = this.config.title || '';
         
         // 7. Обновление счетчика места
-        this.updatePlaceCounter();
+        this.createStoriesProgress();
 
         // 8. Инициализируем меню (для дропдаунов и свайпов)
         if (typeof window.initializeMenu === 'function') {
@@ -189,6 +189,8 @@ if (photoWrapper) {
             this.createUsefulDropdown();
         }
     }
+
+    
 
     createAddressDropdown() {
         const container = document.getElementById('dropdownsContainer');
@@ -270,6 +272,49 @@ if (photoWrapper) {
     getPageConfig(placeId) {
         return PAGES_CONFIG[placeId];
     }
+
+
+    // Метод для создания полосок прогресса (Stories-style)
+createStoriesProgress() {
+    const container = document.getElementById('storiesProgress');
+    if (!container || !this.category) return;
+    
+    const order = window.PAGE_ORDER_BY_CATEGORY?.[this.category] || [];
+    if (order.length <= 1) {
+        container.style.display = 'none';
+        return;
+    }
+    
+    container.innerHTML = '';
+    container.style.display = 'flex';
+    
+    const currentIndex = order.indexOf(this.placeId);
+    
+    order.forEach((placeId, index) => {
+        const bar = document.createElement('div');
+        bar.className = 'story-progress-bar';
+        
+        const fill = document.createElement('div');
+        fill.className = 'story-progress-fill';
+        bar.appendChild(fill);
+        
+        // Определяем состояние полоски
+        if (index < currentIndex) {
+            bar.classList.add('viewed');      // Просмотренные - белые
+        } else if (index === currentIndex) {
+            bar.classList.add('current');     // Текущая - белая с тенью
+        }
+        // Будущие - полупрозрачные (без класса)
+        
+        container.appendChild(bar);
+    });
+}
+
+// Обновление полосок (для SPA навигации)
+updateStoriesProgress() {
+    this.createStoriesProgress();
+}
 }
 
 window.pagesManager = new PagesManager();
+
