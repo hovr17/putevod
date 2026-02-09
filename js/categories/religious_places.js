@@ -52,7 +52,7 @@ const RELIGIOUS_PLACES = {
                 '•Учащиеся и студенты с 14 лет - 500₽ (290₽*)',
                 '•Дети от 7 до 14 лет - 500₽ (290₽*)',
                 '•Дети до 7 лет, участники СВО, члены семей участников СВО - 0₽ <br>',
-                '*Посещение только территории и собора<br><br>',
+                '*Посещение только территории и собора (без музеев)<br><br>',
               { prefix: 'Сайт: ', text: 'vladmuseum.ru', link: 'https://vladmuseum.ru/ru/geografiya-muzeya/suzdal/spaso-evfimiev-monastyr/' }
             ]
         }
@@ -351,5 +351,6 @@ const RELIGIOUS_PLACES = {
     }
     
 };
+
 
 
