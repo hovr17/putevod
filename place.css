@@ -1357,7 +1357,7 @@ padding-top: 2vh;
   
   /* Опускаем кнопку "Назад" ниже полосок */
   .back-button {
-    top: calc(min(40px, 5vh) + 15px) !important;
+    top:min(40px, 5vh);
   }
 }
 
@@ -1369,7 +1369,7 @@ padding-top: 2vh;
   
   /* Опускаем кнопку "Назад" на мобильных */
   .back-button {
-    top: calc(3vh + 10px) !important;
+    top: 3vh;
   }
 }
 
@@ -1383,4 +1383,5 @@ padding-top: 2vh;
   opacity: 1;
   transition: opacity 0.3s ease;
 }
+
 
