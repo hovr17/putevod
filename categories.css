@@ -22,7 +22,7 @@
 /* Кнопка назад */
 .back-button {
     position: absolute;
-    top: 3vh + 10px;
+    top: 3vh + 0px;
     left: 3vw;
     width: min(60px, 9vmin);
     height: min(30px, 5vmin);
@@ -213,5 +213,6 @@
     }
 
 }
+
 
 
