@@ -1,38 +1,29 @@
-<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, interactive-widget=resizes-content">
     <title>Путеводитель по Суздалю</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="footer.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            overflow: hidden; /* Предотвращаем скролл на body */
-        }
-
+        /* Стили из index.css с исправлениями */
         .container {
             background: url('backgrounds/bg_first_screen.jpg') center/cover no-repeat;
             display: flex;
             flex-direction: column;
             align-items: center; 
             justify-content: flex-start; 
-            position: fixed; /* Меняем на fixed чтобы контейнер всегда занимал весь экран */
-            top: 0;
-            left: 0;
-            width: 100%;
+            position: relative;
+            
+            /* Используем dvh для мобильных */
+            height: 100dvh; 
             height: 100vh; /* Fallback */
-            height: 100dvh; /* Dynamic viewport height */
-            height: 100svh; /* Small viewport height для мобильных */
+            
             padding: 0;
             padding-top: 5vh; 
-            padding-bottom: env(safe-area-inset-bottom);
-            overflow: hidden; /* Контент не выходит за пределы */
+            
+            /* Отступ для контента снизу, чтобы не налезал на кнопку */
+            padding-bottom: calc(120px + env(safe-area-inset-bottom));
         }
 
         .bird {
@@ -93,7 +84,6 @@
             font-family: 'Crooker', sans-serif;
         }
 
-        /* ✅ КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: Фиксированное позиционирование кнопки */
         .open-btn {
             width: min(500px, 55%, 60vw);
             height: min(100px, 15vh, 12vw);
@@ -103,8 +93,18 @@
             justify-content: center;
             align-items: center;
             text-decoration: none;
-            position: fixed; /* Меняем с absolute на fixed */
-            bottom: max(20px, env(safe-area-inset-bottom) + 10px); /* Отступ с учетом safe area */
+            position: absolute;
+            
+            /* 
+               ИСПРАВЛЕНИЕ: 
+               1. env(safe-area-inset-bottom) учитывает Home Indicator на iPhone.
+               2. 10px дополнительного отступа визуально отодвигают кнопку от края.
+               3. Используем fixed или absolute. 
+               При absolute позиционировании относительно .container (у которого height: 100dvh),
+               кнопка будет всегда в видимой зоне экрана.
+            */
+            bottom: calc(10px + env(safe-area-inset-bottom));
+            
             left: 50%;
             transform: translateX(-50%);
             color: white;
@@ -112,7 +112,7 @@
             font-size: clamp(28px, 8vmin, 70px);
             line-height: 1;
             letter-spacing: 0.05em;
-            z-index: 1000; /* Высокий z-index чтобы быть поверх всего */
+            z-index: 10; /* Подняли z-index, чтобы точно была выше футера */
             text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -147,123 +147,57 @@
             box-shadow: 0 4px 4px rgba(0,0,0,0.25);
         }
 
-        .footer {
-            position: fixed; /* Фиксируем футер */
-            bottom: max(120px, 15vh); /* Отодвигаем от кнопки */
-            left: 0;
-            width: 100%;
-            text-align: center;
-            color: white;
-            z-index: 10;
-            padding: 0 20px;
-        }
-
-        /* Десктоп */
+        /* Адаптив для десктопа */
         @media (min-width: 1081px) {
             .container {
                 padding-top: 4vh;
                 justify-content: flex-start;
+                padding-bottom: calc(80px + env(safe-area-inset-bottom));
             }
             
-            .bird {
-                width: 12vmin; 
-                height: 13vmin;
-                min-width: 60px;
-                min-height: 65px;
-                max-width: 120px;
-                max-height: 130px;
-                margin-bottom: 3vh;
-            }
-            
-            .title {
-                font-size: clamp(20px, 3.5vmin, 27px); 
-                margin-bottom: 1vh;
-            }
-            
-            .subtitle {
-                font-size: clamp(24px, 6vmin, 70px); 
-            }
-            
-            .places {
-                font-size: clamp(14px, 2vmin, 20px);
-            }
+            .bird { width: 12vmin; height: 13vmin; min-width: 60px; min-height: 65px; max-width: 120px; max-height: 130px; margin-bottom: 3vh; }
+            .title { font-size: clamp(20px, 3.5vmin, 27px); margin-bottom: 1vh; }
+            .subtitle { font-size: clamp(24px, 6vmin, 70px); }
+            .places { font-size: clamp(14px, 2vmin, 20px); }
             
             .open-btn {
                 width: min(300px, 70vw); 
                 height: min(60px, 8vh);
                 font-size: clamp(25px, 3.7vmin, 50px);
-                bottom: max(20px, env(safe-area-inset-bottom) + 10px);
-            }
-            
-            .open-btn::before {
-                top: -0.5vmin;
-                left: -0.5vmin;
-                right: -0.5vmin;
-                bottom: -0.5vmin;
-            }
-            
-            .open-btn::after {
-                top: -1vmin;
-                left: -1vmin;
-                right: -1vmin;
-                bottom: -1vmin;
-                border: 0.3vmin solid rgba(255, 255, 255, 1);
-            }
-
-            .footer {
-                bottom: max(100px, 12vh);
+                bottom: calc(8vh + env(safe-area-inset-bottom));
             }
         }
 
-        /* Очень короткие экраны */
-        @media (min-width: 1079px) and (max-height: 900px) {
-            .open-btn {
-                width: min(500px, 45%, 50vw); 
-                height: min(50px, 5vh, 6vw);
-                font-size: clamp(22px, 3.5vmin, 45px);
-            }
-            
-            .container {
-                padding-top: 3vh;
-            }
-            
-            .bird {
-                margin-bottom: 2vh;
-            }
-
-            .footer {
-                bottom: max(80px, 10vh);
-            }
-        }
-
-        /* Мобильные в портретной ориентации */
+        /* Мобильные устройства */
         @media (max-width: 1080px) and (orientation: portrait) {
-            .footer {
-                bottom: max(130px, 18vh);
-                font-size: 0.8em;
+            body.is-mobile .container {
+                height: 100svh; /* Small Viewport Height - самый надежный вариант */
+                padding-bottom: calc(100px + env(safe-area-inset-bottom));
             }
         }
     </style>
 </head>
 <body>
-
+    <!-- Перенесли скрипт в конец body или оборачиваем в событие загрузки -->
     <div class="container">
-        <img src="ui/sokol.png" class="bird" alt="">
+        <img src="ui/sokol.png" class="bird">
         <h1 class="title">путеводитель</h1>
         <h1 class="subtitle">СУЗДАЛЬ</h1>
         <p class="places">
             <span class="places-number">50+</span> <span class="places-text">мест</span>
         </p>
+        <!-- Кнопка теперь абсолютна и прижата к низу контейнера -->
+        <a href="categories.html" class="open-btn">ОТКРЫТЬ</a>
 
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-header">
                     <a href="about_project.html" class="footer-link">О проекте</a>
-                    <img src="ui/sokol.png" class="footer-logo" alt="">
+                    <img src="ui/sokol.png" class="footer-logo">
                 </div>
                 <div class="footer-separator"></div>
                 <div class="footer-text-container">
-                    <p class="footer-disclaimer">Данный интернет-сайт и его содержимое носит исключительно информационный характер...</p>
+                    <p class="footer-disclaimer">Данный интернет-сайт и его содержимое носит исключительно информационный характер и ни при каких условиях информационные материалы, каталоги, статьи и цены, размещенные на сайте, не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса РФ.</p>
                     <p class="footer-copy-info">Использование или копирование фото- и видеоматериалов допускается исключительно с обязательным указанием активной гиперссылки на данный сайт.</p>
                     <p class="footer-copyright">2026©</p>
                 </div>
@@ -271,23 +205,43 @@
         </footer>
     </div>
 
-    <!-- ✅ Кнопка вынесена за пределы контейнера и использует fixed позиционирование -->
-    <a href="categories.html" class="open-btn">ОТКРЫТЬ</a>
-
     <script>
-        // Упрощенный скрипт для корректировки viewport на iOS
+        // Унифицированная логика для всех мобильных браузеров
         (function() {
-            const setViewportHeight = () => {
-                const vh = window.innerHeight * 0.01;
-                document.documentElement.style.setProperty('--vh', `${vh}px`);
-            };
+            const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
+                             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
-            setViewportHeight();
-            window.addEventListener('resize', setViewportHeight);
-            window.addEventListener('orientationchange', () => {
-                setTimeout(setViewportHeight, 100);
+            if (!isMobile) return;
+            
+            document.body.classList.add('is-mobile');
+            
+            // ИСПРАВЛЕНИЕ: Запускаем логику только после того, как элементы появились на странице
+            document.addEventListener('DOMContentLoaded', function() {
+                const container = document.querySelector('.container');
+                const btn = document.querySelector('.open-btn');
+                const vv = window.visualViewport;
+                
+                if (!container) return;
+                
+                function updateViewport() {
+                    // Обрезаем контейнер по видимой области
+                    container.style.height = vv.height + 'px';
+                    
+                    // Логика позиционирования кнопки теперь в CSS (safe-area-inset-bottom),
+                    // JS здесь не нужен для позиционирования, чтобы не перезаписывать безопасные отступы.
+                }
+                
+                if (vv) {
+                    vv.addEventListener('resize', updateViewport);
+                    window.addEventListener('orientationchange', () => {
+                        setTimeout(updateViewport, 100);
+                    });
+                    updateViewport();
+                }
             });
         })();
     </script>
+
+    <script src="script.js"></script>
 </body>
 </html>
