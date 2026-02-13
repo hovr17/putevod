@@ -1,184 +1,50 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, interactive-widget=resizes-content">
     <title>Путеводитель по Суздалю</title>
     <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="footer.css">
-    <style>
-        /* Стили из index.css с исправлениями */
-        .container {
-            background: url('backgrounds/bg_first_screen.jpg') center/cover no-repeat;
-            display: flex;
-            flex-direction: column;
-            align-items: center; 
-            justify-content: flex-start; 
-            position: relative;
-            
-            /* Используем dvh для мобильных */
-            height: 100dvh; 
-            height: 100vh; /* Fallback */
-            
-            padding: 0;
-            padding-top: 5vh; 
-            
-            /* Отступ для контента снизу, чтобы не налезал на кнопку */
-            padding-bottom: calc(120px + env(safe-area-inset-bottom));
-        }
-
-        .bird {
-            width: 20vmin;
-            height: 22vmin;
-            min-width: 100px;
-            min-height: 110px;
-            max-width: 280px;
-            max-height: 300px;
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.25));
-            margin-bottom: 2vh;
-            object-fit: contain;
-        }
-
-        .title {
-            font-family: 'Crooker', sans-serif;
-            font-size: clamp(20px, 4.5vmin, 42px);
-            line-height: 1.2;
-            letter-spacing: 0.05em;
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.25));
-            color: white;
-            text-align: center; 
-            margin-bottom: 0.5vh;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            font-weight: 100;
-            width: 100%;
-        }
-
-        .subtitle {
-            font-family: 'Zametka', sans-serif;
-            font-size: clamp(32px, 12vmin, 110px);
-            line-height: 1;
-            letter-spacing: 0.05em;
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.25));
-            color: white;
-            text-align: center; 
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            font-weight: 100;
-            width: 100%; 
-        }
-
-        .places {
-            font-size: clamp(16px, 3.5vmin, 32px);
-            line-height: 1.2;
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.25));
-            color: white;
-            text-align: center; 
-            width: 100%; 
-        }
-
-        .places-number {
-            font-family: 'Zametka', sans-serif;
-        }
-
-        .places-text {
-            font-family: 'Crooker', sans-serif;
-        }
-
-        .open-btn {
-            width: min(500px, 55%, 60vw);
-            height: min(100px, 15vh, 12vw);
-            background-color: transparent;
-            border-radius: 90px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            position: absolute;
-            
-            /* 
-               ИСПРАВЛЕНИЕ: 
-               1. env(safe-area-inset-bottom) учитывает Home Indicator на iPhone.
-               2. 10px дополнительного отступа визуально отодвигают кнопку от края.
-               3. Используем fixed или absolute. 
-               При absolute позиционировании относительно .container (у которого height: 100dvh),
-               кнопка будет всегда в видимой зоне экрана.
-            */
-            bottom: calc(10px + env(safe-area-inset-bottom));
-            
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-family: 'Zametka', sans-serif;
-            font-size: clamp(28px, 8vmin, 70px);
-            line-height: 1;
-            letter-spacing: 0.05em;
-            z-index: 10; /* Подняли z-index, чтобы точно была выше футера */
-            text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            font-weight: 100;
-            padding-top: 0.5vh;
-            padding-left: 0.6vh;
-        }
-
-        .open-btn::before {
-            content: "";
-            position: absolute;
-            top: -1vmin;
-            left: -1vmin;
-            right: -1vmin;
-            bottom: -1vmin;
-            background: rgba(222, 222, 222, 0.1);
-            border-radius: inherit;
-            backdrop-filter: blur(5px);
-            z-index: -1;
-        }
-
-        .open-btn::after {
-            content: "";
-            position: absolute;
-            top: -2vmin;
-            left: -2vmin;
-            right: -2vmin;
-            bottom: -2vmin;
-            border: 0.5vmin solid rgba(255, 255, 255, 1);
-            border-radius: 90px;
-            z-index: -2;
-            box-shadow: 0 4px 4px rgba(0,0,0,0.25);
-        }
-
-        /* Адаптив для десктопа */
-        @media (min-width: 1081px) {
-            .container {
-                padding-top: 4vh;
-                justify-content: flex-start;
-                padding-bottom: calc(80px + env(safe-area-inset-bottom));
-            }
-            
-            .bird { width: 12vmin; height: 13vmin; min-width: 60px; min-height: 65px; max-width: 120px; max-height: 130px; margin-bottom: 3vh; }
-            .title { font-size: clamp(20px, 3.5vmin, 27px); margin-bottom: 1vh; }
-            .subtitle { font-size: clamp(24px, 6vmin, 70px); }
-            .places { font-size: clamp(14px, 2vmin, 20px); }
-            
-            .open-btn {
-                width: min(300px, 70vw); 
-                height: min(60px, 8vh);
-                font-size: clamp(25px, 3.7vmin, 50px);
-                bottom: calc(8vh + env(safe-area-inset-bottom));
-            }
-        }
-
-        /* Мобильные устройства */
-        @media (max-width: 1080px) and (orientation: portrait) {
-            body.is-mobile .container {
-                height: 100svh; /* Small Viewport Height - самый надежный вариант */
-                padding-bottom: calc(100px + env(safe-area-inset-bottom));
-            }
-        }
-    </style>
 </head>
 <body>
-    <!-- Перенесли скрипт в конец body или оборачиваем в событие загрузки -->
+    <script>
+        // Унифицированная логика для всех мобильных браузеров
+        (function() {
+            const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
+                             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (!isMobile) return;
+            
+            document.body.classList.add('is-mobile');
+            
+            const container = document.querySelector('.container');
+            const btn = document.querySelector('.open-btn');
+            const vv = window.visualViewport;
+            
+            if (!vv || !container) return;
+            
+            function updateViewport() {
+                // Обрезаем контейнер по видимой области (для всех браузеров)
+                container.style.height = vv.height + 'px';
+                
+                // Кнопка на 5px от низа для ВСЕХ браузеров
+                if (btn) {
+                    btn.style.bottom = '5px';
+                }
+            }
+            
+            vv.addEventListener('resize', updateViewport);
+            window.addEventListener('orientationchange', () => {
+                setTimeout(updateViewport, 100);
+            });
+            
+            updateViewport();
+            window.addEventListener('load', updateViewport);
+        })();
+    </script>
+
     <div class="container">
         <img src="ui/sokol.png" class="bird">
         <h1 class="title">путеводитель</h1>
@@ -186,7 +52,6 @@
         <p class="places">
             <span class="places-number">50+</span> <span class="places-text">мест</span>
         </p>
-        <!-- Кнопка теперь абсолютна и прижата к низу контейнера -->
         <a href="categories.html" class="open-btn">ОТКРЫТЬ</a>
 
         <footer class="footer">
@@ -204,43 +69,6 @@
             </div>
         </footer>
     </div>
-
-    <script>
-        // Унифицированная логика для всех мобильных браузеров
-        (function() {
-            const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
-                             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            if (!isMobile) return;
-            
-            document.body.classList.add('is-mobile');
-            
-            // ИСПРАВЛЕНИЕ: Запускаем логику только после того, как элементы появились на странице
-            document.addEventListener('DOMContentLoaded', function() {
-                const container = document.querySelector('.container');
-                const btn = document.querySelector('.open-btn');
-                const vv = window.visualViewport;
-                
-                if (!container) return;
-                
-                function updateViewport() {
-                    // Обрезаем контейнер по видимой области
-                    container.style.height = vv.height + 'px';
-                    
-                    // Логика позиционирования кнопки теперь в CSS (safe-area-inset-bottom),
-                    // JS здесь не нужен для позиционирования, чтобы не перезаписывать безопасные отступы.
-                }
-                
-                if (vv) {
-                    vv.addEventListener('resize', updateViewport);
-                    window.addEventListener('orientationchange', () => {
-                        setTimeout(updateViewport, 100);
-                    });
-                    updateViewport();
-                }
-            });
-        })();
-    </script>
 
     <script src="script.js"></script>
 </body>
