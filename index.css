@@ -226,6 +226,7 @@
 @media (max-height: 500px) {
     .open-btn {
         /* Базовые 10px + 30px сдвиг = итого 40px от низа */
-        bottom: calc(40px + env(safe-area-inset-bottom));
+        bottom: calc(50px + env(safe-area-inset-bottom));
     }
 }
+
