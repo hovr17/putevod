@@ -948,100 +948,42 @@
   .mode-intro .hero-details { transform: translateY(calc(55vh - 60px)); }
 }
 
-/* Исправленный блок для низких экранов (ландшафт и маленькие высоты) */
 @media (max-height: 500px) {
   
-  /* 1. Убираем огромный отступ, оставляем минимальный */
-  .title-block h1 { 
-    font-size: clamp(24px, 6vw, 400px); 
-    padding-top: 20px; /* Было 150px - это была главная ошибка */
-  }
-  
-  .details-header { 
-    font-size: clamp(16px, 4vw, 72px); 
-    line-height: 1.2; 
-  }
-  
-  .entry-note { 
-    font-size: clamp(12px, 4vmin, 65px); 
-    gap: 5px; 
-  }
-  
-  .small-btn { height: 20px; }
+  .title-block h1 { font-size: clamp(36px, 8vw, 400px); padding-top: 150px; }
+  .details-header { font-size: clamp(16px, 4vw, 72px); line-height: 1.2; }
+  .entry-note { font-size: clamp(14px, 6vmin, 65px); gap: 6.5px; }
+  .small-btn { height: 25px; }
 
-  /* 2. Группируем элементы вверху экрана */
-  /* Логика: держим всё вместе с небольшими отступами от верха */
-  
-  .mode-intro .title-block {
-    transform: translateY(10vh); /* Сдвигаем чуть ниже верхнего края */
-  }
+  .mode-intro .hero-details { transform: translateY(-10vh); }
+  .mode-intro .title-block { transform: translateY(-25vh); }
 
-  .mode-intro .hero-details {
-    transform: translateY(15vh); /* Чуть ниже заголовка */
-  }
-
-  /* Скрываем dropdowns в режиме intro на очень низких экранах, 
-     иначе они не влезут, или тоже поднимаем их вверх */
-  .mode-intro #dropdownsContainer {
-    transform: translateY(20vh); 
-    opacity: 0.5; /* Полупрозрачность, если мешает */
-    pointer-events: none; /* Или отключаем взаимодействие */
-  }
-  
-  /* Если dropdowns должны быть видны и кликабельны, используйте translateY(20vh) без opacity */
-
-  /* Стили для фото и dropdowns (оставляем ваши, но проверяем размеры) */
-  .photo-wrapper { 
-    display: grid; 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 2vw; 
-    justify-items: center; 
-  }
-  
+  .photo-wrapper { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4vw; justify-items: center; }
   .photo-card {
-    width: 42vw; 
-    height: auto; 
-    aspect-ratio: 166 / 225; 
-    max-width: 42vw;
-    border-radius: 5vw; 
-    border-width: 0.5vw;
+    width: 42vw; height: auto; aspect-ratio: 166 / 225; max-width: 42vw;
+    border-radius: 7vw; border-width: 0.8vw;
   }
-  
-  .photo-label { 
-    font-size: clamp(16px, 5vmin, 55px); 
-    left: 4vw; 
-    right: 4vw; 
-    bottom: 1vh; 
-  }
+  .photo-label { font-size: clamp(20px, 7vmin, 55px); left: 4vw; right: 4vw; bottom: 1vh; }
 
   .dropdown {
-    border-radius: 35px; 
-    max-height: 55px; /* Чуть уменьшаем высоту блоков */
-    margin-inline: 3vw; 
-    padding-top: 1vh; 
-    margin-top: 2vh; 
-    padding-bottom: 0;
+    border-radius: 35px; max-height: 65px; margin-inline: 3vw; padding-top: 3vh; margin-top: 3.5vh; padding-bottom: 0;
   }
-  
   .dropdown-header {
-    min-height: 40px;
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; justify-items: center;
+    padding: 0 5vw; min-height: 50px; height: auto; margin: 0;
   }
-
-  .dropdown-title { font-size: clamp(16px, 5vmin, 44px); }
-  .dropdown-icon { width: 4.5vw; height: 4.5vw; }
+  .dropdown-icon, .dropdown-arrow { margin: 0; padding: 0; align-self: center; justify-self: center; }
+  .dropdown-title { font-size: clamp(18px, 6.5vmin, 44px); margin: 0; padding: 0; text-align: center; }
+  .dropdown-icon { width: 5.5vw; height: 5.5vw; }
   .dropdown-arrow { width: 4.5vw; height: 4.5vw; }
-  .dropdown-body p { font-size: clamp(14px, 5vmin, 50px); }
+  .dropdown-body p { font-size: clamp(16px, 7vmin, 50px); }
 
-  /* Скрываем навигационные стрелки, чтобы не мешали */
-  .temple-nav-arrows, .temple-nav-arrow { display: none !important; pointer-events: none; }
+  .temple-nav-arrows, .temple-nav-arrow { display: none; pointer-events: none; }
+  .mode-intro #dropdownsContainer { transform: translateY(50vh); }
 
   .video-background {
-    position: absolute; 
-    inset: 0; 
-    width: 100%; 
-    height: 100%; 
-    min-height: 100vh; 
-    z-index: -1;
+    position: absolute; inset: 0; width: 100%; height: 100%; min-height: 100vh; z-index: -1;
+    background: white; transition: none;
   }
 }
 
@@ -1389,6 +1331,7 @@ padding-top: 2vh;
   opacity: 1;
   transition: opacity 0.3s ease;
 }
+
 
 
 
