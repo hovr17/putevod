@@ -1295,12 +1295,13 @@ padding-top: 2vh;
 }
 
 
-@media (min-height: 1080px)
+@media (min-height: 1059px)
 {
 .title-block h1 {
     font-size: clamp(28px, 3vmin, 62px);
   }
 }
+
 
 
 
