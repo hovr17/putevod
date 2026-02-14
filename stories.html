@@ -12,6 +12,38 @@
   <script src="stories.js"></script>
 </head>
 <body>
+  <!-- ДОБАВЛЕННЫЙ СКРИПТ ДЛЯ ПЛАНШЕТОВ -->
+  <script>
+    (function() {
+        // Проверяем: либо ширина < 1080, либо это мобильное устройство по User Agent
+        // Это важно для iPad в горизонтальном режиме (ширина > 1080, но это мобильный)
+        const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
+                         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (!isMobile) return;
+        
+        document.body.classList.add('is-mobile');
+        
+        const container = document.querySelector('.stories-container');
+        const vv = window.visualViewport;
+        
+        if (!vv || !container) return;
+        
+        function updateViewport() {
+            // Обрезаем контейнер строго по видимой области браузера
+            container.style.height = vv.height + 'px';
+        }
+        
+        vv.addEventListener('resize', updateViewport);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(updateViewport, 100);
+        });
+        
+        updateViewport();
+        window.addEventListener('load', updateViewport);
+    })();
+  </script>
+
   <div class="stories-container">
     <!-- Текстовая метка "фото объекта" -->
     <div class="stories-label" id="storiesLabel"></div>
@@ -45,6 +77,3 @@
   
 </body>
 </html>
-
-
-
