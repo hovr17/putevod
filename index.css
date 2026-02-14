@@ -6,16 +6,20 @@
     justify-content: flex-start; 
     position: relative;
     
-    /* Используем dvh для мобильных устройств */
-    height: 100dvh; 
-    /* Fallback для старых браузеров */
-    height: 100vh;
+    /* Стандартная высота для ПК */
+    height: 100vh; 
     
     padding: 0;
     padding-top: 5vh; 
     
     /* Отступ для безопасной зоны снизу */
     padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ВАЖНО: На мобильных устройствах (класс добавляется JS) отключаем 100vh,
+   так как высота задается скриптом через visualViewport */
+body.is-mobile .container {
+    height: auto; /* Или 100%, но JS перезапишет это */
 }
 
 .bird {
@@ -90,9 +94,9 @@
     position: absolute;
     
     /* 
-       ИСПРАВЛЕНИЕ: 
        Кнопка всегда в зоне видимости. 
-       10px + безопасная зона (для iPhone Home Indicator).
+       40px + безопасная зона.
+       JS теперь не меняет это значение, поэтому берем из CSS.
     */
     bottom: calc(40px + env(safe-area-inset-bottom));
     
@@ -214,21 +218,16 @@
 
 /* Мобильные устройства в портретной ориентации */
 @media (max-width: 1080px) and (orientation: portrait) {
-    
+    /* JS управляет высотой, но оставляем fallback */
     body.is-mobile .container {
         height: 100svh; 
         padding-bottom: 0;
     }
 }
 
-/* === НОВОЕ ПРАВИЛО === */
-/* Если высота экрана меньше 500px, поднимаем кнопку на 30px выше */
+/* Если высота экрана меньше 500px */
 @media (max-height: 500px) {
     .open-btn {
-        /* Базовые 10px + 30px сдвиг = итого 40px от низа */
         bottom: calc(50px + env(safe-area-inset-bottom));
     }
 }
-
-
-
