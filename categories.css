@@ -1,3 +1,16 @@
+/* === ДОБАВИТЬ ЭТОТ БЛОК В САМОЕ НАЧАЛО === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
 .container {
     background: url('backgrounds/bg_second_screen.jpg') center/cover no-repeat;
     display: flex;
@@ -6,17 +19,24 @@
     justify-content: flex-start;
     position: relative;
     
-    /* ✅ ИСПРАВЛЕНИЕ: Используем динамическую высоту */
+    /* Используем dvh для мобильных устройств */
     height: 100dvh;
-    height: 100vh; /* Fallback */
+    /* Fallback для старых браузеров */
+    height: 100vh;
     
     padding: 0;
     padding-top: 5vh;
     
-    /* ✅ ИСПРАВЛЕНИЕ: Добавляем отступ снизу для безопасной зоны (iPhone Home Indicator) */
+    /* Отступ для безопасной зоны снизу */
     padding-bottom: env(safe-area-inset-bottom);
     
     overflow: hidden;
+}
+
+/* На мобильных устройствах (класс добавляется JS) JS управляет высотой */
+body.is-mobile .container {
+    height: auto; /* JS перезапишет это */
+    padding-bottom: 0; /* JS учитывает визуальную область */
 }
 
 /* Кнопка назад */
@@ -94,8 +114,6 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
-
-    
 }
 
 /* Фон кнопки */
@@ -153,7 +171,7 @@
     }
     
     .back-button {
-    top: min(40px, 5vh);
+        top: min(40px, 5vh);
         left: min(20px, 3vw);
         width: min(60px, 6vmin);
         height: min(30px, 3vmin);
@@ -200,20 +218,13 @@
     .buttons-container {
         gap: 8vh;
     }
-
 }
-
 
 @media (max-width: 1080px) and (orientation: portrait) {
     
     /* Все мобильные браузеры: высота = видимая область (JS управляет) */
     body.is-mobile .container {
         height: 100svh; /* Fallback до загрузки JS */
-        padding-bottom: 0; /* Убираем safe-area, т.к. JS точно вычисляет видимую область */
+        padding-bottom: 0;
     }
-
 }
-
-
-
-
