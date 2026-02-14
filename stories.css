@@ -1,5 +1,5 @@
 html {
-  /* Это база. 1rem будет равен 16px везде, даже если пользователь изменил настройки телефона */
+
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   font-size: 16px;
@@ -1036,3 +1036,4 @@ html, body {
     padding-bottom: 20px !important; /* Отступ текста от низа */
   }
 }
+
