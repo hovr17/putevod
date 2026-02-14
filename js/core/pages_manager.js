@@ -1,9 +1,10 @@
-// pages_manager.js - Добавлена мобильная инициализация видео
+// pages_manager.js - Добавлена мобильная инициализация видео + адаптация шрифта под высоту
 class PagesManager {
     constructor() {
         this.config = null;
         this.placeId = null;
         this.category = null;
+        this._resizeHandler = null; // Для хранения обработчика resize
         console.log('📦 PagesManager создан');
     }
 
@@ -22,35 +23,31 @@ class PagesManager {
         }
 
         // 1. Заголовок
-
-const titleBlock = document.querySelector('.title-block h1');
-if (titleBlock) {
-    titleBlock.innerHTML = this.config.heading || this.config.title || '';
-    
-    // 🆕 Индивидуальный размер шрифта
-    if (this.config.headingSize) {
-        titleBlock.style.fontSize = this.config.headingSize;
-    } else {
-        // Сбрасываем inline-стиль, чтобы применились стандартные стили из CSS
-        titleBlock.style.fontSize = '';
-    }
-    
-    console.log('✅ Заголовок установлен:', titleBlock.innerHTML, this.config.headingSize ? `(${this.config.headingSize})` : '(default)');
-}
+        const titleBlock = document.querySelector('.title-block h1');
+        if (titleBlock) {
+            titleBlock.innerHTML = this.config.heading || this.config.title || '';
+            
+            // Индивидуальный размер шрифта
+            if (this.config.headingSize) {
+                titleBlock.style.fontSize = this.config.headingSize;
+            } else {
+                // Сбрасываем inline-стиль, чтобы применились стандартные стили из CSS
+                titleBlock.style.fontSize = '';
+            }
+            
+            console.log('✅ Заголовок установлен:', titleBlock.innerHTML, this.config.headingSize ? `(${this.config.headingSize})` : '(default)');
+        }
 
         // 2. Видео (МОБИЛЬНАЯ ИНИЦИАЛИЗАЦИЯ)
         const bgVideo = document.getElementById('bgVideo');
         if (bgVideo && this.config.video?.src) {
-            // Сначала сбрасываем
             bgVideo.pause();
             bgVideo.src = '';
             bgVideo.load();
             
-            // Теперь устанавливаем новый src
             bgVideo.src = this.config.video.src;
             bgVideo.poster = this.config.video.poster || '';
             
-            // ВАЖНО: Устанавливаем мобильные атрибуты ДО воспроизведения
             bgVideo.muted = true;
             bgVideo.setAttribute('muted', '');
             bgVideo.setAttribute('playsinline', '');
@@ -72,87 +69,72 @@ if (titleBlock) {
                 entryNoteSpan.textContent = this.config.paidEntry.text || '';
                 paidBtn.style.display = 'flex';
                 
-                // Восстанавливаем видимость строки и сбрасываем смещение заголовка
                 if (entryNoteEl) entryNoteEl.style.display = '';
                 if (h1El) h1El.style.marginTop = '';
                 
                 console.log('✅ Платный вход:', entryNoteSpan.textContent);
             } else {
-                // Скрываем блок "Вход платный" полностью
                 entryNoteSpan.textContent = '\u00A0';
                 paidBtn.style.display = 'none';
                 
-                // Смещаем h1 вниз на высоту скрываемого блока
                 if (entryNoteEl && h1El) {
-                    // Убеждаемся что элемент видим для измерения
                     entryNoteEl.style.display = '';
-                    
                     const height = entryNoteEl.getBoundingClientRect().height;
-                    
-                    // Скрываем блок
                     entryNoteEl.style.display = 'none';
-                    
-                    // Применяем отступ к заголовку равный высоте скрытой строки
                     h1El.style.marginTop = `${height}px`;
                 }
             }
         }
 
         // 4. Фото-кнопки
-        // 4. Фото-кнопки
-// 4. Фото-кнопки
-const photoWrapper = document.querySelector('.photo-wrapper');
-if (photoWrapper) {
-    photoWrapper.innerHTML = '';
-    this.config.photoButtons?.forEach((btn, index) => {
-        const card = document.createElement('a');
-        card.className = 'photo-card';
-        card.href = btn.link || '#';
-        card.id = `photoCard${index + 1}`;
-        
-        // ✅ СОХРАНЕНИЕ СОСТОЯНИЯ МЕНЮ ПРИ КЛИКЕ НА ФОТО
-        card.addEventListener('click', function(e) {
-            // Проверяем, что это переход на stories.html
-            if (this.href && this.href.includes('stories.html')) {
-                // Сохраняем текущее состояние меню
-                const frame = document.getElementById('frame');
-                const isMenuOpen = frame && frame.classList.contains('mode-details');
-                const usefulDrop = document.getElementById('usefulDrop');
-                const isDropdownOpen = usefulDrop && usefulDrop.classList.contains('open');
+        const photoWrapper = document.querySelector('.photo-wrapper');
+        if (photoWrapper) {
+            photoWrapper.innerHTML = '';
+            this.config.photoButtons?.forEach((btn, index) => {
+                const card = document.createElement('a');
+                card.className = 'photo-card';
+                card.href = btn.link || '#';
+                card.id = `photoCard${index + 1}`;
                 
-                if (isMenuOpen) {
-                    sessionStorage.setItem('menuState', 'open');
-                    console.log('💾 Сохранено: меню открыто');
-                } else {
-                    sessionStorage.removeItem('menuState');
+                card.addEventListener('click', function(e) {
+                    if (this.href && this.href.includes('stories.html')) {
+                        const frame = document.getElementById('frame');
+                        const isMenuOpen = frame && frame.classList.contains('mode-details');
+                        const usefulDrop = document.getElementById('usefulDrop');
+                        const isDropdownOpen = usefulDrop && usefulDrop.classList.contains('open');
+                        
+                        if (isMenuOpen) {
+                            sessionStorage.setItem('menuState', 'open');
+                            console.log('💾 Сохранено: меню открыто');
+                        } else {
+                            sessionStorage.removeItem('menuState');
+                        }
+                        
+                        if (isDropdownOpen) {
+                            sessionStorage.setItem('usefulDropdownState', 'open');
+                            console.log('💾 Сохранено: dropdown открыт');
+                        } else {
+                            sessionStorage.removeItem('usefulDropdownState');
+                        }
+                    }
+                });
+                
+                if (btn.image) {
+                    card.style.backgroundImage = `url('${btn.image}')`;
+                    card.style.backgroundSize = 'cover';
+                    card.style.backgroundPosition = 'center';
+                    card.style.backgroundRepeat = 'no-repeat';
                 }
                 
-                // Сохраняем состояние dropdown
-                if (isDropdownOpen) {
-                    sessionStorage.setItem('usefulDropdownState', 'open');
-                    console.log('💾 Сохранено: dropdown открыт');
-                } else {
-                    sessionStorage.removeItem('usefulDropdownState');
-                }
-            }
-        });
-        
-        if (btn.image) {
-            card.style.backgroundImage = `url('${btn.image}')`;
-            card.style.backgroundSize = 'cover';
-            card.style.backgroundPosition = 'center';
-            card.style.backgroundRepeat = 'no-repeat';
+                const label = document.createElement('div');
+                label.className = 'photo-label';
+                label.textContent = btn.label || '';
+                card.appendChild(label);
+                photoWrapper.appendChild(card);
+                
+                console.log(`✅ Фото-кнопка ${index + 1}:`, btn.label);
+            });
         }
-        
-        const label = document.createElement('div');
-        label.className = 'photo-label';
-        label.textContent = btn.label || '';
-        card.appendChild(label);
-        photoWrapper.appendChild(card);
-        
-        console.log(`✅ Фото-кнопка ${index + 1}:`, btn.label);
-    });
-}
 
         // 5. Дропдауны
         this.createDropdowns();
@@ -161,7 +143,7 @@ if (photoWrapper) {
         document.title = this.config.title || '';
         
         // 7. Обновление счетчика места
-        this.createStoriesProgress();
+        this.updatePlaceCounter();
 
         // 8. Инициализируем меню (для дропдаунов и свайпов)
         if (typeof window.initializeMenu === 'function') {
@@ -169,7 +151,10 @@ if (photoWrapper) {
                 window.initializeMenu();
             }, 100);
         }
-        
+
+        // 9. Адаптация шрифта под размер экрана
+        this.setupScreenAdaptation();
+
         console.log('✅ Конфигурация применена полностью');
     }
 
@@ -189,8 +174,6 @@ if (photoWrapper) {
             this.createUsefulDropdown();
         }
     }
-
-    
 
     createAddressDropdown() {
         const container = document.getElementById('dropdownsContainer');
@@ -269,52 +252,70 @@ if (photoWrapper) {
         }
     }
 
+    /**
+     * Настраивает адаптацию заголовка под изменение размеров окна
+     */
+    setupScreenAdaptation() {
+        // Удаляем предыдущий обработчик, если есть
+        if (this._resizeHandler) {
+            window.removeEventListener('resize', this._resizeHandler);
+            this._resizeHandler = null;
+        }
+
+        // Функция адаптации с debounce
+        const adapt = () => {
+            this.adjustFontSizeForScreen();
+        };
+
+        // Выполняем сразу
+        adapt();
+
+        // Добавляем обработчик resize с debounce (150 мс)
+        let timeout;
+        this._resizeHandler = () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(adapt, 150);
+        };
+        window.addEventListener('resize', this._resizeHandler);
+    }
+
+    /**
+     * Проверяет размеры экрана и при необходимости изменяет размер шрифта заголовка
+     */
+    adjustFontSizeForScreen() {
+        const titleBlock = document.querySelector('.title-block h1');
+        if (!titleBlock) return;
+
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        // Условие: ширина > 1080px и высота < 1060px
+        if (width > 1080 && height < 1060) {
+            // Сохраняем исходный размер (если ещё не сохранили)
+            if (!titleBlock.dataset.originalFontSize) {
+                // Запоминаем текущий inline-стиль (если он был от headingSize) или пустую строку
+                titleBlock.dataset.originalFontSize = titleBlock.style.fontSize || '';
+            }
+            // Устанавливаем уменьшенный размер (можно настроить под свой дизайн)
+            titleBlock.style.fontSize = 'clamp(24px, 3vmin, 40px)'; // пример уменьшенного размера
+        } else {
+            // Восстанавливаем исходный размер, если он был изменён
+            if (titleBlock.dataset.originalFontSize !== undefined) {
+                if (titleBlock.dataset.originalFontSize) {
+                    // Возвращаем сохранённый inline-стиль
+                    titleBlock.style.fontSize = titleBlock.dataset.originalFontSize;
+                } else {
+                    // Если исходного inline-стиля не было, удаляем inline, чтобы вернуться к CSS
+                    titleBlock.style.fontSize = '';
+                }
+                delete titleBlock.dataset.originalFontSize;
+            }
+        }
+    }
+
     getPageConfig(placeId) {
         return PAGES_CONFIG[placeId];
     }
-
-
-    // Метод для создания полосок прогресса (Stories-style)
-createStoriesProgress() {
-    const container = document.getElementById('storiesProgress');
-    if (!container || !this.category) return;
-    
-    const order = window.PAGE_ORDER_BY_CATEGORY?.[this.category] || [];
-    if (order.length <= 1) {
-        container.style.display = 'none';
-        return;
-    }
-    
-    container.innerHTML = '';
-    container.style.display = 'flex';
-    
-    const currentIndex = order.indexOf(this.placeId);
-    
-    order.forEach((placeId, index) => {
-        const bar = document.createElement('div');
-        bar.className = 'story-progress-bar';
-        
-        const fill = document.createElement('div');
-        fill.className = 'story-progress-fill';
-        bar.appendChild(fill);
-        
-        // Определяем состояние полоски
-        if (index < currentIndex) {
-            bar.classList.add('viewed');      // Просмотренные - белые
-        } else if (index === currentIndex) {
-            bar.classList.add('current');     // Текущая - белая с тенью
-        }
-        // Будущие - полупрозрачные (без класса)
-        
-        container.appendChild(bar);
-    });
-}
-
-// Обновление полосок (для SPA навигации)
-updateStoriesProgress() {
-    this.createStoriesProgress();
-}
 }
 
 window.pagesManager = new PagesManager();
-
