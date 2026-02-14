@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, interactive-widget=resizes-content">
     <title>Путеводитель по Суздалю</title>
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="categories.css">
@@ -10,7 +10,10 @@
 </head>
 <body>
     <script>
+        // Унифицированная логика для всех мобильных браузеров и планшетов
         (function() {
+            // Проверяем: либо ширина < 1080, либо это мобильное устройство по User Agent
+            // Это важно для iPad в горизонтальном режиме (ширина > 1080, но это мобильный)
             const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
                              /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
@@ -24,7 +27,7 @@
             if (!vv || !container) return;
             
             function updateViewport() {
-                // Обрезаем контейнер ровно по границе видимой области (без панелей инструментов)
+                // Обрезаем контейнер строго по видимой области браузера
                 container.style.height = vv.height + 'px';
             }
             
@@ -50,8 +53,8 @@
         <!-- Контейнер для кнопок категорий -->
         <div class="buttons-container">
             <a href="place.html?id=kreml&cat=museum" class="category-btn">МУЗЕИ</a>
-            <a  href="place.html?id=Pokrovsky_monastery&cat=religious" class="category-btn">ХРАМЫ</a>
-            <a href="place.html?id=smotrovaya_zaradye&cat=nature"  class="category-btn">КРАСИВЫЕ МЕСТА</a>
+            <a href="place.html?id=Pokrovsky_monastery&cat=religious" class="category-btn">ХРАМЫ</a>
+            <a href="place.html?id=smotrovaya_zaradye&cat=nature" class="category-btn">КРАСИВЫЕ МЕСТА</a>
             <a href="place.html?id=aqua&cat=entertainment" class="category-btn">РАЗВЛЕЧЕНИЯ</a>
         </div>
 
@@ -84,5 +87,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
-
