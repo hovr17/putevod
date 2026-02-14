@@ -1,3 +1,16 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Также важно запретить скролл body, чтобы не было "прыжков" */
+html, body {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
 .container {
     background: url('backgrounds/bg_first_screen.jpg') center/cover no-repeat;
     display: flex;
@@ -6,8 +19,10 @@
     justify-content: flex-start; 
     position: relative;
     
-    /* Стандартная высота для ПК */
-    height: 100vh; 
+    /* Используем dvh для мобильных устройств */
+    height: 100dvh; 
+    /* Fallback для старых браузеров */
+    height: 100vh;
     
     padding: 0;
     padding-top: 5vh; 
@@ -15,6 +30,7 @@
     /* Отступ для безопасной зоны снизу */
     padding-bottom: env(safe-area-inset-bottom);
 }
+
 
 /* ВАЖНО: На мобильных устройствах (класс добавляется JS) отключаем 100vh,
    так как высота задается скриптом через visualViewport */
@@ -231,3 +247,4 @@ body.is-mobile .container {
         bottom: calc(50px + env(safe-area-inset-bottom));
     }
 }
+
