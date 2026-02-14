@@ -5,6 +5,13 @@ html {
   font-size: 16px;
 }
 
+/* === ДОБАВЛЕНО: Запрет скролла для body === */
+html, body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -21,6 +28,8 @@ html {
   z-index: 1000;
   overflow: hidden;
 }
+
+/* ... Остальные стили остаются без изменений ... */
 
 .stories-label {
   position: absolute;
@@ -1000,8 +1009,9 @@ html {
 @media (max-width: 1080px) {
   
   /* 1. Контейнер */
+  /* ИЗМЕНЕНО: Убрано !important, чтобы JS мог управлять высотой */
   .stories-container:not(.yandex-browser) {
-    height: 100dvh !important;
+    height: 100dvh;
   }
 
   /* 2. Контейнер с текстом */
@@ -1026,10 +1036,3 @@ html {
     padding-bottom: 20px !important; /* Отступ текста от низа */
   }
 }
-
-
-
-
-
-
-
