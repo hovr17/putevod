@@ -1296,6 +1296,20 @@ padding-top: 2vh;
 
 
 
+/* === СПЕЦИАЛЬНЫЙ СТИЛЬ ДЛЯ ШИРОКИХ, НО НИЗКИХ ЭКРАНОВ === */
+/* Срабатывает только если JS добавил класс "short-screen" */
+#frame.short-screen .title-block h1 {
+    /* Уменьшаем шрифт. Было clamp(28px, 4vw, 62px), делаем меньше */
+    font-size: clamp(22px, 3vw, 48px);
+    
+    /* Можно также немного уменьшить отступ сверху, если нужно */
+    padding-top: 8vh; 
+}
+
+/* Если нужно уменьшить и заголовок "подробнее" для этого режима */
+#frame.short-screen .details-header {
+    font-size: clamp(16px, 2vw, 24px);
+}
 
 
 
