@@ -100,8 +100,35 @@
           window.addEventListener('load', updateViewport);
       })();
   </script>
+  <script>
+    (function() {
+        const frame = document.getElementById('frame');
+        
+        // Функция проверки размеров
+        function checkScreenHeight() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            // Условие: Ширина > 1080 И Высота < 1060
+            if (width > 1080 && height < 1060) {
+                // Добавляем класс, если условия совпали
+                frame.classList.add('short-screen');
+            } else {
+                // Убираем класс, если условия не совпадают (вернулись к обычному виду)
+                frame.classList.remove('short-screen');
+            }
+        }
+
+        // Запускаем проверку при загрузке страницы
+        checkScreenHeight();
+
+        // Запускаем проверку при изменении размера окна
+        window.addEventListener('resize', checkScreenHeight);
+    })();
+</script>
 </body>
 
 </html>
+
 
 
