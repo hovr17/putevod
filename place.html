@@ -101,38 +101,35 @@
       })();
   </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    (function() {
         const frame = document.getElementById('frame');
         
-        if (!frame) {
-            console.error('Элемент #frame не найден!');
-            return;
-        }
-
+        // Функция проверки размеров
         function checkScreenHeight() {
             const width = window.innerWidth;
             const height = window.innerHeight;
 
-            // Логика: Ширина > 1080 И Высота < 1060
+            // Условие: Ширина > 1080 И Высота < 1060
             if (width > 1080 && height < 1060) {
+                // Добавляем класс, если условия совпали
                 frame.classList.add('short-screen');
-                console.log('Экран низкий: класс short-screen ДОБАВЛЕН');
             } else {
+                // Убираем класс, если условия не совпадают (вернулись к обычному виду)
                 frame.classList.remove('short-screen');
-                console.log('Экран нормальный: класс short-screen УДАЛЕН');
             }
         }
 
-        // Запуск при загрузке
+        // Запускаем проверку при загрузке страницы
         checkScreenHeight();
 
-        // Запуск при ресайзе
+        // Запускаем проверку при изменении размера окна
         window.addEventListener('resize', checkScreenHeight);
-    });
+    })();
 </script>
 </body>
 
 </html>
+
 
 
 
