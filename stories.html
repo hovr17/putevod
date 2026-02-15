@@ -34,7 +34,7 @@
                 
                 // 2. ГЛАВНОЕ ДОПОЛНЕНИЕ: Сдвигаем контейнер вниз, если браузерная панель сверху
                 // visualViewport.offsetTop показывает, сколько пикселей скрыто сверху.
-                container.style.top = (vv.offsetTop - 10) + 'px';
+                container.style.top = vv.offsetTop + 'px';
                 
                 // 3. Принудительно фиксируем левый край (на случай сдвигов при скролле)
                 container.style.left = vv.offsetLeft + 'px';
@@ -94,6 +94,7 @@
   
 </body>
 </html>
+
 
 
 
