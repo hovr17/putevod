@@ -801,7 +801,7 @@
   }
 
   .details-header { font-size: clamp(20px, 2.5vmin, 30px); }
-  .photo-label { font-size: clamp(20px, 2.5vmin, 32px); bottom: 1.2vh; }
+  .photo-label { font-size: clamp(10px, 2.5vmin, 32px); bottom: 1.2vh; }
 
   .dropdown {
     margin-inline: 1.5vh;
@@ -1312,6 +1312,7 @@ padding-top: 2vh;
 #frame.short-screen .mode-intro .title-block {
     transform: translateY(40vh) !important;
 }
+
 
 
 
