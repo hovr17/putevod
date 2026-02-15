@@ -14,9 +14,9 @@
 <body>
 
   <!-- ИСПРАВЛЕННЫЙ СКРИПТ -->
+  <!-- ИСПРАВЛЕННЫЙ СКРИПТ -->
   <script>
     (function() {
-        // Определяем мобильные устройства
         const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
                          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
@@ -30,25 +30,33 @@
         if (!container) return;
         
         function updateViewport() {
-            // ГЛАВНОЕ ИСПРАВЛЕНИЕ: Задаем высоту через visualViewport
-            // Это гарантирует, что контент не уйдет под браузерную панель
             if (vv) {
+                // 1. Устанавливаем высоту равной видимой высоте (учитывает панель браузера)
                 container.style.height = vv.height + 'px';
+                
+                // 2. ГЛАВНОЕ ДОПОЛНЕНИЕ: Сдвигаем контейнер вниз, если браузерная панель сверху
+                // visualViewport.offsetTop показывает, сколько пикселей скрыто сверху.
+                container.style.top = vv.offsetTop + 'px';
+                
+                // 3. Принудительно фиксируем левый край (на случай сдвигов при скролле)
+                container.style.left = vv.offsetLeft + 'px';
             } else {
-                // Fallback для старых браузеров
+                // Fallback
                 container.style.height = '100svh';
+                container.style.top = '0';
             }
         }
         
         // Запускаем сразу
         updateViewport();
         
-        // Обновляем при любом изменении размера видимой области (выезд панели, поворот, клавиатура)
+        // Обновляем при изменении размера панели или скролле
         if (vv) {
             vv.addEventListener('resize', updateViewport);
+            // Событие scroll нужно, так как offsetTop может меняться при появлении панели
+            vv.addEventListener('scroll', updateViewport); 
         }
         
-        // Страхуемся на случай orientationchange
         window.addEventListener('orientationchange', () => {
             setTimeout(updateViewport, 100);
         });
@@ -88,3 +96,4 @@
   
 </body>
 </html>
+
