@@ -12,7 +12,6 @@
 </head>
 <body>
   <!-- ОБНОВЛЁННЫЙ СКРИПТ -->
-  <!-- ИСПРАВЛЕННЫЙ СКРИПТ -->
   <script>
     (function() {
         const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
@@ -25,39 +24,29 @@
         const container = document.querySelector('.stories-container');
         const vv = window.visualViewport;
         
-        if (!container) return;
+        if (!container || !vv) return;
         
         function updateViewport() {
-            if (vv) {
-                // 1. Устанавливаем высоту равной видимой высоте + 10px (для сдвига вверх)
-                // Увеличиваем высоту, чтобы при сдвиге вверх не было черной полосы снизу
-                let height = vv.height;
-                container.style.height = (height + 10) + 'px';
-                
-                // 2. Сдвигаем контейнер под верхнюю панель
-                container.style.top = vv.offsetTop + 'px';
-                container.style.left = vv.offsetLeft + 'px';
-                
-                // 3. Визуально поднимаем контейнер на 10px вверх
-                // Это "вытаскивает" низ из-под браузерной панели
-                container.style.transform = 'translateY(-10px)';
-            } else {
-                container.style.height = '100svh';
-                container.style.top = '0';
-                container.style.transform = 'none';
-            }
+            // Устанавливаем высоту контейнера равной видимой области
+            container.style.height = vv.height + 'px';
+            container.style.position = 'fixed';
+            container.style.top = '0';
+            container.style.left = '0';
+            container.style.width = '100%';
+            container.style.maxWidth = 'none';
+            container.style.borderRadius = '0';
+            container.style.margin = '0';
         }
         
+        // Запускаем сразу
         updateViewport();
         
-        if (vv) {
-            vv.addEventListener('resize', updateViewport);
-            vv.addEventListener('scroll', updateViewport);
-        }
-        
+        // Обновляем при изменении размера окна (поворот, появление клавиатуры)
+        vv.addEventListener('resize', updateViewport);
         window.addEventListener('orientationchange', () => {
             setTimeout(updateViewport, 100);
         });
+        window.addEventListener('load', updateViewport);
     })();
   </script>
 
@@ -94,4 +83,3 @@
   
 </body>
 </html>
-
