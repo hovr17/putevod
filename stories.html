@@ -13,7 +13,8 @@
 </head>
 <body>
   <!-- ОБНОВЛЕННЫЙ СКРИПТ -->
-  <script>
+<!-- ОБНОВЛЕННЫЙ СКРИПТ ДЛЯ stories.html -->
+<script>
     (function() {
         const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
                          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -25,14 +26,10 @@
         const container = document.querySelector('.stories-container');
         const vv = window.visualViewport;
         
-        if (!vv || !container) return;
+        if (!container) return;
         
         function updateViewport() {
-            // 1. Устанавливаем высоту
-            container.style.height = vv.height + 'px';
-            
-            // 2. ПРИНУДИТЕЛЬНО применяем стили мобильного вида
-            // Это исправляет проблему, когда планшет в горизонтали (>1080px) ведет себя как ПК
+            // 1. Принудительно применяем мобильные стили (отключаем десктопное центрирование)
             container.style.position = 'fixed';
             container.style.top = '0';
             container.style.left = '0';
@@ -40,17 +37,32 @@
             container.style.maxWidth = 'none';
             container.style.borderRadius = '0';
             container.style.margin = '0';
+            
+            // 2. ГЛАВНОЕ ИСПРАВЛЕНИЕ: Используем '100svh'
+            // svh (Small Viewport Height) автоматически учитывает высоту БЕЗ панелей браузера.
+            // Это решает проблему, когда контент прячется под низ.
+            container.style.height = '100svh';
+            
+            // Если нужно строго pixel-perfect обновление при скролле/появлении клавиатуры:
+            if (vv) {
+                // Дополнительно подгоняем, если visualViewport доступен и отличается
+                // Но 100svh обычно достаточно и надежнее
+                // container.style.height = vv.height + 'px'; 
+            }
         }
         
-        vv.addEventListener('resize', updateViewport);
+        // Запускаем сразу
+        updateViewport();
+        
+        // Обновляем при изменении размера окна (поворот, появление клавиатуры)
+        if (vv) {
+            vv.addEventListener('resize', updateViewport);
+        }
         window.addEventListener('orientationchange', () => {
             setTimeout(updateViewport, 100);
         });
-        
-        updateViewport();
-        window.addEventListener('load', updateViewport);
     })();
-  </script>
+</script>
 
   <div class="stories-container">
     <!-- Текстовая метка "фото объекта" -->
@@ -85,3 +97,4 @@
   
 </body>
 </html>
+
