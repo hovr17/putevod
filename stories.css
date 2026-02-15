@@ -915,75 +915,106 @@ html, body {
   }
 }
 
-/* ==================== ГОРИЗОНТАЛЬНАЯ ОРИЕНТАЦИЯ ==================== */
+/* ==================== ГОРИЗОНТАЛЬНАЯ ОРИЕНТАЦИЯ — КРИТИЧЕСКИЕ ФИКСЫ ==================== */
 @media (max-width: 1080px) and (orientation: landscape) {
-  /* Контейнер подписи — фиксируем высоту и позицию */
-  .story-caption-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    max-height: 40vh; /* Ограничиваем высоту в landscape */
-    min-height: auto;
-    z-index: 10;
+  /* Сбрасываем стили для JS-управления */
+  body.is-mobile .stories-container {
+    height: auto !important;
+    top: auto !important;
+    bottom: auto !important;
   }
 
-  /* Контент подписи — компактнее */
+  /* Контейнер подписи — фиксируем в видимой зоне */
+  .story-caption-container {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    max-height: 40vh !important;
+    z-index: 100 !important;
+    transform: none !important;
+  }
+
+  /* Контент подписи — компактный */
   .story-caption-content {
-    font-size: 16px; /* Фиксированный размер для стабильности */
-    line-height: 1.3;
-    padding: 15px 20px 50px; /* Увеличенный нижний отступ для кнопки */
-    max-height: 40vh;
-    overflow-y: auto;
+    font-size: 14px !important;
+    line-height: 1.3 !important;
+    padding: 10px 15px 45px !important;
+    max-height: 40vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   /* Текст подписи */
   .story-caption-text {
-    font-size: 16px;
-    line-height: 1.3;
+    font-size: 14px !important;
+    line-height: 1.3 !important;
   }
 
-  /* Кнопка разворачивания — фиксированный размер */
+  /* Кнопка разворачивания — видимая */
   .caption-expand-btn {
-    width: 40px;
-    height: 40px;
-    bottom: 10px;
+    width: 35px !important;
+    height: 35px !important;
+    bottom: 8px !important;
+    z-index: 101 !important;
   }
 
-  /* Оверлей в landscape */
-  .caption-overlay.mobile-overlay .caption-fullscreen {
-    font-size: 16px;
-    padding: 20px;
-    max-height: 80vh;
+  /* Изображение — уменьшаем, чтобы освободить место для подписи */
+  .story-image {
+    max-height: 58vh !important;
+    object-fit: contain !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -55%) !important; /* Сдвигаем вверх */
+    width: auto !important;
+    height: auto !important;
+    max-width: 90vw !important;
+  }
+
+  /* Слайд — позиционируем содержимое */
+  .story-slide {
+    display: flex !important;
+    align-items: flex-start !important; /* Прижимаем к верху */
+    justify-content: center !important;
+    padding-top: 5vh !important;
   }
 
   /* Метка */
   .stories-label {
-    font-size: 18px;
-    top: 15px;
-    padding-left: 5px;
+    font-size: 16px !important;
+    top: 10px !important;
+    z-index: 102 !important;
   }
 
   /* Прогресс-бары */
   .progress-container {
-    top: 10px;
+    top: 8px !important;
+    z-index: 102 !important;
   }
 
   /* Кнопка закрытия */
   .close-button {
-    width: 40px;
-    height: 40px;
-    top: 10px;
+    width: 35px !important;
+    height: 35px !important;
+    top: 8px !important;
+    z-index: 102 !important;
   }
 
-  /* Изображение — не растягиваем на всю высоту, чтобы освободить место для подписи */
-  .story-image {
-    object-fit: contain;
-    max-height: 60vh; /* Оставляем место для подписи снизу */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  /* Оверлей — полная высота */
+  .caption-overlay.mobile-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 200 !important;
+  }
+
+  .caption-overlay.mobile-overlay .caption-fullscreen {
+    font-size: 14px !important;
+    padding: 15px !important;
+    max-height: 80vh !important;
   }
 }
 
@@ -1019,9 +1050,20 @@ html, body {
   }
 }
 
+/* ==================== ЯНДЕКС В ГОРИЗОНТАЛЬНОЙ ОРИЕНТАЦИИ ==================== */
+@media (max-width: 1080px) and (orientation: landscape) {
+  .yandex-browser .story-caption-container {
+    bottom: 0 !important;
+    padding-bottom: 20px !important;
+  }
+
+  .yandex-browser .story-image {
+    transform: translate(-50%, -55%) !important;
+  }
+}
+
 /* ==================== СТИЛИ ДЛЯ ВСЕХ БРАУЗЕРОВ КРОМЕ ЯНДЕКС ==================== */
 @media (max-width: 1080px) {
-  /* JS управляет высотой, но оставляем fallback */
   .stories-container:not(.yandex-browser) {
     height: 100dvh;
   }
@@ -1045,34 +1087,20 @@ html, body {
   }
 }
 
-/* ==================== ГОРИЗОНТАЛЬНАЯ ОРИЕНТАЦИЯ — ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ ==================== */
+/* ==================== ГОРИЗОНТАЛЬНАЯ ОРИЕНТАЦИЯ — ПЕРЕОПРЕДЕЛЕНИЕ ДЛЯ ВСЕХ БРАУЗЕРОВ ==================== */
 @media (max-width: 1080px) and (orientation: landscape) {
-  /* Переопределяем для JS-управляемой высоты */
-  body.is-mobile .stories-container {
-    height: auto; /* JS установит через inline style */
-  }
-
-  /* Гарантируем видимость контейнера подписи */
+  /* Отменяем safe-area-inset-bottom в пользу фиксированного позиционирования */
   .stories-container:not(.yandex-browser) .story-caption-container {
     bottom: 0 !important;
-    padding-bottom: env(safe-area-inset-bottom) !important;
+    padding-bottom: 10px !important;
   }
 
-  /* Компактная подпись в landscape */
   .stories-container:not(.yandex-browser) .story-caption-content {
-    padding: 15px 20px calc(50px + env(safe-area-inset-bottom)) !important;
-    font-size: 14px;
-    max-height: 35vh;
-  }
-
-  /* Оверлей в landscape */
-  .stories-container:not(.yandex-browser) .caption-overlay.mobile-overlay {
-    height: 100% !important;
+    padding: 10px 15px 45px !important;
   }
 
   .stories-container:not(.yandex-browser) .caption-fullscreen {
-    max-height: 70vh;
-    padding: 20px !important;
     bottom: 0 !important;
+    padding-bottom: 15px !important;
   }
 }
