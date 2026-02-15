@@ -1,5 +1,5 @@
 html {
-  
+  /* Это база. 1rem будет равен 16px везде, даже если пользователь изменил настройки телефона */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   font-size: 16px;
@@ -1020,68 +1020,4 @@ html {
     padding-bottom: 20px !important; /* Отступ текста от низа */
   }
 }
-
-/* ==========================================================================
-   ГЛАВНЫЙ ФИКС ДЛЯ ЛАНДШАФТНОЙ ОРИЕНТАЦИИ (ГОРИЗОНТАЛЬНОЙ)
-   Контент будет всегда в зоне видимости, с учетом safe-areas
-   ========================================================================== */
-@media screen and (max-width: 1080px) and (orientation: landscape) {
-  
-  /* 1. Принудительно устанавливаем высоту контейнера равной видимой области экрана.
-     Это решает проблему, когда браузер скрывает часть страницы за своими панелями. */
-  .stories-container {
-    height: 100dvh !important;
-    width: 100vw !important;
-  }
-
-  /* 2. Сдвигаем верхние элементы (прогресс, метку, крестик) с учетом "челки" камеры и верхних панелей браузера.
-     env(safe-area-inset-top) добавляет необходимый отступ сверху. */
-  
-  .progress-container {
-    top: calc(1.8vh + env(safe-area-inset-top)) !important;
-    /* Учитываем боковые вырезы экрана */
-    padding-left: calc(15px + env(safe-area-inset-left)) !important;
-    padding-right: calc(15px + env(safe-area-inset-right)) !important;
-  }
-
-  .stories-label {
-    top: calc(3vh + env(safe-area-inset-top)) !important;
-    left: calc(0.5vh + env(safe-area-inset-left)) !important;
-  }
-
-  .close-button {
-    top: calc(2.5vh + env(safe-area-inset-top)) !important;
-    right: calc(3vw + env(safe-area-inset-right)) !important;
-  }
-
-  /* 3. Сдвигаем нижний контент (подписи) над нижней панелью браузера и индикатором домой.
-     Переопределяем жесткие отступы Yandex, так как env() надежнее. */
-  .story-caption-container {
-    bottom: env(safe-area-inset-bottom) !important;
-    /* Добавляем боковые отступы, чтобы текст не залезал за закругления/вырезы экрана */
-    padding-left: env(safe-area-inset-left) !important;
-    padding-right: env(safe-area-inset-right) !important;
-    box-sizing: border-box;
-  }
-
-  .story-caption-content {
-    /* Гарантируем отступы текста внутри контейнера */
-    padding-left: max(4vw, env(safe-area-inset-left)) !important;
-    padding-right: max(4vw, env(safe-area-inset-right)) !important;
-  }
-  
-  /* 4. Корректировка стрелок навигации, чтобы не попадали под вырезы */
-  .nav-arrow.prev-arrow {
-    left: calc(20px + env(safe-area-inset-left)) !important;
-  }
-  .nav-arrow.next-arrow {
-    right: calc(20px + env(safe-area-inset-right)) !important;
-  }
-}
-
-
-
-
-
-
 
