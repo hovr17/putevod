@@ -2,21 +2,19 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+  <!-- ИЗМЕНЕНО: Добавлен interactive-widget=resizes-content -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
   <title>Фото - Храм Ильи Пророка</title>
   <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="stories.css">
   
-  <!-- Подключаем данные ДО основного скрипта -->
   <script src="https://unpkg.com/safe-area-insets@0.4.1/dist/index.iife.js"></script>
   <script src="stories.js"></script>
 </head>
 <body>
-  <!-- ДОБАВЛЕННЫЙ СКРИПТ ДЛЯ ПЛАНШЕТОВ -->
+  <!-- ОБНОВЛЕННЫЙ СКРИПТ -->
   <script>
     (function() {
-        // Проверяем: либо ширина < 1080, либо это мобильное устройство по User Agent
-        // Это важно для iPad в горизонтальном режиме (ширина > 1080, но это мобильный)
         const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
                          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
@@ -30,8 +28,18 @@
         if (!vv || !container) return;
         
         function updateViewport() {
-            // Обрезаем контейнер строго по видимой области браузера
+            // 1. Устанавливаем высоту
             container.style.height = vv.height + 'px';
+            
+            // 2. ПРИНУДИТЕЛЬНО применяем стили мобильного вида
+            // Это исправляет проблему, когда планшет в горизонтали (>1080px) ведет себя как ПК
+            container.style.position = 'fixed';
+            container.style.top = '0';
+            container.style.left = '0';
+            container.style.width = '100%';
+            container.style.maxWidth = 'none';
+            container.style.borderRadius = '0';
+            container.style.margin = '0';
         }
         
         vv.addEventListener('resize', updateViewport);
