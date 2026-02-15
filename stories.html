@@ -7,17 +7,26 @@
   <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="stories.css">
   
+  <!-- Подключаем данные ДО основного скрипта -->
   <script src="https://unpkg.com/safe-area-insets@0.4.1/dist/index.iife.js"></script>
   <script src="stories.js"></script>
 </head>
 <body>
-
   <div class="stories-container">
+    <!-- Текстовая метка "фото объекта" -->
     <div class="stories-label" id="storiesLabel"></div>
+    
+    <!-- Кнопка закрытия (крестик) -->
     <button class="close-button" id="closeBtn">
       <img src="ui/cross.svg" alt="Закрыть">
     </button>
-    <div class="slides-container" id="slidesContainer"></div>
+
+    <!-- Контейнер для фотографий -->
+    <div class="slides-container" id="slidesContainer">
+      <!-- Фотографии и подписи будут добавляться динамически -->
+    </div>
+
+    <!-- Навигационные стрелки -->
     <div class="nav-arrows">
       <button class="nav-arrow prev-arrow hidden" id="prevArrow">
         <img src="ui/back_button.svg" alt="Предыдущее">
@@ -26,43 +35,16 @@
         <img src="ui/back_button.svg" alt="Следующее">
       </button>
     </div>
-    <div class="progress-container" id="progressContainer"></div>
+
+    <!-- Индикатор прогресса -->
+    <div class="progress-container" id="progressContainer">
+      <!-- Прогресс-бары будут добавляться динамически -->
+    </div>
   </div>
 
-  <!-- ОБНОВЛЕННЫЙ СКРИПТ -->
-  <script>
-    (function() {
-        const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
-                         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        if (!isMobile) return;
-        
-        document.body.classList.add('is-mobile');
-        
-        const container = document.querySelector('.stories-container');
-        const vv = window.visualViewport;
-        
-        if (!vv || !container) return;
-        
-        function updateViewport() {
-            // 1. Устанавливаем высоту строго по видимой области
-            container.style.height = vv.height + 'px';
-            
-            // 2. ПРИЖИМАЕМ К ВЕРХУ: компенсируем смещение viewport при скролле или панелях
-            // Это решает проблему "зазора" сверху на iOS и в ландшафте
-            container.style.top = vv.offsetTop + 'px';
-        }
-        
-        vv.addEventListener('resize', updateViewport);
-        vv.addEventListener('scroll', updateViewport); // Реагируем на скролл панелей
-        
-        window.addEventListener('orientationchange', () => {
-            setTimeout(updateViewport, 100);
-        });
-        
-        updateViewport();
-        window.addEventListener('load', updateViewport);
-    })();
-  </script>
+  
 </body>
 </html>
+
+
+
