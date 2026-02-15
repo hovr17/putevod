@@ -20,11 +20,11 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/5.jpg',
-        caption: 'В соборе были похоронены сыновья князя Юрия Долгорукого, князья из рода Шуйских и другие известные личности, оставившие свой след в истории нашей страны.'
+        caption: 'В соборе похоронены сыновья князя Юрия Долгорукого, князья из рода Шуйских и другие известные князья и представители духовенства.'
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/6.jpg',
-        caption: 'В соборе сохранились настенные росписи XIII, XV и XVII веков, а также иконостас XVII века, созданный мастером Оружейной палаты (центральной художественной мастерской Московского царства) Григорием Зиновьевым.'
+        caption: 'В храме сохранились настенные росписи XIII, XV и XVII веков, а также иконостас XVII века, созданный мастером Оружейной палаты (центральной художественной мастерской Московского царства) Георгий Зиновьевым.'
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/7.jpg',
@@ -40,15 +40,15 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/10.jpg',
-        caption: 'Также при входе в собор можно увидеть Золотые ворота. Это храмовые двери, созданные около 1230-х годов.'
+        caption: 'При входе в собор можно увидеть Золотые ворота. Это храмовые двери, созданные около 1230-х годов.'
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/11.jpg',
-        caption: 'Ворота сделаны из дерева, покрытого медью. На меди выгравированы золотые изображения, иллюстрирующие Библейские и Евангельские сюжеты.'
+        caption: 'Ворота сделаны из дерева, покрытого медью. На "Златых вратах" выгравированы изображения, иллюстрирующие Библейские сюжеты.'
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/12.jpg',
-        caption: 'Ещё внутри собора хранится «Царь-фонарь»— это огромный фонарь XVII века, с которым совершали крестные ходы. '
+        caption: 'Внутри собора хранится «Царь-фонарь»— это огромный фонарь XVII века, с которым совершали крестные ходы. '
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/13.jpg',
@@ -60,7 +60,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/15.jpg',
-        caption: 'Фонари для крестных ходов. Вместо стекла используется слюда.'
+        caption: 'Фонари для крестного хода. Вместо стекла используется слюда.'
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/16.jpg',
@@ -106,7 +106,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/kreml/kolokolna/2.jpg',
-        caption: 'Обратите внимание на часы-куранты. Они имеют уникальный циферблат допетровской эпохи. Вместо привычных арабских цифр на нем располагаются кириллические буквы. '
+        caption: 'Часы-куранты имеют уникальный циферблат допетровской эпохи. Вместо привычных арабских цифр на нем располагаются кириллические буквы.'
       },
       {
         src: 'stories_content/museum_places/kreml/kolokolna/3.jpg',
@@ -158,7 +158,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/o_territorii/1.jpg',
-        caption: 'В 1352 году по указу князя Суздальско-Нижегородского Бориса Константиновича был заложен мужской монастырь. Монастырь изначально создавался как крепость для защиты города от врагов.'
+        caption: 'В 1352 году по указу князя Суздальско-Нижегородского Бориса Константиновича был заложен мужской монастырь.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/o_territorii/2.jpg',
@@ -241,7 +241,7 @@ window.storiesData = {
       ,
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Preobrazhenskiy_sobor/6.jpg',
-        caption: 'Каждая фреска демонстрируют определенную сцену из Библии, и по замыслу авторов важно было то, чтобы каждый человек, знакомый с текстами Библии, мог сразу понять, что на них изображено, не зависимо от образования. Чтобы достичь такого результата мастера использовали образы, которые были бы понятны каждому.'
+        caption: 'Каждая фреска демонстрирует определенную сцену из Библии, и по замыслу авторов важно было, чтобы каждый человек, знакомый с текстами Библии, мог сразу понять, что на них изображено, независимо от образования. Чтобы достичь такого результата мастера использовали образы, которые были бы понятны каждому.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Preobrazhenskiy_sobor/7.jpg',
@@ -249,7 +249,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Preobrazhenskiy_sobor/8.jpg',
-        caption: 'Важно отметить, что собор это непросто музей, кроме субботы в нём ежедневно проходят службы. '
+        caption: 'Важно отметить, что в соборе ежедневно проходят службы (кроме субботы).'
       }
     ]
   },
@@ -262,7 +262,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Turma/2.jpg',
-        caption: 'Тюрьма располагалась в глубине монастыря, в отдельном тюремном корпусе, которое теперь входит в музейный комплекс и открыто для посещения.'
+        caption: 'Тюрьма располагалась в глубине монастыря, в отдельном тюремном корпусе.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Turma/3.jpg',
@@ -270,7 +270,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Turma/4.jpg',
-        caption: 'В годы Великой Отечественной войны здесь содержались военнопленные — итальянские, немецкие и другие офицеры, в том числе фельдмаршал Паулюс. Фридрих Паулюс — возглавлял армию Германии в Сталинградской битве. Именно под его руководством немецкая армия потерпела поражение. Он стал единственным германским фельдмаршалом, сдавшимся в плен врагу. Впоследствии он выступал против нацистского режима.'
+        caption: 'В годы Великой Отечественной войны здесь содержались военнопленные — немецкие и другие офицеры, в том числе фельдмаршал Паулюс. Фридрих Паулюс — возглавлял армию Германии в Сталинградской битве. Именно под его руководством немецкая армия потерпела поражение. Он стал единственным германским фельдмаршалом, сдавшимся в плен врагу. Впоследствии он выступал против нацистского режима.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Turma/5.jpg',
@@ -370,7 +370,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Blagovestniki. Kolokola/4.jpg',
-        caption: 'Секретер. Секретер сочетает в себе функции письменного стола и комода. Внутри находится множество ящичков, потайных отделений для хранения бумаг, писем, драгоценностей.'
+        caption: 'Секретер сочетает в себе функции письменного стола и комода. Внутри находится множество ящичков, потайных отделений для хранения бумаг, писем, драгоценностей.'
       }
     ]
   },
@@ -399,7 +399,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Steni/6.jpg',
-        caption: 'Также можно зайти внутрь башен и познакомиться с их внутренним строением.'
+        caption: 'Внутрь башни можно зайти и познакомиться со строением.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Steni/7.jpg',
@@ -407,7 +407,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Steni/8.jpg',
-        caption: 'Такие виды открываются с галереи.'
+        caption: 'Виды с галереи.'
       }
     ]
   },
@@ -419,7 +419,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/museum_places/derevannoe_zodchestvo/o_museum/1.jpg',
-        caption: 'Музей деревянного зодчества – это музей под открытым небом, который представляет собой воссозданную деревню XVIII–XIX веков с настоящими деревянными церквями, избами и хозяйственными постройками, перевезёнными из разных уголков Владимирской области.'
+        caption: 'Музей деревянного зодчества – музей под открытым небом, который представляет собой воссозданную деревню XVIII–XIX веков с настоящими деревянными церквями, избами и хозяйственными постройками, перевезёнными из разных уголков Владимирской области.'
       },
       {
         src: 'stories_content/museum_places/derevannoe_zodchestvo/o_museum/2.jpg',
@@ -452,7 +452,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/museum_places/derevannoe_zodchestvo/na_territorii/1.jpg',
-        caption: 'Это Воскресенская церковь. Построена в 1776 году.'
+        caption: 'Воскресенская церковь. Построена в 1776 году.'
       },
       {
         src: 'stories_content/museum_places/derevannoe_zodchestvo/na_territorii/2.jpg',
@@ -460,11 +460,11 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/derevannoe_zodchestvo/na_territorii/3.jpg',
-        caption: 'Это яркий пример традиционной деревянной церкви Владимирской губернии. Как было принято тогда, здание построено без единого гвоздя.'
+        caption: 'Яркий пример традиционной деревянной церкви Владимирской губернии. Как было принято тогда, здание построено без единого гвоздя.'
       },
       {
         src: 'stories_content/museum_places/derevannoe_zodchestvo/na_territorii/4.jpg',
-        caption: 'Это Преображенская церковь. Памятник русской деревянной архитектуры XVIII века.'
+        caption: 'Преображенская церковь. Памятник русской деревянной архитектуры XVIII века.'
       },{
         src: 'stories_content/museum_places/derevannoe_zodchestvo/na_territorii/5.jpg',
         caption: 'Интересный факт: в 1996 году в немецком городе Гифхорн была построена точная копия Преображенской церкви — храм Святителя Николая.'
@@ -476,7 +476,7 @@ window.storiesData = {
         caption: 'Внутрь можно зайти и посмотреть быт людей тех времен.'
       },{
         src: 'stories_content/museum_places/derevannoe_zodchestvo/na_territorii/8.jpg',
-        caption: 'Этот дом принадлежал крестьянину Кузовкину, который имел маленькую домашнюю фабрику и занимался ткачеством в XIX веке. Качество постройки и наличие фундамента, что было редкостью тех времен, свидетельствует от том, что крестьянин был зажиточным.'
+        caption: 'Этот дом принадлежал крестьянину Кузовкину, который имел маленькую домашнюю фабрику и занимался ткачеством в XIX веке. Качество постройки и наличие фундамента, что было редкостью тех времен, свидетельствует о том, что крестьянин был зажиточным.'
       },
       {
         src: 'stories_content/museum_places/derevannoe_zodchestvo/na_territorii/9.jpg',
@@ -489,7 +489,7 @@ window.storiesData = {
         caption: ''
       },{
         src: 'stories_content/museum_places/derevannoe_zodchestvo/na_territorii/12.jpg',
-        caption: 'Также на территории располагаются некогда работающие мельницы.'
+        caption: 'Также на территории располагаются мельницы.'
       },{
         src: 'stories_content/museum_places/derevannoe_zodchestvo/na_territorii/13.jpg',
         caption: ''
@@ -536,7 +536,7 @@ window.storiesData = {
         caption: ''
       },{
         src: 'stories_content/museum_places/rezidencia/rezidencia/6.jpg',
-        caption: 'В XVIII веке рядом построили дополнительную Стефановскую церковь и колокольню, которая сейчас заметно наклонена.'
+        caption: 'В XVIII веке рядом построили Стефановскую церковь и колокольню.'
       },{
         src: 'stories_content/museum_places/rezidencia/rezidencia/7.jpg',
         caption: ''
@@ -546,7 +546,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/rezidencia/rezidencia/9.jpg',
-        caption: 'Выйдя на улицу и встав на смотровую площадку рядом с алтарем Борисоглебского храма, можно увидеть красоты здешней местности. '
+        caption: 'Виды со смотровой площадки рядом с алтарём Борисоглебского храма'
       }
       
     ]
@@ -607,7 +607,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/dom_balzaminova/o_dome/4.jpg',
-        caption: 'Чтобы не пропустить из виду достопримечательность, то можно выйти на улицу Старая и ориентироваться на памятник Вицину. Он укажет взглядом на нужный дом.'
+        caption: 'Ориентируйтесь на памятник Вицину на улице Старая. Он взглядом укажет на дом Бальзаминова.' 
       },{
         src: 'stories_content/museum_places/dom_balzaminova/o_dome/5.jpg',
         caption: ''
@@ -635,7 +635,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/dinnikov/vnutri/4.jpg',
-        caption: 'Его работы отличались особой манерой построения композиций, использованием крупных цветовых пятен и изысканной фактуры.'
+        caption: 'Его работы отличаются особой манерой построения композиций, использованием крупных цветовых пятен и изысканной фактуры.'
       },{
         src: 'stories_content/museum_places/dinnikov/vnutri/5.jpg',
         caption: 'Дынников был настоящим новатором, чье творчество не всегда находило понимание у современников.'
@@ -753,7 +753,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/museum_places/museum_voskovih_figur/vnutri_museum/1.jpg',
-        caption: 'В Музее восковых фигур можно лицом к лицу встретится с великими личностями прошлого. Каждая восковая фигура выполнена с невероятной точностью и вниманием к деталям, что создаёт полное ощущение присутствия рядом с настоящими людьми.'
+        caption: 'В Музее восковых фигур можно встретится с великими личностями прошлого. Каждая восковая фигура выполнена с невероятной точностью и вниманием к деталям, что создаёт полное ощущение присутствия рядом с настоящими людьми.'
       },
       {
         src: 'stories_content/museum_places/museum_voskovih_figur/vnutri_museum/2.jpg',
