@@ -931,180 +931,27 @@ html {
   }
 }
 
-/* ==========================================================================
-   MOBILE LANDSCAPE ORIENTATION - ENSURE CONTENT IS ALWAYS VISIBLE
-   ========================================================================= */
+/* Специальные фиксы для ландшафтной ориентации */
 @media (max-width: 1080px) and (orientation: landscape) {
-  
-  /* Container - full viewport with safe area consideration */
-  .stories-container {
-    width: 100vw !important;
-    height: 100dvh !important; /* Dynamic viewport height */
-    max-width: none !important;
-    max-height: none !important;
-    min-width: auto !important;
-    min-height: auto !important;
-    aspect-ratio: auto !important;
-    border-radius: 0 !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    margin: 0 !important;
-    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0) !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-  }
-
-  /* Slides container - account for safe areas */
-  .slides-container {
-    width: 100% !important;
-    height: 100% !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-  }
-
-  /* Story image - ensure it fits within visible area */
-  .story-image {
-    width: 100% !important;
-    height: 100% !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
-    object-fit: contain !important; /* Changed to contain to ensure full visibility */
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-  }
-
-  /* Caption container - positioned within safe area */
-  .story-caption-container {
-    position: absolute !important;
-    bottom: max(10px, env(safe-area-inset-bottom, 10px)) !important;
-    left: 0 !important;
-    width: 100% !important;
-    max-height: 40vh !important; /* Limit height in landscape */
-    min-height: auto !important;
-    z-index: 1003 !important;
-    padding: 0 env(safe-area-inset-right, 0) 0 env(safe-area-inset-left, 0) !important;
-    box-sizing: border-box !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-end !important;
-  }
-
-  /* Caption content */
-  .story-caption-content {
-    font-size: 16px !important;
-    padding: 15px 20px max(20px, env(safe-area-inset-bottom, 20px)) !important;
-    max-height: 40vh !important;
-    min-height: auto !important;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%) !important;
-    border-radius: 10px 10px 0 0 !important;
-  }
-
-  /* Ensure caption text is visible */
-  .story-caption-text {
-    font-size: 16px !important;
-    line-height: 1.4 !important;
-    max-height: 35vh !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
-  /* Expand button */
-  .caption-expand-btn {
-    width: 30px !important;
-    height: 30px !important;
-    bottom: max(10px, env(safe-area-inset-bottom, 10px)) !important;
-    z-index: 1004 !important;
-  }
-
-  /* Progress container - positioned below safe area top */
-  .progress-container {
-    top: max(10px, env(safe-area-inset-top, 10px)) !important;
-    padding: 0 15px !important;
-    z-index: 1015 !important;
-  }
-
-  /* Stories label */
-  .stories-label {
-    font-size: 18px !important;
-    top: max(15px, env(safe-area-inset-top, 15px)) !important;
-    left: 15px !important;
-    z-index: 1015 !important;
-  }
-
-  /* Close button */
-  .close-button {
-    width: 44px !important;
-    height: 44px !important;
-    top: max(10px, env(safe-area-inset-top, 10px)) !important;
-    right: 15px !important;
-    z-index: 1015 !important;
-  }
-
-  /* Navigation arrows */
-  .nav-arrows {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 1001 !important;
-    pointer-events: none !important;
-  }
-
-  .nav-arrow {
-    display: flex !important;
-    width: 40px !important;
-    height: 40px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    z-index: 1002 !important;
-  }
-
-  .prev-arrow {
-    left: max(10px, env(safe-area-inset-left, 10px)) !important;
-  }
-
-  .next-arrow {
-    right: max(10px, env(safe-area-inset-right, 10px)) !important;
-  }
-
-  /* Touch zones */
-  .touch-zone {
-    display: none !important; /* Disable touch zones in landscape, use arrows instead */
-  }
-
-  /* Caption overlay for expanded view */
-  .caption-overlay.mobile-overlay {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100dvh !important;
-    z-index: 1020 !important;
-    background-color: rgba(0, 0, 0, 0.95) !important;
-  }
-
   .caption-overlay.mobile-overlay .caption-fullscreen {
-    position: absolute !important;
-    bottom: max(10px, env(safe-area-inset-bottom, 10px)) !important;
-    left: 0 !important;
-    width: 100% !important;
-    max-height: 80vh !important;
-    padding: 20px !important;
-    font-size: 16px !important;
-    overflow-y: auto !important;
-    box-sizing: border-box !important;
+    font-size: 18px;
+    padding: 3vh 5vw 8vh;
   }
 
-  /* Ensure fullscreen caption content is visible */
-  .caption-fullscreen-content {
-    padding: 0 !important;
-    max-height: 100% !important;
-    overflow-y: auto !important;
+  .story-caption-content {
+    font-size: 18px;
+    padding: 15px 20px 40px;
+  }
+
+  .caption-expand-btn {
+    width: 3.5vh; /* Фиксированные размеры */
+    height: 3.5vh;
+  }
+
+  .stories-label {
+    font-size: 2.5vh;
+    top: 3vh;
+    padding-left: 0.5vh;
   }
 }
 
@@ -1174,4 +1021,60 @@ html {
   }
 }
 
+/* ==========================================================================
+   ГЛАВНЫЙ ФИКС ДЛЯ ЛАНДШАФТНОЙ ОРИЕНТАЦИИ (ГОРИЗОНТАЛЬНОЙ)
+   Контент будет всегда в зоне видимости, с учетом safe-areas
+   ========================================================================== */
+@media screen and (max-width: 1080px) and (orientation: landscape) {
+  
+  /* 1. Принудительно устанавливаем высоту контейнера равной видимой области экрана.
+     Это решает проблему, когда браузер скрывает часть страницы за своими панелями. */
+  .stories-container {
+    height: 100dvh !important;
+    width: 100vw !important;
+  }
 
+  /* 2. Сдвигаем верхние элементы (прогресс, метку, крестик) с учетом "челки" камеры и верхних панелей браузера.
+     env(safe-area-inset-top) добавляет необходимый отступ сверху. */
+  
+  .progress-container {
+    top: calc(1.8vh + env(safe-area-inset-top)) !important;
+    /* Учитываем боковые вырезы экрана */
+    padding-left: calc(15px + env(safe-area-inset-left)) !important;
+    padding-right: calc(15px + env(safe-area-inset-right)) !important;
+  }
+
+  .stories-label {
+    top: calc(3vh + env(safe-area-inset-top)) !important;
+    left: calc(0.5vh + env(safe-area-inset-left)) !important;
+  }
+
+  .close-button {
+    top: calc(2.5vh + env(safe-area-inset-top)) !important;
+    right: calc(3vw + env(safe-area-inset-right)) !important;
+  }
+
+  /* 3. Сдвигаем нижний контент (подписи) над нижней панелью браузера и индикатором домой.
+     Переопределяем жесткие отступы Yandex, так как env() надежнее. */
+  .story-caption-container {
+    bottom: env(safe-area-inset-bottom) !important;
+    /* Добавляем боковые отступы, чтобы текст не залезал за закругления/вырезы экрана */
+    padding-left: env(safe-area-inset-left) !important;
+    padding-right: env(safe-area-inset-right) !important;
+    box-sizing: border-box;
+  }
+
+  .story-caption-content {
+    /* Гарантируем отступы текста внутри контейнера */
+    padding-left: max(4vw, env(safe-area-inset-left)) !important;
+    padding-right: max(4vw, env(safe-area-inset-right)) !important;
+  }
+  
+  /* 4. Корректировка стрелок навигации, чтобы не попадали под вырезы */
+  .nav-arrow.prev-arrow {
+    left: calc(20px + env(safe-area-inset-left)) !important;
+  }
+  .nav-arrow.next-arrow {
+    right: calc(20px + env(safe-area-inset-right)) !important;
+  }
+}
