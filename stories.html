@@ -7,38 +7,6 @@
   <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="stories.css">
   
-  <!-- Стили для is-mobile — ПОДНЯТО НА 100px ВВЕРХ -->
-  <style>
-    /* Когда JS сработал — контейнер прижат к верху и поднят на 100px */
-    body.is-mobile .stories-container {
-      position: absolute !important;
-      top: -100px !important;
-      left: 0 !important;
-      right: 0 !important;
-      bottom: auto !important;
-      width: 100% !important;
-      height: 100% !important;
-      margin: 0 !important;
-      transform: none !important;
-    }
-    
-    /* На десктопе центрируем как обычно */
-    @media (min-width: 1081px) {
-      body.is-mobile .stories-container {
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-        right: auto !important;
-        margin: auto !important;
-        width: auto !important;
-        height: 90vh !important;
-        max-width: 650px !important;
-        max-height: 1100px !important;
-        aspect-ratio: 9/16 !important;
-      }
-    }
-  </style>
-  
   <!-- Подключаем данные ДО основного скрипта -->
   <script src="https://unpkg.com/safe-area-insets@0.4.1/dist/index.iife.js"></script>
   <script src="stories.js"></script>
@@ -74,36 +42,9 @@
     </div>
   </div>
 
-  <!-- ИНТЕГРИРОВАННЫЙ СКРИПТ VISUAL VIEWPORT -->
-  <script>
-      (function() {
-          const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
-                           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-          
-          if (!isMobile) return;
-          
-          document.body.classList.add('is-mobile');
-          
-          const container = document.querySelector('.stories-container');
-          const vv = window.visualViewport;
-          
-          if (!vv || !container) return;
-          
-          function updateViewport() {
-              // Контейнер = высота видимой области, поднят на 100px вверх
-              container.style.height = (vv.height + 100) + 'px';
-              container.style.top = (vv.offsetTop - 100) + 'px';
-              container.style.left = vv.offsetLeft + 'px';
-          }
-          
-          vv.addEventListener('resize', updateViewport);
-          window.addEventListener('orientationchange', () => {
-              setTimeout(updateViewport, 100);
-          });
-          
-          updateViewport();
-          window.addEventListener('load', updateViewport);
-      })();
-  </script>
+  
 </body>
 </html>
+
+
+
