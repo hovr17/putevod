@@ -2,96 +2,16 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
   <title>Фото - Храм Ильи Пророка</title>
   <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="stories.css">
   
+  <!-- Подключаем данные ДО основного скрипта -->
   <script src="https://unpkg.com/safe-area-insets@0.4.1/dist/index.iife.js"></script>
   <script src="stories.js"></script>
 </head>
 <body>
-  <!-- ОБНОВЛЁННЫЙ СКРИПТ С FIX ДЛЯ ГОРИЗОНТАЛЬНОЙ ОРИЕНТАЦИИ -->
-  <script>
-    (function() {
-        const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
-                         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        if (!isMobile) return;
-        
-        document.body.classList.add('is-mobile');
-        
-        const container = document.querySelector('.stories-container');
-        const vv = window.visualViewport;
-        
-        if (!container || !vv) return;
-        
-        let isLandscape = window.matchMedia('(orientation: landscape)').matches;
-        
-        function updateViewport() {
-            // Обновляем флаг ориентации
-            isLandscape = window.matchMedia('(orientation: landscape)').matches;
-            
-            // Получаем реальные размеры видимой области
-            const vvHeight = vv.height;
-            const vvWidth = vv.width;
-            const vvOffsetTop = vv.offsetTop;
-            
-            // Устанавливаем размеры контейнера
-            container.style.position = 'fixed';
-            container.style.top = vvOffsetTop + 'px';
-            container.style.left = '0';
-            container.style.width = '100%';
-            container.style.height = vvHeight + 'px';
-            container.style.maxWidth = 'none';
-            container.style.borderRadius = '0';
-            container.style.margin = '0';
-            
-            // В landscape режиме дополнительно проверяем и корректируем позицию подписи
-            if (isLandscape) {
-                adjustCaptionForLandscape(vvHeight);
-            }
-        }
-        
-        function adjustCaptionForLandscape(viewportHeight) {
-            const captionContainer = document.querySelector('.story-caption-container');
-            const captionContent = document.querySelector('.story-caption-content');
-            
-            if (!captionContainer) return;
-            
-            // Вычисляем максимальную высоту подписи (30% от viewport)
-            const maxCaptionHeight = viewportHeight * 0.35;
-            
-            captionContainer.style.maxHeight = maxCaptionHeight + 'px';
-            captionContainer.style.bottom = '0';
-            
-            if (captionContent) {
-                captionContent.style.maxHeight = maxCaptionHeight + 'px';
-                // Гарантируем, что контент не выходит за пределы
-                captionContent.style.overflowY = 'auto';
-            }
-        }
-        
-        // Запускаем сразу
-        updateViewport();
-        
-        // Обновляем при изменении размера окна
-        vv.addEventListener('resize', updateViewport);
-        vv.addEventListener('scroll', updateViewport); // Важно для мобильных браузеров
-        
-        window.addEventListener('orientationchange', () => {
-            setTimeout(updateViewport, 300); // Увеличили задержку для landscape
-        });
-        
-        window.addEventListener('load', updateViewport);
-        
-        // Дополнительное обновление при скролле страницы (для iOS Safari)
-        window.addEventListener('scroll', () => {
-            if (isLandscape) updateViewport();
-        }, { passive: true });
-    })();
-  </script>
-
   <div class="stories-container">
     <!-- Текстовая метка "фото объекта" -->
     <div class="stories-label" id="storiesLabel"></div>
@@ -122,6 +42,34 @@
     </div>
   </div>
 
-  
+  <!-- ИНТЕГРИРОВАННЫЙ СКРИПТ VISUAL VIEWPORT -->
+  <script>
+      (function() {
+          const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
+                           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          if (!isMobile) return;
+          
+          document.body.classList.add('is-mobile');
+          
+          const container = document.querySelector('.stories-container');
+          const vv = window.visualViewport;
+          
+          if (!vv || !container) return;
+          
+          function updateViewport() {
+              // Обрезаем контейнер ровно по границе видимой области (без панелей инструментов)
+              container.style.height = vv.height + 'px';
+          }
+          
+          vv.addEventListener('resize', updateViewport);
+          window.addEventListener('orientationchange', () => {
+              setTimeout(updateViewport, 100);
+          });
+          
+          updateViewport();
+          window.addEventListener('load', updateViewport);
+      })();
+  </script>
 </body>
 </html>
