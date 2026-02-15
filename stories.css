@@ -4,7 +4,7 @@ html {
   font-size: 16px;
 }
 
-/* === Убираем зазоры и скролл body === */
+/* Убираем зазоры и скролл body */
 html, body {
   overflow: hidden;
   width: 100%;
@@ -28,8 +28,6 @@ html, body {
   background-color: #000;
   z-index: 1000;
   overflow: hidden;
-  /* Transition для плавности, если нужно */
-  transition: top 0.1s, height 0.1s;
 }
 
 .stories-label {
@@ -249,7 +247,7 @@ html, body {
   max-width: 100%;
   color: #ffffff;
   font-family: 'Crooker', sans-serif;
-  font-size: 5px; /*18*/
+  font-size: 5px;
   font-weight: 100;
   line-height: 1.5;
   padding: 20px 25px 50px;
@@ -409,7 +407,7 @@ html, body {
   padding-right: 30px;
 }
 
-/* === ДЕСКТОП СТИЛИ === */
+/* ==================== ДЕСКТОП ==================== */
 @media (min-width: 1081px) {
   .stories-container {
     width: auto;
@@ -651,7 +649,7 @@ html, body {
   }
 }
 
-/* === МОБИЛЬНЫЕ СТИЛИ (ОБЩИЕ) === */
+/* ==================== МОБИЛЬНЫЕ УСТРОЙСТВА ==================== */
 @media (max-width: 1080px) {
   .story-image {
     width: 100vw;
@@ -665,66 +663,8 @@ html, body {
     min-width: 100%;
     min-height: 100%;
   }
-
-  /* Правила для контейнера */
-  .stories-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    /* Fallback, JS перезапишет это */
-    height: 100dvh; 
-    
-    /* Убираем лишние свойства */
-    max-width: none;
-    margin: 0;
-    border-radius: 0;
-    overflow: hidden;
-  }
-
-  /* Разрешаем JS управлять высотой */
-  body.is-mobile .stories-container {
-    height: auto;
-  }
-
-  /* Подписи и низ экрана */
-  .story-caption-container {
-    bottom: calc(1px + env(safe-area-inset-bottom));
-    padding-bottom: 0;
-  }
-
-  /* Специфика для Яндекс Браузера */
-  .yandex-browser .story-caption-container {
-    bottom: 135px;
-  }
-  
-  .yandex-browser .caption-expand-btn {
-    bottom: calc(1vh + 5px);
-  }
-
-  .yandex-browser .story-image {
-    margin-top: 0px;
-  }
-
-  .yandex-browser .caption-overlay.mobile-overlay .caption-fullscreen {
-    padding: 2vh 4vw 19vh;
-    font-size: 2.2vh;
-  }
-
-  .yandex-browser .story-caption-content {
-    font-size: 2.2vh;
-  }
-
-  .yandex-browser .story-caption-container:not(:has(.caption-expand-btn)) .story-caption-content {
-    font-size: 2.2vh;
-  }
-
-  .yandex-browser .stories-label {
-    font-size: 2.7vh;
-  }
 }
 
-/* === МОБИЛЬНЫЕ СТИЛИ (ДЕТАЛЬНЫЕ < 750px) === */
 @media (max-width: 750px) {
   .slides-container {
     background-color: #000;
@@ -749,14 +689,14 @@ html, body {
   .stories-label {
     font-size: 3.2vh;
     top: 3vh;
-    z-index: 20 !important;
+    z-index: 20 !important; 
     padding-left: 0.5vh;
     position: absolute;
   }
 
   .story-caption-container {
     position: absolute;
-    bottom: 0; /* Будет перебито общим мобильным правилом с safe-area */
+    bottom: 0;
     left: 0;
     width: 100%;
     height: auto;
@@ -857,7 +797,7 @@ html, body {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh; /* Fallback, JS поставит точный */
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 50 !important;
     display: none;
@@ -963,10 +903,11 @@ html, body {
   }
 
   .stories-container.overlay-open .stories-label {
-    z-index: 100;
+    z-index: 100; 
   }
 }
 
+/* Специальные фиксы для очень маленьких экранов */
 @media (max-width: 375px) {
   .caption-overlay.mobile-overlay .caption-fullscreen {
     padding: 3vh 5vw 8vh;
@@ -974,25 +915,164 @@ html, body {
   }
 }
 
+/* ==================== ГОРИЗОНТАЛЬНАЯ ОРИЕНТАЦИЯ ==================== */
 @media (max-width: 1080px) and (orientation: landscape) {
-  .caption-overlay.mobile-overlay .caption-fullscreen {
-    font-size: 18px;
-    padding: 3vh 5vw 8vh;
+  /* Контейнер подписи — фиксируем высоту и позицию */
+  .story-caption-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 40vh; /* Ограничиваем высоту в landscape */
+    min-height: auto;
+    z-index: 10;
   }
 
+  /* Контент подписи — компактнее */
   .story-caption-content {
-    font-size: 18px;
-    padding: 15px 20px 40px;
+    font-size: 16px; /* Фиксированный размер для стабильности */
+    line-height: 1.3;
+    padding: 15px 20px 50px; /* Увеличенный нижний отступ для кнопки */
+    max-height: 40vh;
+    overflow-y: auto;
   }
 
+  /* Текст подписи */
+  .story-caption-text {
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  /* Кнопка разворачивания — фиксированный размер */
   .caption-expand-btn {
-    width: 3.5vh;
-    height: 3.5vh;
+    width: 40px;
+    height: 40px;
+    bottom: 10px;
   }
 
+  /* Оверлей в landscape */
+  .caption-overlay.mobile-overlay .caption-fullscreen {
+    font-size: 16px;
+    padding: 20px;
+    max-height: 80vh;
+  }
+
+  /* Метка */
   .stories-label {
-    font-size: 2.5vh;
-    top: 3vh;
-    padding-left: 0.5vh;
+    font-size: 18px;
+    top: 15px;
+    padding-left: 5px;
+  }
+
+  /* Прогресс-бары */
+  .progress-container {
+    top: 10px;
+  }
+
+  /* Кнопка закрытия */
+  .close-button {
+    width: 40px;
+    height: 40px;
+    top: 10px;
+  }
+
+  /* Изображение — не растягиваем на всю высоту, чтобы освободить место для подписи */
+  .story-image {
+    object-fit: contain;
+    max-height: 60vh; /* Оставляем место для подписи снизу */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* ==================== ЯНДЕКС БРАУЗЕР ==================== */
+@media (max-width: 1080px) {
+  .yandex-browser .story-caption-container {
+    bottom: 135px;
+  }
+
+  .yandex-browser .caption-expand-btn {
+    bottom: calc(1vh + 5px);
+  }
+
+  .yandex-browser .story-image {
+    margin-top: 0px;
+  }
+
+  .yandex-browser .caption-overlay.mobile-overlay .caption-fullscreen {
+    padding: 2vh 4vw 19vh;
+    font-size: 2.2vh;
+  }
+
+  .yandex-browser .story-caption-content {
+    font-size: 2.2vh;
+  }
+
+  .yandex-browser .story-caption-container:not(:has(.caption-expand-btn)) .story-caption-content {
+    font-size: 2.2vh;
+  }
+
+  .yandex-browser .stories-label {
+    font-size: 2.7vh;
+  }
+}
+
+/* ==================== СТИЛИ ДЛЯ ВСЕХ БРАУЗЕРОВ КРОМЕ ЯНДЕКС ==================== */
+@media (max-width: 1080px) {
+  /* JS управляет высотой, но оставляем fallback */
+  .stories-container:not(.yandex-browser) {
+    height: 100dvh;
+  }
+
+  .stories-container:not(.yandex-browser) .story-caption-container {
+    bottom: calc(1px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: 0px !important;
+  }
+
+  .stories-container:not(.yandex-browser) .story-caption-container:not(:has(.caption-expand-btn)) {
+    bottom: calc(1px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .stories-container:not(.yandex-browser) .caption-overlay.mobile-overlay {
+    height: 100dvh !important;
+  }
+
+  .stories-container:not(.yandex-browser) .caption-fullscreen {
+    bottom: calc(1px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: 20px !important;
+  }
+}
+
+/* ==================== ГОРИЗОНТАЛЬНАЯ ОРИЕНТАЦИЯ — ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ ==================== */
+@media (max-width: 1080px) and (orientation: landscape) {
+  /* Переопределяем для JS-управляемой высоты */
+  body.is-mobile .stories-container {
+    height: auto; /* JS установит через inline style */
+  }
+
+  /* Гарантируем видимость контейнера подписи */
+  .stories-container:not(.yandex-browser) .story-caption-container {
+    bottom: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+  }
+
+  /* Компактная подпись в landscape */
+  .stories-container:not(.yandex-browser) .story-caption-content {
+    padding: 15px 20px calc(50px + env(safe-area-inset-bottom)) !important;
+    font-size: 14px;
+    max-height: 35vh;
+  }
+
+  /* Оверлей в landscape */
+  .stories-container:not(.yandex-browser) .caption-overlay.mobile-overlay {
+    height: 100% !important;
+  }
+
+  .stories-container:not(.yandex-browser) .caption-fullscreen {
+    max-height: 70vh;
+    padding: 20px !important;
+    bottom: 0 !important;
   }
 }
