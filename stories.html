@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <!-- interactive-widget=resizes-content важен для корректной работы на iOS и Android -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
   <title>Фото - Храм Ильи Пророка</title>
   <link rel="stylesheet" href="common.css">
@@ -12,11 +11,9 @@
   <script src="stories.js"></script>
 </head>
 <body>
-
-  <!-- ИСПРАВЛЕННЫЙ СКРИПТ -->
+  <!-- ОБНОВЛЁННЫЙ СКРИПТ -->
   <script>
     (function() {
-        // Определяем мобильные устройства
         const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
                          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
@@ -27,43 +24,29 @@
         const container = document.querySelector('.stories-container');
         const vv = window.visualViewport;
         
-        if (!container) return;
+        if (!container || !vv) return;
         
-                function updateViewport() {
-            if (vv) {
-                // 1. Высота видимой области
-                container.style.height = vv.height + 'px';
-                
-                // 2. Сдвигаем контейнер под верхнюю панель (если она есть)
-                container.style.top = vv.offsetTop + 'px';
-                container.style.left = vv.offsetLeft + 'px';
-                
-                // 3. ГЛАВНОЕ ИСПРАВЛЕНИЕ: Дополнительно поднимаем весь блок вверх на 10px
-                // Используем transform, так как это работает поверх любых остальных расчетов.
-                container.style.transform = 'translateY(-10px)';
-                
-                // 4. Увеличиваем высоту на эти же 10px, чтобы не было черной полосы снизу
-                // (так как мы сдвинули блок вверх, снизу образуется пустота)
-                container.style.height = (vv.height + 10) + 'px';
-            } else {
-                container.style.height = '100svh';
-                container.style.top = '0';
-                container.style.transform = 'none';
-            }
+        function updateViewport() {
+            // Устанавливаем высоту контейнера равной видимой области
+            container.style.height = vv.height + 'px';
+            container.style.position = 'fixed';
+            container.style.top = '0';
+            container.style.left = '0';
+            container.style.width = '100%';
+            container.style.maxWidth = 'none';
+            container.style.borderRadius = '0';
+            container.style.margin = '0';
         }
         
         // Запускаем сразу
         updateViewport();
         
-        // Обновляем при любом изменении размера видимой области (выезд панели, поворот, клавиатура)
-        if (vv) {
-            vv.addEventListener('resize', updateViewport);
-        }
-        
-        // Страхуемся на случай orientationchange
+        // Обновляем при изменении размера окна (поворот, появление клавиатуры)
+        vv.addEventListener('resize', updateViewport);
         window.addEventListener('orientationchange', () => {
             setTimeout(updateViewport, 100);
         });
+        window.addEventListener('load', updateViewport);
     })();
   </script>
 
