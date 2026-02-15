@@ -1078,3 +1078,93 @@ html {
     right: calc(20px + env(safe-area-inset-right)) !important;
   }
 }
+
+
+
+
+
+/* ... [Начало файла stories.css остается без изменений до медиа-запросов] ... */
+
+/* ==========================================================================
+   СТИЛИ ДЛЯ ВСЕХ БРАУЗЕРОВ (Используем dvh как базу, JS перекроет на мобильных)
+   ========================================================================= */
+@media (max-width: 1080px) {
+  
+  /* 1. Контейнер */
+  .stories-container {
+    /* dvh - лучший вариант для CSS, JS выше перекроет это для точности */
+    height: 100dvh !important; 
+  }
+
+  /* 2. Контейнер с текстом */
+  .story-caption-container {
+    bottom: calc(1px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: 0px !important;
+  }
+
+  .story-caption-container:not(:has(.caption-expand-btn)) {
+    bottom: calc(1px + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* 3. Оверлей с развернутым текстом */
+  .stories-container:not(.yandex-browser) .caption-overlay.mobile-overlay {
+    height: 100dvh !important;
+  }
+
+  .stories-container:not(.yandex-browser) .caption-fullscreen {
+    bottom: calc(1px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: 20px !important; 
+  }
+}
+
+/* ==========================================================================
+   ГЛАВНЫЙ ФИКС ДЛЯ ЛАНДШАФТНОЙ ОРИЕНТАЦИИ (Аналогично place.css)
+   ========================================================================== */
+@media screen and (max-width: 1080px) and (orientation: landscape) {
+  
+  /* 1. Учитываем Safe Area Insets (безопасные зоны) для всех краев.
+     Это заставит контент отодвинуться от вырезов камеры и панелей браузера. */
+
+  /* Прогресс-бары сверху */
+  .progress-container {
+    top: calc(1.8vh + env(safe-area-inset-top)) !important;
+    /* Отступы слева/справа, чтобы не заехать под камеру/вырез */
+    padding-left: calc(15px + env(safe-area-inset-left)) !important;
+    padding-right: calc(15px + env(safe-area-inset-right)) !important;
+  }
+
+  /* Метка "фото объекта" */
+  .stories-label {
+    top: calc(2.5vh + env(safe-area-inset-top)) !important;
+    left: calc(3vw + env(safe-area-inset-left)) !important;
+  }
+
+  /* Кнопка закрытия */
+  .close-button {
+    top: calc(2.5vh + env(safe-area-inset-top)) !important;
+    right: calc(3vw + env(safe-area-inset-right)) !important;
+  }
+
+  /* Нижний контейнер с подписью */
+  .story-caption-container {
+    /* Поднимаем над нижней панелью браузера */
+    bottom: env(safe-area-inset-bottom) !important;
+    /* Сдвигаем контент внутри от боковых вырезов */
+    padding-left: env(safe-area-inset-left) !important;
+    padding-right: env(safe-area-inset-right) !important;
+    box-sizing: border-box;
+  }
+  
+  .story-caption-content {
+    padding-left: max(4vw, env(safe-area-inset-left)) !important;
+    padding-right: max(4vw, env(safe-area-inset-right)) !important;
+  }
+  
+  /* Стрелки навигации */
+  .nav-arrow.prev-arrow {
+    left: calc(20px + env(safe-area-inset-left)) !important;
+  }
+  .nav-arrow.next-arrow {
+    right: calc(20px + env(safe-area-inset-right)) !important;
+  }
+}
