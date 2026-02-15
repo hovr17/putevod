@@ -7,12 +7,12 @@
   <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="stories.css">
   
-  <!-- Стили для is-mobile — ПРИЖАТО К ВЕРХУ -->
+  <!-- Стили для is-mobile — ПОДНЯТО НА 100px ВВЕРХ -->
   <style>
-    /* Когда JS сработал — контейнер прижат к верху */
+    /* Когда JS сработал — контейнер прижат к верху и поднят на 100px */
     body.is-mobile .stories-container {
       position: absolute !important;
-      top: 0 !important;
+      top: -100px !important;
       left: 0 !important;
       right: 0 !important;
       bottom: auto !important;
@@ -90,9 +90,9 @@
           if (!vv || !container) return;
           
           function updateViewport() {
-              // Контейнер = высота видимой области, прижат к верху
-              container.style.height = vv.height + 'px';
-              container.style.top = vv.offsetTop + 'px';
+              // Контейнер = высота видимой области, поднят на 100px вверх
+              container.style.height = (vv.height + 100) + 'px';
+              container.style.top = (vv.offsetTop - 100) + 'px';
               container.style.left = vv.offsetLeft + 'px';
           }
           
