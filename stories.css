@@ -1031,5 +1031,65 @@ html {
 
 
 
+/* === БЛОК ПРЕДУПРЕЖДЕНИЯ О ПОВОРОТЕ УСТРОЙСТВА (СТРАНИЦА STORIES) === */
+
+.rotate-overlay {
+  display: none; /* Скрыт по умолчанию */
+  position: absolute; /* Вписывается в .stories-container (на ПК будет с углами) */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 10000; /* Перекрывает все элементы внутри stories-container */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Показываем только на мобильных в горизонтальной ориентации */
+@media screen and (orientation: landscape) and (max-height: 600px) {
+  .rotate-overlay {
+    display: flex;
+  }
+}
+
+.rotate-text {
+  font-family: 'Crooker', sans-serif;
+  font-size: clamp(18px, 5vw, 24px);
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.rotate-icon {
+  width: 80px;
+  height: 80px;
+  color: #333;
+  /* Анимация вращения */
+  animation: spinIcon 3s linear infinite;
+}
+
+.rotate-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+@keyframes spinIcon {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Адаптация для ПК (чтобы повторить закругления контейнера) */
+@media (min-width: 1081px) {
+  .rotate-overlay {
+    /* Повторяем скругления как у .stories-container */
+    border-radius: 30px;
+  }
+}
 
 
