@@ -1327,9 +1327,9 @@ padding-top: 2vh;
   left: 0;
   width: 100vw;
   height: 100vh;
-  height: 100dvh; /* Динамическая высота для мобильных */
+  height: 100dvh;
   background-color: #ffffff;
-  z-index: 999999; /* Самый высокий z-index, чтобы перекрыть всё */
+  z-index: 999999;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -1337,10 +1337,7 @@ padding-top: 2vh;
   padding: 20px;
 }
 
-/* Логика отображения: 
-   1. Ориентация альбомная (landscape)
-   2. Максимальная высота экрана 600px (исключаем планшеты и ПК)
-*/
+/* Показываем только на мобильных в горизонтальной ориентации */
 @media screen and (orientation: landscape) and (max-height: 600px) {
   .rotate-overlay {
     display: flex;
@@ -1355,25 +1352,26 @@ padding-top: 2vh;
 }
 
 .rotate-icon {
-  width: 60px;
-  height: 60px;
-  color: #333;
-  /* Анимация покачивания, привлекая внимание */
-  animation: rotatePhoneIcon 2s ease-in-out infinite;
+  width: 80px;
+  height: 80px;
+  /* Анимация вращения применяется к контейнеру */
+  animation: spinIcon 3s linear infinite;
 }
 
-.rotate-icon svg {
+.rotate-icon img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
   display: block;
+  /* Если в SVG не задан цвет, можно подкрасить его фильтром (опционально) */
+  /* filter: brightness(0);  */
 }
 
-/* Анимация: имитация поворота телефона в вертикальное положение */
-@keyframes rotatePhoneIcon {
-  0%, 100% { 
-    transform: rotate(0deg); 
+@keyframes spinIcon {
+  from {
+    transform: rotate(0deg);
   }
-  50% { 
-    transform: rotate(-90deg); 
+  to {
+    transform: rotate(360deg);
   }
 }
