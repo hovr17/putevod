@@ -1317,3 +1317,63 @@ padding-top: 2vh;
 
 
 
+
+/* === БЛОК ПРЕДУПРЕЖДЕНИЯ О ПОВОРОТЕ УСТРОЙСТВА === */
+
+.rotate-overlay {
+  display: none; /* Скрыт по умолчанию */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh; /* Динамическая высота для мобильных */
+  background-color: #ffffff;
+  z-index: 999999; /* Самый высокий z-index, чтобы перекрыть всё */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Логика отображения: 
+   1. Ориентация альбомная (landscape)
+   2. Максимальная высота экрана 600px (исключаем планшеты и ПК)
+*/
+@media screen and (orientation: landscape) and (max-height: 600px) {
+  .rotate-overlay {
+    display: flex;
+  }
+}
+
+.rotate-text {
+  font-family: 'Crooker', sans-serif;
+  font-size: clamp(18px, 5vw, 24px);
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.rotate-icon {
+  width: 60px;
+  height: 60px;
+  color: #333;
+  /* Анимация покачивания, привлекая внимание */
+  animation: rotatePhoneIcon 2s ease-in-out infinite;
+}
+
+.rotate-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Анимация: имитация поворота телефона в вертикальное положение */
+@keyframes rotatePhoneIcon {
+  0%, 100% { 
+    transform: rotate(0deg); 
+  }
+  50% { 
+    transform: rotate(-90deg); 
+  }
+}
