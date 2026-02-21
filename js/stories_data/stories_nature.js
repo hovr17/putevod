@@ -12,7 +12,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/nature_places/smotrovaya_zaradye/Photo/3.jpg',
-        caption: 'Многие приходят на эту смотровую, чтобы насладиться красивыми закатами. Одно из лучших мест для их встречи.'
+        caption: 'Многие приходят на эту смотровую, чтобы насладиться красивыми закатами. Лучшее место для встречи закатов.'
       },
       {
         src: 'stories_content/nature_places/smotrovaya_zaradye/Photo/4.jpg',
@@ -71,15 +71,15 @@ window.storiesData = {
     name: 'Фото',
     images: [
       {
-        src: 'stories_content/nature_places/Ilinskiy_lug/Photo/1.jpg',
+        src: 'stories_content/nature_places/smotrovaya_na_lug/Photo/1.jpg',
         caption: 'Эта одна из самых популярных смотровых площадок Суздаля. Отличное место, чтобы насладиться красивыми видами и сделать фото. На этом кадре видно Рождественский собор, палаты суздальского кремля, деревянный Никольский храм и Ильинскую церковь.'
       },
       {
-        src: 'stories_content/nature_places/Ilinskiy_lug/Photo/2.jpg',
+        src: 'stories_content/nature_places/smotrovaya_na_lug/Photo/2.jpg',
         caption: 'Ильинский заливной луг. Луг назван заливным, поскольку раньше он сильно затапливался водами реки Каменки во время весеннего половодья.'
       },
       {
-        src: 'stories_content/nature_places/Ilinskiy_lug/Photo/3.jpg',
+        src: 'stories_content/nature_places/smotrovaya_na_lug/Photo/3.jpg',
         caption: 'Справа видно Преподобенскую колокольню (на неё можно подняться), слева от неё Кресто-Никольскую церковь и дальше Тихвинскую.'
       }
     ]
@@ -93,7 +93,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/nature_places/Ilinskiy_lug/Photo/2.jpg',
-        caption: 'Вид на реку Каменка.'
+        caption: ''
       },
       {
         src: 'stories_content/nature_places/Ilinskiy_lug/Photo/3.jpg',
@@ -135,7 +135,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/nature_places/most/Photo/1.jpg',
-        caption: 'Пройдя направо вдоль стены от смотровой площадки Спасо-Евфимиева монастыря, вы придёте на это живописное место.'
+        caption: 'Справа от смотровой площадки Спасо-Евфимиева монастыря мост через каменку с живописными видами'
       },
       {
         src: 'stories_content/nature_places/most/Photo/2.jpg',
@@ -207,7 +207,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/nature_places/smotrovaya_Alexandrovskiy/Photo/1.jpg',
-        caption: 'Cправа Спасо-Евфимиев монастырь (Слева Покровский), если пройти по тропинке направо от смотровой площадки, то можно будет выйти к нему.'
+        caption: 'Cправа Спасо-Евфимиев монастырь и Слева Покровский, если пройти по тропинке направо от смотровой площадки, то можно будет выйти к монастырю.'
       },
       {
         src: 'stories_content/nature_places/smotrovaya_Alexandrovskiy/Photo/2.jpg',
