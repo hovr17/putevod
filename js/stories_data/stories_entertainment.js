@@ -12,7 +12,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/entertainment_places/aqua/snaruzhi/3.jpg',
-        caption: 'Многие приходят на эту смотровую, чтобы насладиться красивыми закатами. Одно из лучших мест для их встречи.'
+        caption: ''
       },
       {
         src: 'stories_content/entertainment_places/aqua/snaruzhi/4.jpg',
@@ -37,7 +37,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/entertainment_places/aqua/vnutri/4.jpg',
-        caption: 'Игровой грот. Зона для детей с мягкими игрушками, лабиринтами, стенами для скалолазания и другими развлечениями где можно оставить ребенка под присмотром сотрудника. За пребывание ребенка в гроте нужно дополнительно заплатить в определенных тарифах.'
+        caption: 'Игровой грот. Зона для детей с мягкими игрушками, лабиринтами, стенами для скалолазания и другими развлечениями, где можно оставить ребенка под присмотром сотрудника. За пребывание ребенка в гроте нужно дополнительно заплатить в определенных тарифах.'
       },
       {
         src: 'stories_content/entertainment_places/aqua/vnutri/5.jpg',
@@ -56,7 +56,7 @@ window.storiesData = {
         caption: 'Акватерра. Русская баня, сауна, хаммам, ледяной водопад, снежная комната и другое. *(фото - https://vk.ru/urururr)'
       },{
         src: 'stories_content/entertainment_places/aqua/vnutri/10.jpg',
-        caption: 'Также в этой зоне есть один крытый бассейн и уличный.'
+        caption: 'Также в этой зоне есть крытый бассейн и уличный.'
       },{
         src: 'stories_content/entertainment_places/aqua/vnutri/11.jpg',
         caption: ''
@@ -152,7 +152,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/entertainment_places/torgovie_lavki_centre/photo/1.jpg',
-        caption: 'Здесь сосредоточено наибольшее количество торговых точек, так что вы гарантированно найдете себе то, что можно купить на память.'
+        caption: 'Здесь сосредоточено наибольшее количество торговых точек, так что вы гарантированно найдете себе Сувенир из Суздаля.'
       },
       {
         src: 'stories_content/entertainment_places/torgovie_lavki_centre/photo/2.jpg',
@@ -237,7 +237,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/entertainment_places/churovo_gorodiche/animals/3.jpg',
-        caption: 'Прогулка по городищу напоминает путешествие в деревенское детство. Пасущиеся коровы, барашки, лошади и другие животные не боятся людей и находятся так близко, что с ними можно познакомиться на расстоянии вытянутой руки.'
+        caption: 'Прогулка по городищу напоминает путешествие в деревенское детство. Пасущиеся коровы, барашки, лошади и другие животные не боятся людей и находятся так близко, что с ними можно познакомиться и пообщаться.'
       },
       {
         src: 'stories_content/entertainment_places/churovo_gorodiche/animals/4.jpg',
@@ -273,7 +273,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/entertainment_places/centre_narodnogo_tvorchestva/photo/4.jpg',
-        caption: 'ончарный мастер-класс. Создайте чашку, миску или горшочек вместе с гончаром в пятом поколении на старинном гончарном круге.'
+        caption: 'Гончарный мастер-класс. Создайте чашку, миску или горшочек вместе с гончаром в пятом поколении на старинном гончарном круге.'
       },
       {
         src: 'stories_content/entertainment_places/centre_narodnogo_tvorchestva/photo/5.jpg',
@@ -293,7 +293,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/entertainment_places/torgovie_lavki/photo/1.jpg',
-        caption: '. Здесь вы найдете уникальные сувениры и изделия, созданные руками местных мастеров.'
+        caption: 'Здесь вы найдете уникальные сувениры и изделия, созданные руками местных мастеров.'
       },
       {
         src: 'stories_content/entertainment_places/torgovie_lavki/photo/2.jpg',
@@ -403,7 +403,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/entertainment_places/arena/vnutri/2.jpg',
-        caption: 'Главный зал — «колодец». На стенах и потолке установлен огромный изогнутый экран, а пол выполнен в виде зеркала, создавая эффект полного погружения.'
+        caption: ''
       },
       {
         src: 'stories_content/entertainment_places/arena/vnutri/3.jpg',
@@ -444,12 +444,12 @@ window.storiesData = {
 
 
 
-  'neskuchniy_museum.traktirnie_istorii': {
+   'neskuchniy_museum.traktirnie_istorii': {
     name: 'Трактирные истории',
     images: [
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/traktirnie_istorii/1.jpg',
-        caption: 'Почувствуйте себя посетителем трактира 19 века! Веселый трактирщик расскажет всё об истории русского трактира, загадает загадки и покажет диковинные старинные вещицы, научит правильно пить чай с баранками, пригласит сударынь на кадриль под граммофон и исполнит куплеты.'
+        caption: 'Интерактивная экскурсия, погружающая в атмосферу трактира XIX века. В программе: история заведения, загадки, демонстрация старинных предметов, уроки чаепития и танцы под граммофон.'
       },
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/traktirnie_istorii/2.jpg',
@@ -466,12 +466,12 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/chaepitie/1.jpg',
-        caption: 'Купчиха Аполлинария Павловна приглашает в гости на чай! Вы узнаете историю появления чая в России и научитесь его пить аж четырьмя традиционными способами, узнаете историю популярных чайных заведений, побеседуете о жизни, нравах купеческого сословия и многочасовых чаепитиях, а также попробуете отгадать загадки.'
+        caption: 'В программе — история появления чая в России, четыре традиционных способа чаепития и рассказ о купеческом быте. Гостям предлагают чай, баранки и загадки.'
       },
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/chaepitie/2.jpg',
         caption: ''
-      }     ,
+      },
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/chaepitie/3.jpg',
         caption: ''
@@ -483,7 +483,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/chaynie_istorii/1.jpg',
-        caption: 'Весёлая и познавательная экскурсия для детей! Хозяин суздальской чайной лавки, купец Блинников, приглашает гостей за прилавок, где за чашкой ароматного чая, конкурсами и музыкальными номерами расскажет историю напитка, любимого всеми в России. Программа отлично подходит для школьных групп!'
+        caption: 'Экскурсия для детей и школьных групп. Гостей встречает купец Блинников, рассказывает историю чая, проводит конкурсы и угощает напитком.'
       },
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/chaynie_istorii/2.jpg',
@@ -500,11 +500,11 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/russkaya_izba/1.jpg',
-        caption: 'Хозяйка русской избы расскажет о жизни крестьянской семьи, старинных предметах быта, обычаях и традициях наших предков. Все экспонаты можно рассмотреть и использовать по назначению.'
+        caption: 'Рассказ о жизни крестьянской семьи, быте и традициях. Экспонаты можно трогать и использовать по назначению.'
       },
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/russkaya_izba/2.jpg',
-        caption: 'В программу включён мастер-класс и фото в народных костюмах в интерьере избы. Программа адаптируется под возраст и состав участников.'
+        caption: 'Включен мастер-класс и фото в народных костюмах. Программа адаптируется под возраст участников.'
       },
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/russkaya_izba/3.jpg',
@@ -525,7 +525,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/master_class/1.jpg',
-        caption: 'Мастер-класс "Магнит" подходит даже самым маленьким. Это рисунок с элементами аппликации. После экскурсии по избе дети делают собственный сувенир на память и лучше запоминают рассказ экскурсовода. Длительность мастер-класса — 40 минут.'
+        caption: 'Мастер-класс «Магнит» — рисунок с элементами аппликации. Подходит для детей, помогает закрепить информацию об экскурсии. Длительность — 40 минут.'
       },
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/master_class/2.jpg',
@@ -533,11 +533,11 @@ window.storiesData = {
       },
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/master_class/3.jpg',
-        caption: 'Семейный мастер-класс "Свеча". Хорошо получается у всех! На мастер-класс мы подготовили вощину (натуральный материал из тоненьких восковых пластинок), декор, необходимые материалы и инструменты. Во время работы научим скручивать вощину, аккуратно вставлять фитиль и декорировать свечу.'
+        caption: 'Семейный мастер-класс «Свеча». Участники работают с вощиной и декором, учатся скручивать свечу и вставлять фитиль.'
       },
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/master_class/4.jpg',
-        caption: 'На мастер-классе "Народная кукла" Хозяюшка интересно расскажет об истории обережных, обрядовых и игровых кукол, особенностях их изготовления. Следуя ее советам, вы по канонам смастерите свою куклу, которая долго будет вас радовать и напоминать о Суздале. Длительность мастер-класса — от 40 минут до 2,5 часов (зависит от сложности изготовления куклы).'
+        caption: 'Мастер-класс «Народная кукла». История обережных и игровых кукол с последующим изготовлением своей поделки. Длительность: от 40 минут до 2,5 часов.'
       },
       {
         src: 'stories_content/entertainment_places/neskuchniy_museum/master_class/5.jpg',
@@ -615,7 +615,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/entertainment_places/freska_naboyka/freska/2.jpg',
-        caption: 'Мастер-классы проводятся при действующей Иконописной мастерской. Занятие ведут преподаватели с большим опытом работы, том числе и за рубежом.'
+        caption: 'Мастер-классы проводятся при действующей Иконописной мастерской. Занятие ведут преподаватели с большим опытом работы.'
       },
       {
         src: 'stories_content/entertainment_places/freska_naboyka/freska/3.jpg',
@@ -735,10 +735,9 @@ window.storiesData = {
         caption: ''
       }
     ]
-  },
+  }
 
 };
-
 
 
 
