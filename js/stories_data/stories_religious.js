@@ -606,12 +606,13 @@ window.storiesData = {
   },
 
 
+ 
   'SpasoEvfimiev_monastery.o_territorii': {
     name: 'О монастыре',
     images: [
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/o_territorii/1.jpg',
-        caption: 'В 1352 году по указу князя Суздальско-Нижегородского Бориса Константиновича был заложен мужской монастырь. Монастырь изначально создавался как крепость для защиты города от врагов.'
+        caption: 'В 1352 году по указу князя Суздальско-Нижегородского Бориса Константиновича был заложен мужской монастырь.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/o_territorii/2.jpg',
@@ -694,7 +695,7 @@ window.storiesData = {
       ,
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Preobrazhenskiy_sobor/6.jpg',
-        caption: 'Каждая фреска демонстрируют определенную сцену из Библии, и по замыслу авторов важно было то, чтобы каждый человек, знакомый с текстами Библии, мог сразу понять, что на них изображено, не зависимо от образования. Чтобы достичь такого результата мастера использовали образы, которые были бы понятны каждому.'
+        caption: 'Каждая фреска демонстрирует определенную сцену из Библии, и по замыслу авторов важно было, чтобы каждый человек, знакомый с текстами Библии, мог сразу понять, что на них изображено, независимо от образования. Чтобы достичь такого результата мастера использовали образы, которые были бы понятны каждому.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Preobrazhenskiy_sobor/7.jpg',
@@ -702,7 +703,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Preobrazhenskiy_sobor/8.jpg',
-        caption: 'Важно отметить, что собор это непросто музей, кроме субботы в нём ежедневно проходят службы. '
+        caption: 'Важно отметить, что в соборе ежедневно проходят службы (кроме субботы).'
       }
     ]
   },
@@ -715,7 +716,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Turma/2.jpg',
-        caption: 'Тюрьма располагалась в глубине монастыря, в отдельном тюремном корпусе, которое теперь входит в музейный комплекс и открыто для посещения.'
+        caption: 'Тюрьма располагалась в глубине монастыря, в отдельном тюремном корпусе.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Turma/3.jpg',
@@ -723,7 +724,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Turma/4.jpg',
-        caption: 'В годы Великой Отечественной войны здесь содержались военнопленные — итальянские, немецкие и другие офицеры, в том числе фельдмаршал Паулюс. Фридрих Паулюс — возглавлял армию Германии в Сталинградской битве. Именно под его руководством немецкая армия потерпела поражение. Он стал единственным германским фельдмаршалом, сдавшимся в плен врагу. Впоследствии он выступал против нацистского режима.'
+        caption: 'В годы Великой Отечественной войны здесь содержались военнопленные — немецкие и другие офицеры, в том числе фельдмаршал Паулюс. Фридрих Паулюс — возглавлял армию Германии в Сталинградской битве. Именно под его руководством немецкая армия потерпела поражение. Он стал единственным германским фельдмаршалом, сдавшимся в плен врагу. Впоследствии он выступал против нацистского режима.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Turma/5.jpg',
@@ -823,7 +824,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Blagovestniki. Kolokola/4.jpg',
-        caption: 'Секретер. Секретер сочетает в себе функции письменного стола и комода. Внутри находится множество ящичков, потайных отделений для хранения бумаг, писем, драгоценностей.'
+        caption: 'Секретер сочетает в себе функции письменного стола и комода. Внутри находится множество ящичков, потайных отделений для хранения бумаг, писем, драгоценностей.'
       }
     ]
   },
@@ -852,7 +853,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Steni/6.jpg',
-        caption: 'Также можно зайти внутрь башен и познакомиться с их внутренним строением.'
+        caption: 'Внутрь башни можно зайти и познакомиться со строением.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Steni/7.jpg',
@@ -860,7 +861,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Steni/8.jpg',
-        caption: 'Такие виды открываются с галереи.'
+        caption: 'Виды с галереи.'
       }
     ]
   },
@@ -1046,3 +1047,4 @@ window.storiesData = {
     ]
   }
 };
+
