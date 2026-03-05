@@ -4,7 +4,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/1.jpg',
-        caption: 'Рождественский собор является старейшей постройкой города — ему почти 800 лет.'
+        caption: 'Самый древний из сохранившихся храмов в Суздале - Рождественский собор.'
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/2.jpg',
@@ -24,7 +24,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/6.jpg',
-        caption: 'В храме сохранились настенные росписи XIII, XV и XVII веков, а также иконостас XVII века, созданный мастером Оружейной палаты (центральной художественной мастерской Московского царства) Георгий Зиновьевым.'
+        caption: 'В храме сохранились настенные росписи XIII, XV и XVII веков, а также иконостас XVII века, созданный мастером Оружейной палаты (центральной художественной мастерской Московского царства) Георгием Зиновьевым.'
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/7.jpg',
@@ -40,11 +40,11 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/10.jpg',
-        caption: 'При входе в собор можно увидеть Золотые ворота. Это храмовые двери, созданные около 1230-х годов.'
+        caption: 'При входе в собор можно увидеть Золотые ворота. Это входные храмовые двери, созданные около 1230-х годов.'
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/11.jpg',
-        caption: 'Ворота сделаны из дерева, покрытого медью. На "Златых вратах" выгравированы изображения, иллюстрирующие Библейские сюжеты.'
+        caption: '"Златые врата" сделаны из дерева, покрытого медью. На них выгравированы изображения, иллюстрирующие Библейские сюжеты.'
       },
       {
         src: 'stories_content/museum_places/kreml/Rozhdestvenskiy_sobor/12.jpg',
@@ -245,7 +245,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Preobrazhenskiy_sobor/7.jpg',
-        caption: 'Например, на этой фреске Понтий Пилат, изображён в одежде русских бояр времён Романовых. Это помогало людям лучше понимать библейские сюжеты: роскошные одеяния указывали на высокий статус и роль персонажа в повествовании.'
+        caption: 'Например, на этой фреске Понтий Пилат изображён в одежде русских бояр времён Романовых. Это помогало людям лучше понимать библейские сюжеты, а роскошные одеяния указывали на высокий статус и роль персонажа в повествовании.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Preobrazhenskiy_sobor/8.jpg',
@@ -370,7 +370,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Blagovestniki. Kolokola/4.jpg',
-        caption: 'Секретер сочетает в себе функции письменного стола и комода. Внутри находится множество ящичков, потайных отделений для хранения бумаг, писем, драгоценностей.'
+        caption: 'Секретер.'
       }
     ]
   },
@@ -599,7 +599,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/museum_places/dom_balzaminova/o_dome/2.jpg',
-        caption: 'В дом попасть, к сожалению, нельзя, но разрешают зайти во двор и посмотреть то место, где проходила съемка.'
+        caption: 'В дом попасть, к сожалению, нельзя, но разрешают зайти во двор и посмотреть, где проходила съемка.'
       },
       {
         src: 'stories_content/museum_places/dom_balzaminova/o_dome/3.jpg',
@@ -753,7 +753,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/museum_places/museum_voskovih_figur/vnutri_museum/1.jpg',
-        caption: 'В Музее восковых фигур можно встретится с великими личностями прошлого. Каждая восковая фигура выполнена с невероятной точностью и вниманием к деталям, что создаёт полное ощущение присутствия рядом с настоящими людьми.'
+        caption: 'В Музее восковых фигур можно встретиться с великими личностями прошлого. Каждая восковая фигура выполнена с невероятной точностью и вниманием к деталям, что создаёт полное ощущение присутствия рядом с настоящими людьми.'
       },
       {
         src: 'stories_content/museum_places/museum_voskovih_figur/vnutri_museum/2.jpg',
