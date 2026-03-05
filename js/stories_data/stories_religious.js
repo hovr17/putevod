@@ -699,7 +699,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Preobrazhenskiy_sobor/7.jpg',
-        caption: 'Например, на этой фреске Понтий Пилат, изображён в одежде русских бояр времён Романовых. Это помогало людям лучше понимать библейские сюжеты: роскошные одеяния указывали на высокий статус и роль персонажа в повествовании.'
+        caption: 'Например, на этой фреске Понтий Пилат изображён в одежде русских бояр времён Романовых. Это помогало людям лучше понимать библейские сюжеты, а роскошные одеяния указывали на высокий статус и роль персонажа в повествовании.'
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Preobrazhenskiy_sobor/8.jpg',
@@ -824,7 +824,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/SpasoEvfimiev_monastery/Blagovestniki. Kolokola/4.jpg',
-        caption: 'Секретер сочетает в себе функции письменного стола и комода. Внутри находится множество ящичков, потайных отделений для хранения бумаг, писем, драгоценностей.'
+        caption: 'Секретер.'
       }
     ]
   },
@@ -1047,4 +1047,5 @@ window.storiesData = {
     ]
   }
 };
+
 
