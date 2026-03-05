@@ -25,7 +25,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/religious_places/Aleksandrovskiy_monastery/Voznesenskaya_cerkov/1.jpg',
-        caption: 'Вознесенская церковь была построена в 1695 году на средства царицы Натальи Нарышкиной, мамы Петра Первого.'
+        caption: 'Вознесенская церковь была построена в 1695 году на средства царицы Натальи Нарышкиной.'
       },
       {
         src: 'stories_content/religious_places/Aleksandrovskiy_monastery/Voznesenskaya_cerkov/2.jpg',
@@ -352,7 +352,7 @@ window.storiesData = {
       },
       {
         src: 'stories_content/religious_places/Pokrovsky_monastery/o_monastery/3.jpg',
-        caption: 'Среди известных узниц были первая жена Василия III — Соломония Сабурова, которая впоследствии стала высокопочитаемой святой – Софией Суздальской, жена Петра I - Евдокия Лопухина, дочь Бориса Годунова — Ксения, а также другие высокопоставленные женщины.'
+        caption: 'Среди известных узниц были первая жена Василия III — Соломония Сабурова, которая впоследствии стала высокопочитаемой святой – Софией Суздальской, жена Петра I - Евдокия Лопухина, дочь Бориса Годунова — Ксения.'
       },
       {
         src: 'stories_content/religious_places/Pokrovsky_monastery/o_monastery/4.jpg',
@@ -427,7 +427,7 @@ window.storiesData = {
     images: [
       {
         src: 'stories_content/religious_places/Pokrovsky_monastery/Trapeznaya/1.jpg',
-        caption: 'Трапезная находится в конце территории монастыря. Меню составлено согласно монастырскому уставу: мясные блюда не готовят, в течение церковных постов подают только постные обеды, но несмотря на это, блюда не менее вкусные!'
+        caption: 'Трапезная находится в конце территории монастыря. Меню составлено согласно монастырскому уставу: мясные блюда не готовят, в течение церковных постов подают только постные обеды, но, несмотря на это, блюда не менее вкусные!'
       },
       {
         src: 'stories_content/religious_places/Pokrovsky_monastery/Trapeznaya/2.jpg',
@@ -1047,5 +1047,4 @@ window.storiesData = {
     ]
   }
 };
-
 
