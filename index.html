@@ -65,7 +65,19 @@
             </div>
         </footer>
     </div>
-
-    <script src="script.js"></script>
+    
+<div class="rotate-overlay">
+  <span class="rotate-text">Переверните устройство</span>
+  <div class="rotate-icon">
+    <img src="ui/turn.svg" alt="Переверните устройство">
+  </div>
+</div>
+    
+    <script src="script.js">
+        window.addEventListener('orientationchange', () => {
+    setTimeout(updateViewport, 100);
+});
+    </script>
+    
 </body>
 </html>
