@@ -248,3 +248,61 @@ body.is-mobile .container {
     }
 }
 
+
+/* === БЛОК ПРЕДУПРЕЖДЕНИЯ О ПОВОРОТЕ УСТРОЙСТВА === */
+
+.rotate-overlay {
+  display: none; /* Скрыт по умолчанию */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #ffffff;
+  z-index: 999999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Показываем только на мобильных в горизонтальной ориентации */
+@media screen and (orientation: landscape) and (max-height: 600px) {
+  .rotate-overlay {
+    display: flex;
+  }
+}
+
+.rotate-text {
+  font-family: 'Crooker', sans-serif;
+  font-size: clamp(18px, 5vw, 24px);
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.rotate-icon {
+  width: 80px;
+  height: 80px;
+  /* Анимация вращения применяется к контейнеру */
+  animation: spinIcon 3s linear infinite;
+}
+
+.rotate-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  /* Если в SVG не задан цвет, можно подкрасить его фильтром (опционально) */
+  /* filter: brightness(0);  */
+}
+
+@keyframes spinIcon {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
