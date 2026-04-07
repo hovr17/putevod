@@ -39,6 +39,10 @@
             updateViewport();
             window.addEventListener('load', updateViewport);
         })();
+
+         window.addEventListener('orientationchange', () => {
+    setTimeout(updateViewport, 100);
+});
     </script>
 
     <div class="container">
@@ -73,11 +77,7 @@
   </div>
 </div>
     
-    <script src="script.js">
-        window.addEventListener('orientationchange', () => {
-    setTimeout(updateViewport, 100);
-});
-    </script>
+    <script src="script.js"> </script>
     
 </body>
 </html>
