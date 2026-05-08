@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, interactive-widget=resizes-content">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Путеводитель по Суздалю</title>
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="categories.css">
@@ -10,7 +10,6 @@
 </head>
 <body>
     <script>
-        // Унифицированная логика для всех мобильных браузеров и планшетов
         (function() {
             const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
                              /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -25,6 +24,7 @@
             if (!vv || !container) return;
             
             function updateViewport() {
+                // Обрезаем контейнер ровно по границе видимой области (без панелей инструментов)
                 container.style.height = vv.height + 'px';
             }
             
@@ -38,17 +38,9 @@
         })();
     </script>
 
-    <!-- Блок с предупреждением о перевороте устройства -->
-    <div class="rotate-overlay">
-        <span class="rotate-text">Переверните устройство</span>
-        <div class="rotate-icon">
-            <img src="ui/turn.svg" alt="Переверните устройство">
-        </div>
-    </div>
-
     <div class="container">
         <!-- Кнопка назад -->
-        <a href="index.html" class="back-button">
+        <a href="plan_walk.html" class="back-button">
             <img src="ui/back_button.svg" alt="Назад">
         </a>
 
@@ -57,10 +49,22 @@
 
         <!-- Контейнер для кнопок категорий -->
         <div class="buttons-container">
-            <a href="place.html?id=kreml&cat=museum" class="category-btn">МУЗЕИ</a>
-            <a href="place.html?id=Pokrovsky_monastery&cat=religious" class="category-btn">ХРАМЫ</a>
-            <a href="place.html?id=smotrovaya_zaradye&cat=nature" class="category-btn">КРАСИВЫЕ МЕСТА</a>
-            <a href="place.html?id=aqua&cat=entertainment" class="category-btn">РАЗВЛЕЧЕНИЯ</a>
+           <a href="place.html?id=kreml&cat=museum" class="category-btn">
+    <img src="ui/pictograms_button/museum.svg" class="category-btn-icon" alt="">
+    МУЗЕИ
+</a>
+<a href="place.html?id=Pokrovsky_monastery&cat=religious" class="category-btn">
+    <img src="ui/pictograms_button/church.svg" class="category-btn-icon" alt="">
+    ХРАМЫ
+</a>
+<a href="place.html?id=smotrovaya_zaradye&cat=nature" class="category-btn">
+    <img src="ui/pictograms_button/photo.svg" class="category-btn-icon" alt="">
+    КРАСИВЫЕ МЕСТА
+</a>
+<a href="place.html?id=aqua&cat=entertainment" class="category-btn">
+    <img src="ui/pictograms_button/ball.svg" class="category-btn-icon" alt="">
+    РАЗВЛЕЧЕНИЯ
+</a>
         </div>
 
         <footer class="footer">
@@ -92,3 +96,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+
