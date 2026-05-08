@@ -52,6 +52,7 @@ if (titleBlock) {
             
             // ВАЖНО: Устанавливаем мобильные атрибуты ДО воспроизведения
             bgVideo.muted = true;
+            bgVideo.loop = (this.config.video?.loop !== false);
             bgVideo.setAttribute('muted', '');
             bgVideo.setAttribute('playsinline', '');
             bgVideo.setAttribute('webkit-playsinline', '');
@@ -277,8 +278,43 @@ if (photoWrapper) {
     // Метод для создания полосок прогресса (Stories-style)
 createStoriesProgress() {
     const container = document.getElementById('storiesProgress');
-    if (!container || !this.category) return;
-    
+    if (!container) return;
+
+    // === Режим маршрута: полоски по местам маршрута ===
+    if (window.spaRouter?.routeMode) {
+        const routePlaces = window.spaRouter.routePlaces;
+        const routeIndex = window.spaRouter.routeIndex;
+
+        if (routePlaces.length <= 1) {
+            container.style.display = 'none';
+            return;
+        }
+
+        container.innerHTML = '';
+        container.style.display = 'flex';
+
+        routePlaces.forEach(function (place, index) {
+            const bar = document.createElement('div');
+            bar.className = 'story-progress-bar';
+
+            const fill = document.createElement('div');
+            fill.className = 'story-progress-fill';
+            bar.appendChild(fill);
+
+            if (index < routeIndex) {
+                bar.classList.add('viewed');
+            } else if (index === routeIndex) {
+                bar.classList.add('current');
+            }
+
+            container.appendChild(bar);
+        });
+        return;
+    }
+    // === Обычный режим ===
+
+    if (!this.category) return;
+
     const order = window.PAGE_ORDER_BY_CATEGORY?.[this.category] || [];
     if (order.length <= 1) {
         container.style.display = 'none';
