@@ -296,7 +296,7 @@ function renderRouteButton(link, route) {
         sessionStorage.setItem('routeTotal', String(routePlaces.length));
         sessionStorage.setItem('yandexMapsLink', route.yandexMapsLink || '#');
         // Сохраняем страницу, с которой запустили маршрут (для кнопки «Назад»)
-        sessionStorage.setItem('routeSource', window.location.pathname.replace(/^\//, '') + window.location.search);
+        sessionStorage.setItem('routeSource', window.location.pathname.split('/').pop() + window.location.search);
 
         console.log('🗺️ Запуск маршрута:', routePlaces.length, 'мест');
 
