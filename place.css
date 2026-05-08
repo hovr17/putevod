@@ -70,6 +70,91 @@
   text-decoration: none;
 }
 
+/* Кнопка "открыть маршрут в яндекс картах" */
+.yandex-maps-btn {
+  position: absolute;
+  top: 2.5vh;
+  right: 3vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2vmin;
+  padding: 1vh 2vw;
+  text-decoration: none;
+  z-index: 10;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+.yandex-maps-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-family: 'Crooker', sans-serif;
+  font-size: clamp(10px, 3vmin, 25px);
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  font-weight: 100;
+  white-space: nowrap;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+}
+
+.yandex-maps-icon {
+  width: min(18px, 3vmin);
+  height: min(18px, 3vmin);
+  flex-shrink: 0;
+  background: url('./ui/geo_tag.svg') center/contain no-repeat;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+}
+
+/* Фон кнопки */
+.yandex-maps-btn::before {
+  content: "";
+  position: absolute;
+  top: -0.6vmin;
+  left: -0.6vmin;
+  right: -0.6vmin;
+  bottom: -0.6vmin;
+  background: rgba(224, 224, 224, 0.19);
+  border-radius: 30px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: -1;
+}
+
+/* Обводка кнопки */
+.yandex-maps-btn::after {
+  content: "";
+  position: absolute;
+  top: -1.5vmin;
+  left: -1.5vmin;
+  right: -1.5vmin;
+  bottom: -1.5vmin;
+  border: 0.5vmin solid rgba(255, 255, 255, 1);
+  border-radius: 35px;
+  z-index: -2;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Скрываем в режиме деталей */
+.mode-details .yandex-maps-btn {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mode-intro .yandex-maps-btn {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
 /* ИСПРАВЛЕНИЕ: Отключаем hover/active эффекты для кнопки "Назад" */
 .back-button:hover, .back-button:active {
   opacity: 1 !important;
@@ -609,24 +694,20 @@
 @keyframes parallaxOutBack { to { transform: translateZ(-300px) scale(1.5) rotateY(5deg); opacity: 0; } }
 @keyframes parallaxOutContent { to { transform: translateX(-100%) translateZ(0) rotateY(-10deg); opacity: 0; } }
 
-/* ИСПРАВЛЕНИЕ: Удален translateY, теперь движение строго горизонтальное */
 @keyframes parallaxOutUILeft { to { transform: translateX(-50px); opacity: 0; } }
 @keyframes parallaxOutUIRight { to { transform: translateX(50px); opacity: 0; } }
 
 @keyframes parallaxInBack { from { transform: translateZ(-300px) scale(1.5) rotateY(-5deg); opacity: 0; } to { transform: translateZ(0) scale(1) rotateY(0); opacity: 1; } }
 @keyframes parallaxInContent { from { transform: translateX(100%) translateZ(0) rotateY(10deg); opacity: 0; } to { transform: translateX(0) translateZ(0) rotateY(0); opacity: 1; } }
 
-/* ИСПРАВЛЕНИЕ: Удален translateY, теперь движение строго горизонтальное */
 @keyframes parallaxInUILeft { from { transform: translateX(-50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes parallaxInUIRight { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* Parallax Back variants */
 @keyframes parallaxOutBackLeft { 0% { transform: translateZ(0) scale(1) rotateY(0); opacity: 1; } 100% { transform: translateZ(-300px) scale(1.5) rotateY(5deg); opacity: 0; } }
 @keyframes parallaxOutBackRight { 0% { transform: translateZ(0) scale(1) rotateY(0); opacity: 1; } 100% { transform: translateZ(-300px) scale(1.5) rotateY(-5deg); opacity: 0; } }
 @keyframes parallaxInBackLeft { 0% { transform: translateZ(-300px) scale(1.5) rotateY(-5deg); opacity: 0; } 100% { transform: translateZ(0) scale(1) rotateY(0); opacity: 1; } }
 @keyframes parallaxInBackRight { 0% { transform: translateZ(-300px) scale(1.5) rotateY(5deg); opacity: 0; } 100% { transform: translateZ(0) scale(1) rotateY(0); opacity: 1; } }
 
-/* Parallax Content variants */
 @keyframes parallaxOutContentLeft { 0% { transform: translateX(0) translateZ(0) rotateY(0); opacity: 1; } 100% { transform: translateX(-100%) translateZ(0) rotateY(-10deg); opacity: 0; } }
 @keyframes parallaxOutContentRight { 0% { transform: translateX(0) translateZ(0) rotateY(0); opacity: 1; } 100% { transform: translateX(100%) translateZ(0) rotateY(10deg); opacity: 0; } }
 @keyframes parallaxInContentLeft { 0% { transform: translateX(100%) translateZ(0) rotateY(10deg); opacity: 0; } 100% { transform: translateX(0) translateZ(0) rotateY(0); opacity: 1; } }
@@ -642,7 +723,6 @@
 .page-enter-parallax .video-background { animation: parallaxInBack 0.6s ease-out forwards; }
 .page-enter-parallax .screen { animation: parallaxInContent 0.5s ease-out forwards; }
 
-/* Parallax Specifics */
 .page-exit-parallax-left .temple-video,
 .page-exit-parallax-left .video-background { animation: parallaxOutBackLeft 0.6s ease-out forwards; }
 .page-exit-parallax-left .screen { animation: parallaxOutContentLeft 0.5s ease-out forwards; }
@@ -698,6 +778,39 @@
     height: min(30px, 3vmin);
   }
 
+  .yandex-maps-btn {
+    top: min(45px, 7vh);
+    right: min(20px, 3vw);
+    padding: 0.1vh 0.2vw;
+    gap: 1vmin;
+  }
+
+  .yandex-maps-text {
+    font-size: clamp(9px, 1.6vmin, 16px);
+  }
+
+  .yandex-maps-icon {
+    width: min(30px, 3vmin);
+    height: min(30px, 3vmin);
+  }
+
+  .yandex-maps-btn::before {
+    top: -0.5vmin;
+    left: -0.5vmin;
+    right: -0.5vmin;
+    bottom: -0.5vmin;
+    border-radius: 45px;
+  }
+
+  .yandex-maps-btn::after {
+    top: -1vmin;
+    left: -1vmin;
+    right: -1vmin;
+    bottom: -1vmin;
+    border-width: 0.25vmin;
+    border-radius: 50px;
+  }
+
   /* СТРЕЛКИ НАВИГАЦИИ */
   .temple-nav-arrows {
     position: fixed !important;
@@ -750,7 +863,6 @@
     background-repeat: no-repeat !important;
   }
 
-  /* Правая иконка с поворотом */
   .temple-next-arrow .arrow-icon {
     transform: rotate(180deg);
   }
@@ -772,13 +884,11 @@
     padding-top: 13vh;
   }
 
-  /* === ВОССТАНОВЛЕННАЯ ПОЗИЦИЯ ЗАГОЛОВКА И ТЕКСТА НА ПК === */
   .mode-intro .title-block { transform: translateY(43vh); }
   .entry-note { font-size: clamp(14px, 1.5vmin, 18px); gap: 0.5vh; }
   .mode-intro .hero-details { transform: translateY(47vh); }
   .mode-intro #dropdownsContainer { transform: translateY(47vh); }
 
-  /* === ИСПРАВЛЕННЫЕ КНОПКИ ФОТО (НЕ СЖИМАЮТСЯ, ВЛЕЗАЮТ В КОНТЕЙНЕР) === */
   .photo-card {
       width: 100% ;
       height: auto ;
@@ -829,7 +939,6 @@
   
   .mode-details .title-block { transform: translateY(-100px); }
 
-  /* === КОНТЕЙНЕР (ТОЛЬКО НА ПК) === */
   #frame {
     position: absolute !important;
     top: 0 !important;
@@ -852,8 +961,6 @@
 
 /* МОБИЛЬНЫЕ УСТРОЙСТВА (до 767px) */
 @media (max-width: 767px) {
-  
-  /* ВАЖНО: Исключаем .is-mobile, чтобы скрипт мог управлять высотой */
   body:not(.is-mobile) .container, 
   body:not(.is-mobile) #frame { width: 100vw !important; height: calc(var(--vh, 1vh) * 100) !important; }
   
@@ -938,7 +1045,6 @@
   }
 }
 
-/* Для очень коротких экранов (iPhone SE) */
 @media (max-width: 767px) and (max-height: 700px) {
   .mode-intro .title-block,
   .mode-intro .hero-details,
@@ -948,13 +1054,9 @@
   .mode-intro .hero-details { transform: translateY(calc(55vh - 60px)); }
 }
 
-
-/* Динамическая высота (исправлено для JS) */
 @media (max-width: 1080px) {
-  /* Применяем !important только если JS не сработал (не is-mobile) */
   body:not(.is-mobile) .container, 
   body:not(.is-mobile) #frame { height: calc(var(--vh, 1vh) * 100) !important; }
-  
   .video-background { min-height: calc(var(--vh, 1vh) * 100); }
   .temple-nav-arrows { height: calc(var(--vh, 1vh) * 100); }
   .dropdown-icon { width: 8vw; height: 8vw; }
@@ -962,372 +1064,99 @@
   .mode-details .video-background { background: white !important; transition: none !important; }
 }
 
-/* Корректировки для планшетов (768px-1080px) */
 @media (min-width: 768px) and (max-width: 1080px) {
   .mode-details .title-block {
     transform: translateY(-100px);
   }
-
-  .dropdown {
-    max-height: 8vh; 
-    margin-inline: 2vh;
-    margin-top: 4vh;
-    padding-top: 1.5vh;
-  }
-
-   .title-block h1 {
-   font-size: clamp(36px, 11vw, 100px);
-    padding-top: 150px;
-  }
-
-/* === АДАПТИВНЫЙ ТЕКСТ "подробнее" === */
-  .details-header {
-    font-size: clamp(16px, 6vw, 72px);  /* min: 16px, adaptive: 4.5vw, max: 24px */
-    line-height: 1.2;                     /* Оптимальный интерлиньяж */
-  }
-
-  .entry-note {
-    font-size: clamp(14px, 3.3vmin, 65px);
-     gap: 6.5px;      
-  }
-  
-  .small-btn {
-    height: 13px;
-  }
-
-  .dropdown-icon {
-    width: 60px ;
-    height:60px;
-    margin: 0 ; 
-    padding: 0 ; 
-  }
-
-  .dropdown-title {
-    flex: 1 ;
-    text-align: center ; 
-    margin: 0 ; 
-    padding: 0 ; 
-    font-size: clamp(16px, 6vmin, 50px) ; 
-  }
-
-  .dropdown-arrow {
-    width: 50px ;
-    height: 50px ;
-    margin: 0 ;
-    padding: 0 ; 
-  }
-
-  .dropdown {
-  border-radius: 65px;
+  .dropdown { max-height: 8vh; margin-inline: 2vh; margin-top: 4vh; padding-top: 1.5vh; }
+  .title-block h1 { font-size: clamp(36px, 11vw, 100px); padding-top: 150px; }
+  .details-header { font-size: clamp(16px, 6vw, 72px); line-height: 1.2; }
+  .entry-note { font-size: clamp(14px, 3.3vmin, 65px); gap: 6.5px; }
+  .small-btn { height: 13px; }
+  .dropdown-icon { width: 60px; height: 60px; margin: 0; padding: 0; }
+  .dropdown-title { flex: 1; text-align: center; margin: 0; padding: 0; font-size: clamp(16px, 6vmin, 50px); }
+  .dropdown-arrow { width: 50px; height: 50px; margin: 0; padding: 0; }
+  .dropdown { border-radius: 65px; }
+  .photo-label { font-size: 3vh; }
+  .dropdown-body p { font-size: clamp(16px, 4vmin, 50px); padding-top: 2vh; }
+  .dropdown-body { padding: 0 7.5vw 25px 7.5vw; }
+  .mode-intro .title-block { transform: translateY(40vh); }
+  .mode-intro .hero-details { transform: translateY(45vh); }
+  .mode-intro #dropdownsContainer { transform: translateY(50vh); }
+  .video-background { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 100vh; z-index: -1; }
+  .mode-details .video-background { background: white; transition: none; }
+  .mode-details .video-background::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; background: white; z-index: 3; }
+  .temple-nav-arrows, .temple-nav-arrow { display: none; pointer-events: none; opacity: 0; }
 }
 
-.photo-label {
-  font-size: 3vh;
-}
-
-  .dropdown-body p {
-    font-size: clamp(16px, 4vmin, 50px);
-padding-top: 2vh;
-  }
-.dropdown-body {
-  padding: 0 7.5vw 25px 7.5vw ; 
-}
-
-.mode-intro .title-block {
-  transform: translateY(40vh) ;  /* +10vh вниз */
-}
-
-.mode-intro .hero-details {
-  transform: translateY(45vh) ;  /* +10vh вниз */
-}
-
-.mode-intro #dropdownsContainer {
-  transform: translateY(50vh) ;  /* +10vh вниз */
-}
-
-.video-background {
-    position: absolute ;
-    inset: 0 ;
-    width: 100% ;
-    height: 100% ;
-    min-height: 100vh ;
-    z-index: -1 ;
-  }
-
-  /* Мгновенный белый фон при размытии */
-  .mode-details .video-background {
-    background: white ;
-    transition: none ;
-  }
-
-  /* Дополнительная полоса внизу (опционально) */
-  .mode-details .video-background::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;              /* Высота полосы для планшетов */
-    background: white;
-    z-index: 3;
-  }
-
-  .temple-nav-arrows,
-  .temple-nav-arrow {
-    display: none ;
-    pointer-events: none ;
-    opacity: 0 ;
-  }
-}
-
-/* =============================================================================
-   СПЕЦИАЛЬНЫЕ СТИЛИ ДЛЯ ЯНДЕКС.БРАУЗЕРА (+40px СДВИГ)
-   ========================================================================= */
 @media (max-width: 767px) {
-    /* Заголовок: Используем мобильную базу 50vh и поднимаем на 110px */
-    .yandex-browser .mode-intro .title-block {
-        transform: translateY(calc(50vh - 100px)) !important;
-    }
-
-    /* Подробнее и фото внутри: Используем мобильную базу 55vh и поднимаем на 110px */
-    .yandex-browser .mode-intro .hero-details {
-        transform: translateY(calc(55vh - 110px)) !important;
-    }
-
-    /* Дропдауны: Используем мобильную базу 50vh и поднимаем на 110px */
-    .yandex-browser .mode-intro #dropdownsContainer {
-        transform: translateY(calc(50vh - 110px)) !important;
-    }
-
-    .yandex-browser #usefulDrop.open {
-        margin-bottom: 80px;
-    }
-
-   .yandex-browser #usefulDrop:not(.open) {
-        margin-bottom: 80px;
-    }
-    
+    .yandex-browser .mode-intro .title-block { transform: translateY(calc(50vh - 100px)) !important; }
+    .yandex-browser .mode-intro .hero-details { transform: translateY(calc(55vh - 110px)) !important; }
+    .yandex-browser .mode-intro #dropdownsContainer { transform: translateY(calc(50vh - 110px)) !important; }
+    .yandex-browser #usefulDrop.open { margin-bottom: 80px; }
+    .yandex-browser #usefulDrop:not(.open) { margin-bottom: 80px; }
 }
-
-/* =============================================================================
-   SWIPE HINT ANIMATION (Подсказка свайпа после 7 сек бездействия)
-   ========================================================================== */
-
-/* =============================================================================
-   SWIPE HINT ANIMATION (Подсказка свайпа с видео следующей страницы)
-   ========================================================================== */
 
 @keyframes swipeHintSlide {
-  0%, 100% { 
-    transform: translateX(0); 
-  }
-  50% { 
-    transform: translateX(-12vw); 
-  }
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-12vw); }
 }
+.swipe-hint-active { animation: swipeHintSlide 0.8s ease-in-out 2; position: relative; }
+.next-page-preview { position: absolute; top: 0; left: 100%; width: 12vw; height: 100%; z-index: 0; overflow: hidden; opacity: 0; transition: opacity 0.3s ease; background: #000; }
+.next-page-preview video, .next-page-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.swipe-hint-active .next-page-preview { opacity: 1; }
+.next-page-preview::after { content: '→'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4vw; color: rgba(255,255,255,0.9); text-shadow: 0 2px 10px rgba(0,0,0,0.8); z-index: 2; pointer-events: none; animation: pulseArrow 0.8s ease-in-out infinite; }
+@keyframes pulseArrow { 0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); } }
 
-.swipe-hint-active {
-  animation: swipeHintSlide 0.8s ease-in-out 2; /* Два цикла движения */
-  position: relative;
-}
-
-/* Контейнер для превью следующей страницы */
-.next-page-preview {
-  position: absolute;
-  top: 0;
-  left: 100%; /* Позиционируем справа от frame */
-  width: 12vw;
-  height: 100%;
-  z-index: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: #000;
-}
-
-.next-page-preview video,
-.next-page-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Показываем preview только во время анимации */
-.swipe-hint-active .next-page-preview {
-  opacity: 1;
-}
-
-/* Стрелка-индикатор поверх видео (опционально, можно убрать) */
-.next-page-preview::after {
-  content: '→';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 4vw;
-  color: rgba(255,255,255,0.9);
-  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-  z-index: 2;
-  pointer-events: none;
-  animation: pulseArrow 0.8s ease-in-out infinite;
-}
-
-@keyframes pulseArrow {
-  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-}
-
-/* Для десктопа уменьшаем амплитуду */
 @media (min-width: 1081px) {
-  @keyframes swipeHintSlide {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-5vw); }
-  }
-  
-  .next-page-preview {
-    width: 5vw;
-    left: 100%;
-  }
-  
-  .next-page-preview::after {
-    font-size: 2vw;
-  }
+  @keyframes swipeHintSlide { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-5vw); } }
+  .next-page-preview { width: 5vw; left: 100%; }
+  .next-page-preview::after { font-size: 2vw; }
 }
 
-/* Отключаем на мобильных в landscape */
 @media (max-height: 500px) and (max-width: 1080px) {
-  .swipe-hint-active {
-    animation: none !important;
-  }
-  .next-page-preview {
-    display: none !important;
-  }
+  .swipe-hint-active { animation: none !important; }
+  .next-page-preview { display: none !important; }
 }
-
-
-
-
 
 /* ===== ПОЛОСКИ ПРОГРЕССА (Stories-style) ===== */
 .stories-progress-container {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   z-index: 100;
-  display: flex;
-  gap: 6px;
+  display: flex; gap: 6px;
   padding: 12px 16px;
   pointer-events: none;
 }
+.story-progress-bar { flex: 1; height: 3px; background: rgba(255, 255, 255, 0.3); border-radius: 3px; overflow: hidden; position: relative; }
+.story-progress-fill { position: absolute; top: 0; left: 0; height: 100%; background: white; border-radius: 3px; width: 0%; transition: width 0.3s ease; }
+.story-progress-bar.viewed .story-progress-fill { width: 100%; background: white; }
+.story-progress-bar.current .story-progress-fill { width: 100%; background: white; box-shadow: 0 0 4px rgba(255,255,255,0.5); }
 
-.story-progress-bar {
-  flex: 1;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
-  overflow: hidden;
-  position: relative;
-}
-
-.story-progress-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background: white;
-  border-radius: 3px;
-  width: 0%;
-  transition: width 0.3s ease;
-}
-
-.story-progress-bar.viewed .story-progress-fill {
-  width: 100%;
-  background: white;
-}
-
-.story-progress-bar.current .story-progress-fill {
-  width: 100%;
-  background: white;
-  box-shadow: 0 0 4px rgba(255,255,255,0.5);
-}
-
-/* ===== АДАПТАЦИЯ ДЛЯ ПК ===== */
 @media (min-width: 1081px) {
-  .stories-progress-container {
-    padding: 16px 20px;
-    gap: 8px;
-    border-radius: 30px 30px 0 0;
-  }
-  
-  .story-progress-bar {
-    height: 4px;
-  }
-  
-  /* Опускаем кнопку "Назад" ниже полосок */
-  .back-button {
-    top:min(40px, 5vh);
-  }
+  .stories-progress-container { padding: 16px 20px; gap: 8px; border-radius: 30px 30px 0 0; }
+  .story-progress-bar { height: 4px; }
+  .back-button { top: min(40px, 5vh); }
 }
 
-/* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
 @media (max-width: 1080px) {
-  .stories-progress-container {
-    padding-top: max(12px, env(safe-area-inset-top));
-  }
-  
-  /* Опускаем кнопку "Назад" на мобильных */
-  .back-button {
-    top: 3vh;
-  }
+  .stories-progress-container { padding-top: max(12px, env(safe-area-inset-top)); }
+  .back-button { top: 3vh; }
 }
 
-/* Скрываем полоски когда меню открыто */
-.mode-details .stories-progress-container {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
+.mode-details .stories-progress-container { opacity: 0; transition: opacity 0.3s ease; }
+.mode-intro .stories-progress-container { opacity: 1; transition: opacity 0.3s ease; }
 
-.mode-intro .stories-progress-container {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-
-
-/* === НАСТРОЙКА ДЛЯ НИЗКИХ ЭКРАНОВ (ШИРИНА > 1080 И ВЫСОТА < 1060) === */
-#frame.short-screen .title-block h1 {
-    /* Делаем шрифт значительно меньше для проверки */
-    font-size: clamp(20px, 2.5vw, 40px) !important;
-    padding-top: 8vh !important;
-}
-
-/* Также уменьшаем "подробнее", чтобы всё смотрелось гармонично */
-#frame.short-screen .details-header {
-    font-size: clamp(16px, 2vw, 24px) !important;
-}
-
-/* Корректируем положение блоков, чтобы не налезали друг на друга */
-#frame.short-screen .mode-intro .title-block {
-    transform: translateY(40vh) !important;
-}
-
-
-
-
-
+#frame.short-screen .title-block h1 { font-size: clamp(20px, 2.5vw, 40px) !important; padding-top: 8vh !important; }
+#frame.short-screen .details-header { font-size: clamp(16px, 2vw, 24px) !important; }
+#frame.short-screen .mode-intro .title-block { transform: translateY(40vh) !important; }
 
 /* === БЛОК ПРЕДУПРЕЖДЕНИЯ О ПОВОРОТЕ УСТРОЙСТВА === */
-
 .rotate-overlay {
-  display: none; /* Скрыт по умолчанию */
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh; height: 100dvh;
   background-color: #ffffff;
   z-index: 999999;
   flex-direction: column;
@@ -1336,42 +1165,268 @@ padding-top: 2vh;
   text-align: center;
   padding: 20px;
 }
-
-/* Показываем только на мобильных в горизонтальной ориентации */
 @media screen and (orientation: landscape) and (max-height: 600px) {
-  .rotate-overlay {
-    display: flex;
-  }
+  .rotate-overlay { display: flex; }
+}
+.rotate-text { font-family: 'Crooker', sans-serif; font-size: clamp(18px, 5vw, 24px); color: #333; margin-bottom: 20px; }
+.rotate-icon { width: 80px; height: 80px; animation: spinIcon 3s linear infinite; }
+.rotate-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
+@keyframes spinIcon { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* ===== ФИНАЛЬНЫЙ ЭКРАН МАРШРУТА ===== */
+.route-complete-screen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.rotate-text {
-  font-family: 'Crooker', sans-serif;
-  font-size: clamp(18px, 5vw, 24px);
-  color: #333;
-  margin-bottom: 20px;
+/* Фоновое изображение */
+.route-complete-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('backgrounds/route_bg.jpg') center/cover no-repeat;
+  z-index: 0;
 }
 
-.rotate-icon {
-  width: 80px;
-  height: 80px;
-  /* Анимация вращения применяется к контейнеру */
-  animation: spinIcon 3s linear infinite;
+/* Градиентный оверлей для читаемости текста */
+.route-complete-screen::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 100, 200, 0.3) 0%,
+    rgba(0, 100, 200, 0.1) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  z-index: 1;
 }
 
-.rotate-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.route-complete-screen .route-complete-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8vh 20px 20px;
+
+  max-width: 90%;
+  position: relative;
+  z-index: 2;
+  gap: 3vh;
+}
+
+.route-complete-screen .route-complete-title {
+  font-family: 'Zametka', sans-serif;
+  font-size: clamp(32px, 8vmin, 56px);
+  font-weight: 100;
+  color: white;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 2vh;
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Кнопка «Назад» на финальном экране маршрута */
+.route-complete-screen .back-button {
+  position: absolute;
+  top: 3vh;
+  left: 3vw;
+  z-index: 60;
   display: block;
-  /* Если в SVG не задан цвет, можно подкрасить его фильтром (опционально) */
-  /* filter: brightness(0);  */
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
-@keyframes spinIcon {
-  from {
-    transform: rotate(0deg);
+/* Общий стиль кнопок */
+.route-complete-btn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  z-index: 1;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* === Кнопка «ОТКРЫТЬ В ЯНДЕКС КАРТАХ» === */
+.route-complete-map-btn {
+  width: min(320px, 70%, 70vw);
+  padding: 1.8vh 0;
+}
+
+/* Фон кнопки (Яндекс Карты) — стекломорфизм */
+.route-complete-map-btn::before {
+  content: "";
+  position: absolute;
+  top: -0.8vmin;
+  left: -0.8vmin;
+  right: -0.8vmin;
+  bottom: -0.8vmin;
+  background: rgba(224, 224, 224, 0.19);
+  border-radius: 45px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: -1;
+}
+
+/* Обводка кнопки (Яндекс Карты) + тень */
+.route-complete-map-btn::after {
+  content: "";
+  position: absolute;
+  top: -2vmin;
+  left: -2vmin;
+  right: -2vmin;
+  bottom: -2vmin;
+  border: 0.6vmin solid rgba(255, 255, 255, 1);
+  border-radius: 50px;
+  z-index: -2;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.route-complete-map-btn .route-complete-btn-text {
+  font-size: clamp(16px, 4.5vmin, 28px);
+}
+
+/* === Кнопка «ВЕРНУТЬСЯ К ВЫБОРУ МАРШРУТА» === */
+.route-complete-places-btn {
+  width: min(400px, 88%, 88vw);
+  padding: 2.4vh 0;
+}
+
+/* Фон кнопки (Вернуться) — стекломорфизм */
+.route-complete-places-btn::before {
+  content: "";
+  position: absolute;
+  top: -1vmin;
+  left: -1vmin;
+  right: -1vmin;
+  bottom: -1vmin;
+  background: rgba(224, 224, 224, 0.19);
+  border-radius: 70px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: -1;
+}
+
+/* Обводка кнопки (Вернуться) + тень */
+.route-complete-places-btn::after {
+  content: "";
+  position: absolute;
+  top: -2.4vmin;
+  left: -2.4vmin;
+  right: -2.4vmin;
+  bottom: -2.4vmin;
+  border: 0.7vmin solid rgba(255, 255, 255, 1);
+  border-radius: 80px;
+  z-index: -2;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.route-complete-places-btn .route-complete-btn-text {
+  font-size: clamp(18px, 5vmin, 32px);
+}
+
+.route-complete-btn-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-family: 'Zametka', sans-serif;
+  line-height: 1.15;
+  letter-spacing: 0.05em;
+  font-weight: 100;
+  text-align: center;
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Отступ между кнопками */
+.route-complete-map-btn {
+  margin-bottom: 1.5vh;
+}
+
+/* Финальный экран на ПК */
+@media (min-width: 1081px) {
+  .route-complete-screen .route-complete-content {
+    padding-top: 10vh;
+    gap: 4vh;
   }
-  to {
-    transform: rotate(360deg);
+
+  .route-complete-screen .route-complete-title {
+    font-size: clamp(28px, 4vmin, 80px);
+    margin-bottom: 3vh;
+  }
+
+  /* Кнопка «Яндекс Карты» на ПК */
+  .route-complete-map-btn {
+    width: min(320px, 55vw);
+    padding: 0.5vh 0;
+  }
+
+  .route-complete-map-btn::before {
+    top: -0.6vmin;
+    left: -0.6vmin;
+    right: -0.6vmin;
+    bottom: -0.6vmin;
+    border-radius: 120px;
+  }
+
+  .route-complete-map-btn::after {
+    top: -1.2vmin;
+    left: -1.2vmin;
+    right: -1.2vmin;
+    bottom: -1.2vmin;
+    border-width: 0.3vmin;
+    border-radius: 150px;
+  }
+
+  .route-complete-map-btn .route-complete-btn-text {
+    font-size: clamp(14px, 2.7vmin, 35px);
+  }
+
+  /* Кнопка «Вернуться» на ПК */
+  .route-complete-places-btn {
+    width: min(200px, 50vw);
+    padding: 0.1vh 0;
+  }
+
+  .route-complete-places-btn::before {
+    top: -0.7vmin;
+    left: -0.7vmin;
+    right: -0.7vmin;
+    bottom: -0.7vmin;
+    border-radius: 15px;
+  }
+
+  .route-complete-places-btn::after {
+    top: -1.2vmin;
+    left: -1.2vmin;
+    right: -1.2vmin;
+    bottom: -1.2vmin;
+    border-width: 0.26vmin;
+    border-radius: 21px;
+  }
+
+  .route-complete-places-btn .route-complete-btn-text {
+    font-size: clamp(10px, 1.5vmin, 24px);
+  }
+
+  /* Кнопка «Назад» на ПК */
+  .route-complete-screen .back-button {
+    top: min(40px, 5vh);
+    left: min(20px, 3vw);
+    width: min(60px, 6vmin);
+    height: min(30px, 3vmin);
   }
 }
