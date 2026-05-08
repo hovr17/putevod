@@ -1,16 +1,3 @@
-/* === ДОБАВИТЬ ЭТОТ БЛОК В САМОЕ НАЧАЛО === */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-}
-
 .container {
     background: url('backgrounds/bg_second_screen.jpg') center/cover no-repeat;
     display: flex;
@@ -19,24 +6,17 @@ html, body {
     justify-content: flex-start;
     position: relative;
     
-    /* Используем dvh для мобильных устройств */
+    /* ✅ ИСПРАВЛЕНИЕ: Используем динамическую высоту */
     height: 100dvh;
-    /* Fallback для старых браузеров */
-    height: 100vh;
+    height: 100vh; /* Fallback */
     
     padding: 0;
     padding-top: 5vh;
     
-    /* Отступ для безопасной зоны снизу */
+    /* ✅ ИСПРАВЛЕНИЕ: Добавляем отступ снизу для безопасной зоны (iPhone Home Indicator) */
     padding-bottom: env(safe-area-inset-bottom);
     
     overflow: hidden;
-}
-
-/* На мобильных устройствах (класс добавляется JS) JS управляет высотой */
-body.is-mobile .container {
-    height: auto; /* JS перезапишет это */
-    padding-bottom: 0; /* JS учитывает визуальную область */
 }
 
 /* Кнопка назад */
@@ -114,6 +94,8 @@ body.is-mobile .container {
     background-color: transparent;
     border: none;
     cursor: pointer;
+
+    
 }
 
 /* Фон кнопки */
@@ -218,71 +200,34 @@ body.is-mobile .container {
     .buttons-container {
         gap: 8vh;
     }
+
 }
+
 
 @media (max-width: 1080px) and (orientation: portrait) {
     
     /* Все мобильные браузеры: высота = видимая область (JS управляет) */
     body.is-mobile .container {
         height: 100svh; /* Fallback до загрузки JS */
-        padding-bottom: 0;
+        padding-bottom: 0; /* Убираем safe-area, т.к. JS точно вычисляет видимую область */
     }
 }
 
-/* === БЛОК ПРЕДУПРЕЖДЕНИЯ О ПОВОРОТЕ УСТРОЙСТВА === */
 
-.rotate-overlay {
-  display: none; /* Скрыт по умолчанию */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  background-color: #ffffff;
-  z-index: 999999;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
+
+/* Пиктограмма внутри кнопки */
+.category-btn-icon {
+    position: absolute;
+    right: 10px;
+    top: -25px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+    pointer-events: none;
 }
-
-/* Показываем только на мобильных в горизонтальной ориентации */
-@media screen and (orientation: landscape) and (max-height: 600px) {
-  .rotate-overlay {
-    display: flex;
-  }
-}
-
-.rotate-text {
-  font-family: 'Crooker', sans-serif;
-  font-size: clamp(18px, 5vw, 24px);
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.rotate-icon {
-  width: 80px;
-  height: 80px;
-  /* Анимация вращения применяется к контейнеру */
-  animation: spinIcon 3s linear infinite;
-}
-
-.rotate-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-  /* Если в SVG не задан цвет, можно подкрасить его фильтром (опционально) */
-  /* filter: brightness(0);  */
-}
-
-@keyframes spinIcon {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.category-btn-icon {
+    width: 28px;
+    height: 28px;
+    top: -25px;
 }
