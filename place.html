@@ -28,10 +28,16 @@
       <div class="back-icon"></div>
     </a>
 
+    <!-- Кнопка "открыть маршрут в яндекс картах" (видна только в режиме маршрута) -->
+    <a href="#" class="yandex-maps-btn" id="yandexMapsBtn" target="_blank" rel="noopener noreferrer" style="display: none;">
+      <span class="yandex-maps-text">открыть маршрут в<br>яндекс картах</span>
+      <div class="yandex-maps-icon"></div>
+    </a>
+
     <div class="video-background" id="videoPoster"></div>
     
     <!-- ⚠️ ПУСТОЙ SRC, заполняется скриптом -->
-    <video class="temple-video" id="bgVideo" muted playsinline webkit-playsinline preload="auto" autoplay loop></video>
+    <video class="temple-video" id="bgVideo" muted playsinline webkit-playsinline preload="auto" autoplay></video>
     
     <div class="overlay-gradient"></div>
 
@@ -59,6 +65,23 @@
     </div>
 
     <div class="bottom-shadow"></div>
+
+    <!-- Финальный экран маршрута (скрыт по умолчанию) -->
+    <div class="route-complete-screen" id="routeCompleteScreen" style="display: none;">
+      <div class="route-complete-bg"></div>
+      <button class="back-button" id="routeCompleteBackBtn" type="button">
+        <div class="back-icon"></div>
+      </button>
+      <div class="route-complete-content">
+        <h1 class="route-complete-title">МАРШРУТ<br>«ТАЙНЫ ГОРОДА»</h1>
+        <a href="#" class="route-complete-btn route-complete-map-btn" id="routeCompleteMapBtn">
+          <span class="route-complete-btn-text">ОТКРЫТЬ В<br>ЯНДЕКС КАРТАХ</span>
+        </a>
+        <a href="plan_walk.html" class="route-complete-btn route-complete-places-btn" id="routeCompletePlacesBtn">
+          <span class="route-complete-btn-text">смотреть<br>больше мест</span>
+        </a>
+      </div>
+    </div>
   </div>
 
   <!-- Блок с предупреждением о перевороте устройства -->
@@ -123,7 +146,7 @@
                 // Добавляем класс, если условия совпали
                 frame.classList.add('short-screen');
             } else {
-                // Убираем класс, если условия не совпадают (вернулись к обычному виду)
+                // Убираем класс, если условия не совпадали (вернулись к обычному виду)
                 frame.classList.remove('short-screen');
             }
         }
@@ -136,11 +159,4 @@
     })();
 </script>
 </body>
-
 </html>
-
-
-
-
-
-
