@@ -39,8 +39,9 @@ class SPARouter {
                 var refUrl = new URL(referrer);
                 // Проверяем, что реферер с того же хоста
                 if (refUrl.hostname === window.location.hostname) {
-                    // Берём pathname + search (например route.html?route=secrets_of_city)
-                    var candidateHref = refUrl.pathname.replace(/^\//, '') + refUrl.search;
+                    // Берём только имя файла + search (без подпапки, для совместимости с GitHub Pages)
+                    var filename = refUrl.pathname.split('/').pop();
+                    var candidateHref = filename + refUrl.search;
                     // stories.html — подстраница, не считаем её как реферер для кнопки «Назад»
                     if (!candidateHref.startsWith('stories.html')) {
                         href = candidateHref;
@@ -633,4 +634,3 @@ document.addEventListener('DOMContentLoaded', () => {
     window.spaRouter.init();
 
 });
-
