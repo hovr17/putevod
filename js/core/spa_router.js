@@ -1,4 +1,4 @@
- // spa_router.js - FINAL VERSION (Robust Video + Network Retry)
+// spa_router.js - FINAL VERSION (Robust Video + Network Retry)
 console.log('spa_router.js загружен (Final Video Fix)');
 
 class SPARouter {
@@ -10,6 +10,250 @@ class SPARouter {
         this.isAnimating = false;
         this.videoRetryCount = 0;
         this.maxVideoRetries = 2;
+
+        // Режим маршрута
+        this.routeMode = false;
+        this.routePlaces = []; // [{placeId, category}, ...]
+        this.routeIndex = -1;
+        this.routeLink = '#';
+        this.routeTitle = '';
+        this.yandexMapsLink = '#';
+
+        // Страница, с которой пришли на place.html
+        this.referrerPage = 'categories.html';
+    }
+
+    /**
+     * Определяет страницу-источник по document.referrer
+     * и устанавливает href кнопки «Назад»
+     */
+    setupBackButton() {
+        var backBtn = document.getElementById('backBtn');
+        if (!backBtn) return;
+
+        var referrer = document.referrer;
+        var href = 'categories.html'; // fallback
+
+        if (referrer) {
+            try {
+                var refUrl = new URL(referrer);
+                // Проверяем, что реферер с того же хоста
+                if (refUrl.hostname === window.location.hostname) {
+                    // Берём pathname + search (например route.html?route=secrets_of_city)
+                    var candidateHref = refUrl.pathname.replace(/^\//, '') + refUrl.search;
+                    // stories.html — подстраница, не считаем её как реферер для кнопки «Назад»
+                    if (!candidateHref.startsWith('stories.html')) {
+                        href = candidateHref;
+                    }
+                }
+            } catch (e) {
+                console.warn('Не удалось разобрать referrer:', e);
+            }
+        }
+
+        // В режиме маршрута — назад ведёт на страницу маршрута (route.html с параметрами)
+        if (this.routeMode && sessionStorage.getItem('routeLink')) {
+            var routeSource = sessionStorage.getItem('routeSource');
+            if (routeSource) {
+                href = routeSource;
+            }
+        }
+
+        this.referrerPage = href;
+        backBtn.href = href;
+
+        // Если мы в режиме маршрута — при нажатии «Назад» очищаем sessionStorage,
+        // чтобы при следующем заходе из categories не остался маршрутный контекст
+        if (this.routeMode) {
+            backBtn.addEventListener('click', function () {
+                sessionStorage.removeItem('routeMode');
+                sessionStorage.removeItem('routePlaces');
+                sessionStorage.removeItem('routeIndex');
+                sessionStorage.removeItem('routeLink');
+                sessionStorage.removeItem('routeTitle');
+                sessionStorage.removeItem('routeTotal');
+                sessionStorage.removeItem('yandexMapsLink');
+                sessionStorage.removeItem('routeSource');
+                console.log('🧹 Контекст маршрута очищен при выходе');
+            });
+        }
+
+        console.log('🔙 Кнопка «Назад» ведёт на:', href);
+    }
+
+    /** Показать/скрыть кнопку "открыть маршрут в яндекс картах" */
+    updateYandexMapsButton() {
+        var btn = document.getElementById('yandexMapsBtn');
+        if (!btn) return;
+
+        if (!this.routeMode || !this.yandexMapsLink || this.yandexMapsLink === '#') {
+            btn.style.display = 'none';
+            return;
+        }
+
+        btn.style.display = 'flex';
+        btn.href = this.yandexMapsLink;
+    }
+
+    /** Проверяем и загружаем контекст маршрута из sessionStorage */
+    initRouteMode() {
+        if (sessionStorage.getItem('routeMode') !== 'true') return false;
+
+        try {
+            this.routePlaces = JSON.parse(sessionStorage.getItem('routePlaces') || '[]');
+            this.routeIndex = parseInt(sessionStorage.getItem('routeIndex') || '0', 10);
+            this.routeLink = sessionStorage.getItem('routeLink') || '#';
+            this.routeTitle = sessionStorage.getItem('routeTitle') || '';
+            this.yandexMapsLink = sessionStorage.getItem('yandexMapsLink') || '#';
+        } catch (e) {
+            console.warn('Ошибка чтения контекста маршрута:', e);
+            return false;
+        }
+
+        if (this.routePlaces.length === 0) return false;
+
+        this.routeMode = true;
+        console.log('🗺️ Режим маршрута активен:', this.routePlaces.length, 'мест, начинаем с', this.routeIndex);
+        this.updateYandexMapsButton();
+        return true;
+    }
+
+    /** Обновить индекс маршрута по текущему placeId */
+    updateRouteIndex() {
+        if (!this.routeMode) return;
+        for (var i = 0; i < this.routePlaces.length; i++) {
+            if (this.routePlaces[i].placeId === this.currentPlaceId &&
+                this.routePlaces[i].category === this.currentCategory) {
+                this.routeIndex = i;
+                sessionStorage.setItem('routeIndex', String(i));
+                return;
+            }
+        }
+    }
+
+    /** Показать финальный экран маршрута */
+    showRouteComplete() {
+        console.log('🏁 Финальный экран маршрута');
+        var frame = document.getElementById('frame');
+        var completeScreen = document.getElementById('routeCompleteScreen');
+        if (!frame || !completeScreen) return;
+
+        // Скрываем всё содержимое place.html
+        var screen = frame.querySelector('.screen');
+        var storiesProgress = document.getElementById('storiesProgress');
+        var navArrows = document.getElementById('templeNavArrows');
+        var backBtn = document.getElementById('backBtn');
+
+        if (screen) screen.style.display = 'none';
+        if (storiesProgress) storiesProgress.style.display = 'none';
+        if (navArrows) navArrows.style.display = 'none';
+
+        // Скрываем кнопку Яндекс Карт
+        var yandexBtn = document.getElementById('yandexMapsBtn');
+        if (yandexBtn) yandexBtn.style.display = 'none';
+
+        // Скрываем видео
+        var bgVideo = document.getElementById('bgVideo');
+        var videoPoster = document.getElementById('videoPoster');
+        if (bgVideo) bgVideo.style.display = 'none';
+        if (videoPoster) videoPoster.style.background = 'white';
+
+        // Скрываем обычную кнопку «Назад» (есть отдельная для финального экрана)
+        if (backBtn) backBtn.style.display = 'none';
+
+        // Заполняем данные финального экрана
+        var titleEl = completeScreen.querySelector('.route-complete-title');
+        var mapBtn = completeScreen.querySelector('.route-complete-map-btn');
+        var placesBtn = completeScreen.querySelector('.route-complete-places-btn');
+        var backToPlaceBtn = document.getElementById('routeCompleteBackBtn');
+
+        if (titleEl) titleEl.innerHTML = this.routeTitle || 'МАРШРУТ<br>ПРОЙДЕН';
+
+        // Кнопка «ОТКРЫТЬ В ЯНДЕКС КАРТАХ»
+        if (mapBtn) {
+            var self = this;
+            mapBtn.onclick = function () {
+                var link = sessionStorage.getItem('yandexMapsLink') || self.routeLink || '#';
+                window.location.href = link;
+            };
+        }
+
+        // Кнопка «ВЕРНУТЬСЯ К ВЫБОРУ МАРШРУТА»
+        if (placesBtn) {
+            placesBtn.onclick = function () {
+                // Очищаем контекст маршрута
+                sessionStorage.removeItem('routeMode');
+                sessionStorage.removeItem('routePlaces');
+                sessionStorage.removeItem('routeIndex');
+                sessionStorage.removeItem('routeLink');
+                sessionStorage.removeItem('routeTitle');
+ sessionStorage.removeItem('routeTotal');
+                sessionStorage.removeItem('yandexMapsLink');
+                sessionStorage.removeItem('routeSource');
+                window.location.href = 'plan_walk.html';
+            };
+        }
+
+        // Кнопка «Назад» — скрыть финальный экран и вернуться к последнему месту
+        if (backToPlaceBtn) {
+            var self = this;
+            backToPlaceBtn.onclick = function (e) {
+                e.preventDefault();
+                self.hideRouteComplete();
+            };
+        }
+
+        // Показываем финальный экран
+        completeScreen.style.display = 'flex';
+        frame.classList.remove('mode-intro', 'mode-details');
+        frame.classList.add('route-complete-active');
+        document.title = 'Маршрут пройден — Путеводитель по Суздалю';
+    }
+
+    /** Скрыть финальный экран и вернуться к просмотру последнего места */
+    hideRouteComplete() {
+        console.log('🔙 Скрытие финального экрана, возврат к последнему месту');
+        var frame = document.getElementById('frame');
+        var completeScreen = document.getElementById('routeCompleteScreen');
+        if (!frame || !completeScreen) return;
+
+        // 1. Скрываем финальный экран
+        completeScreen.style.display = 'none';
+
+        // 2. Показываем все элементы place.html обратно
+        var screen = frame.querySelector('.screen');
+        var storiesProgress = document.getElementById('storiesProgress');
+        var navArrows = document.getElementById('templeNavArrows');
+        var backBtn = document.getElementById('backBtn');
+        var bgVideo = document.getElementById('bgVideo');
+        var videoPoster = document.getElementById('videoPoster');
+
+        if (screen) screen.style.display = '';
+        if (storiesProgress) storiesProgress.style.display = '';
+        if (navArrows) navArrows.style.display = '';
+        if (backBtn) backBtn.style.display = '';
+        if (bgVideo) bgVideo.style.display = '';
+        if (videoPoster) videoPoster.style.background = '';
+
+        // 3. Восстанавливаем режим фрейма
+        frame.classList.remove('route-complete-active');
+        frame.classList.add('mode-intro');
+
+        // 4. Устанавливаем индекс маршрута на последнее место
+        this.routeIndex = this.routePlaces.length - 1;
+        sessionStorage.setItem('routeIndex', String(this.routeIndex));
+
+        // 5. Обновляем UI: полоски прогресса, стрелки, кнопка Яндекс Карт
+        this.updateYandexMapsButton();
+
+        if (window.pagesManager && typeof window.pagesManager.updateStoriesProgress === 'function') {
+            window.pagesManager.updateStoriesProgress();
+        }
+        if (window.updateNavArrows) {
+            window.updateNavArrows();
+        }
+
+        document.title = window.pagesManager.config?.title || 'Путеводитель по Суздалю';
     }
 
     getParamsFromURL() {
@@ -50,6 +294,15 @@ class SPARouter {
             return false;
         }
 
+        // В режиме маршрута — проверяем выход за границы
+        if (this.routeMode) {
+            if (direction === 'next' && this.routeIndex >= this.routePlaces.length - 1) {
+                // После последнего места — финальный экран
+                this.showRouteComplete();
+                return true;
+            }
+        }
+
         if (placeId === this.currentPlaceId && category === this.currentCategory) {
             console.log('⏳ Уже на этом месте:', placeId);
             return true;
@@ -77,6 +330,9 @@ class SPARouter {
                 this.currentPlaceId = placeId;
                 this.currentCategory = category;
                 this.isAnimating = false;
+
+                // Обновляем индекс маршрута
+                this.updateRouteIndex();
 
                 window.pagesManager.setPlaceId(placeId, category);
                 window.pagesManager.applyConfig();
@@ -184,7 +440,7 @@ class SPARouter {
             bgVideo.poster = posterSrc || '';
             
             bgVideo.muted = true;
-            bgVideo.loop = true;
+            bgVideo.loop = (window.pagesManager.config?.video?.loop !== false);
             bgVideo.playsInline = true;
             bgVideo.webkitPlaysInline = true;
             bgVideo.preload = 'auto';
@@ -287,12 +543,18 @@ class SPARouter {
             check();
         });
 
+        // Инициализируем режим маршрута (если пришёл из route.html)
+        this.initRouteMode();
+
+        // Устанавливаем кнопку «Назад» на страницу-источник
+        this.setupBackButton();
+
         const params = this.getParamsFromURL();
         await this.navigateToPlace(params.placeId, params.category, false);
 
         this.setupPopStateHandler();
 
-        console.log('✅ SPA Router (Final Video Fix) готов');
+        console.log('✅ SPA Router (Final Video Fix) готов', this.routeMode ? '(режим маршрута)' : '');
     }
 }
 
@@ -302,6 +564,19 @@ window.navigateToPrevPlace = function() {
     const frame = document.getElementById('frame');
     if (frame && frame.classList.contains('mode-details')) return;
     if (window.spaRouter?.isAnimating) return;
+
+    // === Режим маршрута: навигация по местам маршрута ===
+    if (window.spaRouter?.routeMode) {
+        var idx = window.spaRouter.routeIndex;
+        if (idx <= 0) {
+            console.log('🗺️ Это первое место маршрута');
+            return;
+        }
+        var prev = window.spaRouter.routePlaces[idx - 1];
+        window.spaRouter.navigateToPlace(prev.placeId, prev.category, true, 'prev');
+        return;
+    }
+    // === Обычный режим ===
     
     const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
     const currentIndex = order.indexOf(window.spaRouter?.currentPlaceId);
@@ -323,6 +598,20 @@ window.navigateToNextPlace = function() {
     const frame = document.getElementById('frame');
     if (frame && frame.classList.contains('mode-details')) return;
     if (window.spaRouter?.isAnimating) return;
+
+    // === Режим маршрута: навигация по местам маршрута ===
+    if (window.spaRouter?.routeMode) {
+        var idx = window.spaRouter.routeIndex;
+        if (idx >= window.spaRouter.routePlaces.length - 1) {
+            // Последнее место — показываем финальный экран
+            window.spaRouter.showRouteComplete();
+            return;
+        }
+        var next = window.spaRouter.routePlaces[idx + 1];
+        window.spaRouter.navigateToPlace(next.placeId, next.category, true, 'next');
+        return;
+    }
+    // === Обычный режим ===
     
     const order = getCurrentPageOrder(window.spaRouter?.currentCategory);
     const currentIndex = order.indexOf(window.spaRouter?.currentPlaceId);
