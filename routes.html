@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, interactive-widget=resizes-content">
+    <title>Готовые маршруты - Путеводитель по Суздалю</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="routes.css">
+    <link rel="stylesheet" href="footer.css">
+</head>
+<body>
+    <script>
+        (function() {
+            var isMobile = window.matchMedia('(max-width: 1080px)').matches ||
+                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (!isMobile) return;
+            document.body.classList.add('is-mobile');
+            var container = document.querySelector('.container');
+            var vv = window.visualViewport;
+            if (!vv || !container) return;
+            function updateViewport() {
+                container.style.height = vv.height + 'px';
+            }
+            vv.addEventListener('resize', updateViewport);
+            window.addEventListener('orientationchange', function() {
+                setTimeout(updateViewport, 100);
+            });
+            updateViewport();
+            window.addEventListener('load', updateViewport);
+        })();
+    </script>
+
+    <div class="rotate-overlay">
+        <span class="rotate-text">Переверните устройство</span>
+        <div class="rotate-icon">
+            <img src="ui/turn.svg" alt="Переверните устройство">
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="plan_walk.html" class="back-button">
+            <img src="ui/back_button.svg" alt="Назад">
+        </a>
+
+        <h1 class="title">выберите<br>маршрут</h1>
+
+        <div class="buttons-container">
+            <a href="route.html?route=orthodox_route" class="route-btn">
+                <img src="ui/pictograms_button/church.svg" class="route-btn-icon" alt="">
+                православный
+            </a>
+            <a href="route.html?route=with_kids" class="route-btn">
+                <img src="ui/pictograms_button/kids.svg" class="route-btn-icon" alt="">
+                с детьми
+            </a>
+            <a href="route.html?route=weekend_route" class="route-btn">
+                <img src="ui/pictograms_button/clock.svg" class="route-btn-icon" alt="">
+                на выходные
+            </a>
+            <a href="route.html?route=secrets_of_city" class="route-btn">
+                <img src="ui/pictograms_button/sun.svg" class="route-btn-icon" alt="">
+                лёгкая прогулка
+            </a>
+            <a href="route.html?route=photo_walk" class="route-btn">
+                <img src="ui/pictograms_button/photo.svg" class="route-btn-icon" alt="">
+                фотопрогулка
+            </a>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-header">
+                    <a href="about_project.html" class="footer-link">О проекте</a>
+                    <img src="ui/sokol.png" class="footer-logo">
+                </div>
+                <div class="footer-separator"></div>
+                <div class="footer-text-container">
+                    <p class="footer-disclaimer">Данный интернет-сайт и его содержимое носит исключительно информационный характер и ни при каких условиях информационные материалы, каталоги, статьи и цены, размещенные на сайте, не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса РФ.</p>
+                    <p class="footer-copy-info">Использование или копирование фото- и видеоматериалов допускается исключительно с обязательным указанием активной гиперссылки на данный сайт.</p>
+                    <p class="footer-copyright">2026</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

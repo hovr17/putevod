@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, interactive-widget=resizes-content">
+    <title>Маршрут - Путеводитель по Суздалю</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="route.css">
+    <link rel="stylesheet" href="footer.css">
+</head>
+<body>
+    <script>
+        // Унифицированная логика для всех мобильных браузеров и планшетов
+        (function() {
+            const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
+                             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (!isMobile) return;
+            
+            document.body.classList.add('is-mobile');
+            
+            const container = document.querySelector('.container');
+            const vv = window.visualViewport;
+            
+            if (!vv || !container) return;
+            
+            function updateViewport() {
+                container.style.height = vv.height + 'px';
+            }
+            
+            vv.addEventListener('resize', updateViewport);
+            window.addEventListener('orientationchange', () => {
+                setTimeout(updateViewport, 100);
+            });
+            
+            updateViewport();
+            window.addEventListener('load', updateViewport);
+        })();
+    </script>
+
+    <!-- Блок с предупреждением о перевороте устройства -->
+    <div class="rotate-overlay">
+        <span class="rotate-text">Переверните устройство</span>
+        <div class="rotate-icon">
+            <img src="ui/turn.svg" alt="Переверните устройство">
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Кнопка назад -->
+       <a href="routes.html" class="back-button">
+            <img src="ui/back_button.svg" alt="Назад">
+        </a>
+
+        <!-- Заголовок маршрута (заполняется из JS) -->
+        <h1 class="title" id="routeTitle"></h1>
+
+        <!-- Скроллируемая зона: 3 блока + "мы посетим:" + карточки мест -->
+        <div class="scroll-section" id="scrollSection">
+            <!-- Три блока описания (заполняются из JS) -->
+            <div class="desc-blocks" id="descBlocks"></div>
+
+            <div class="visit-label">мы посетим:</div>
+            <div class="places-grid" id="placesGrid"></div>
+        </div>
+
+        <!-- Четыре информационных прямоугольника (в один ряд, заполняются из JS) -->
+        <div class="info-grid" id="infoGrid"></div>
+
+        <!-- Кнопка "смотреть маршрут" -->
+        <a href="#" class="view-route-btn" id="viewRouteBtn">смотреть маршрут</a>
+
+    
+    </div>
+
+    <!-- Скрипты: сначала данные мест, потом конфиг маршрутов, потом рендерер -->
+    <script src="js/categories/museum_places.js"></script>
+    <script src="js/categories/religious_places.js"></script>
+    <script src="js/categories/nature_places.js"></script>
+    <script src="js/categories/entertainment_places.js"></script>
+    <script src="js/core/categories_config.js"></script>
+    <script src="js/routes/route_data.js"></script>
+    <script src="js/routes/route.js"></script>
+
+</body>
+</html>

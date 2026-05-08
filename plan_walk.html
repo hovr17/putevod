@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, interactive-widget=resizes-content">
+    <title>Спланируйте прогулку - Путеводитель по Суздалю</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="plan_walk.css">
+    <link rel="stylesheet" href="footer.css">
+</head>
+<body>
+    <script>
+        // Унифицированная логика для всех мобильных браузеров и планшетов
+        (function() {
+            const isMobile = window.matchMedia('(max-width: 1080px)').matches || 
+                             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (!isMobile) return;
+            
+            document.body.classList.add('is-mobile');
+            
+            const container = document.querySelector('.container');
+            const vv = window.visualViewport;
+            
+            if (!vv || !container) return;
+            
+            function updateViewport() {
+                container.style.height = vv.height + 'px';
+            }
+            
+            vv.addEventListener('resize', updateViewport);
+            window.addEventListener('orientationchange', () => {
+                setTimeout(updateViewport, 100);
+            });
+            
+            updateViewport();
+            window.addEventListener('load', updateViewport);
+        })();
+    </script>
+
+    <!-- Блок с предупреждением о перевороте устройства -->
+    <div class="rotate-overlay">
+        <span class="rotate-text">Переверните устройство</span>
+        <div class="rotate-icon">
+            <img src="ui/turn.svg" alt="Переверните устройство">
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Кнопка назад -->
+        <a href="index.html" class="back-button">
+            <img src="ui/back_button.svg" alt="Назад">
+        </a>
+
+        <!-- Заголовок -->
+        <h1 class="title">спланируйте<br>прогулку</h1>
+
+        <!-- Контейнер для карточек -->
+        <div class="cards-container">
+            <!-- Карточка: Каталог всех мест -->
+            <a href="categories.html" class="walk-card">
+                <div class="card-image-mask">
+                    <img src="ui/church.svg" alt="Каталог всех мест">
+                </div>
+                <div class="card-text">
+                    <span class="card-title">каталог<br>всех мест</span>
+                    <span class="card-subtitle">музеи, храмы, смотровые площадки, развлечения</span>
+                </div>
+            </a>
+
+            <!-- Карточка: Готовые маршруты -->
+            <a href="routes.html" class="walk-card">
+                <div class="card-image-mask">
+                    <img src="ui/map.svg" alt="Готовые маршруты">
+                </div>
+                <div class="card-text">
+                    <span class="card-title">готовые<br>маршруты</span>
+                    <span class="card-subtitle">с детьми, на выходные, по православным местам</span>
+                </div>
+            </a>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-header">
+                    <a href="about_project.html" class="footer-link">О проекте</a>
+                    <img src="ui/sokol.png" class="footer-logo">
+                </div>
+                
+                <div class="footer-separator"></div>
+                
+                <div class="footer-text-container">
+                    <p class="footer-disclaimer">
+                        Данный интернет-сайт и его содержимое носит исключительно информационный характер и ни при каких условиях информационные материалы, каталоги, статьи и цены, размещенные на сайте, не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса РФ.
+                    </p>
+                    
+                    <p class="footer-copy-info">
+                        Использование или копирование фото- и видеоматериалов допускается исключительно с обязательным указанием активной гиперссылки на данный сайт.
+                    </p>
+                    
+                    <p class="footer-copyright">
+                        2026&copy;
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
