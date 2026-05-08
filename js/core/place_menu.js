@@ -119,7 +119,7 @@ function showSwipeHint() {
         video.src = nextConfig.video.src;
         video.poster = nextConfig.video.poster || '';
         video.muted = true;
-        video.loop = true;
+        video.loop = (nextConfig.video?.loop !== false);
         video.playsInline = true;
         video.autoplay = true;
         video.style.width = '100%';
