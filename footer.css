@@ -1,4 +1,3 @@
-/* ИСПРАВЛЕННЫЙ ФУТЕ */
 .footer {
     position: absolute;
     bottom: 0;
@@ -62,8 +61,12 @@
     transition: opacity 0.3s;
     align-self: flex-start;
     margin-top: 0;
-    padding-top: clamp(10px, 3vh, 40px);
+   padding: 1.5vh 1.5vh;
     white-space: nowrap;
+    border: 3px solid rgba(255, 255, 255, 1);
+    border-radius: 888px;
+    text-align: center;
+    line-height: 1;
 }
 
 .footer-link:hover {
@@ -216,11 +219,3 @@
          margin-top:25vh;
     }
 }
-
-
-
-
-
-
-
-
