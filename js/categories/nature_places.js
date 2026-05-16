@@ -3,7 +3,7 @@ const NATURE_PLACES = {
        'smotrovaya_zaradye': {
         title: 'Смотровая у Зарядья',
         heading: 'Смотровая<br>у Зарядья',
-        video: { src: 'videos/nature_places/smotrovaya_zaradye.mp4', poster: null },
+        video: { src: 'videos/nature_places/smotrovaya_zaradye.mp4', poster: null, loop: false  },
         paidEntry: null,
         photoButtons: [
             { label: 'Фото', image: 'stories_button_images/nature_places/smotrovaya_zaradye/1.jpg', link: 'stories.html?cat=nature&place=smotrovaya_zaradye.Photo' }
@@ -16,7 +16,7 @@ const NATURE_PLACES = {
       'Kremlevskie_vali': {
         title: 'Кремлёвские валы',
         heading: 'Кремлёвские<br>валы',
-        video: { src: 'videos/nature_places/Kremlevskie_vali.mp4', poster: null },
+        video: { src: 'videos/nature_places/Kremlevskie_vali.mp4', poster: null, loop: false  },
         paidEntry: null,
         photoButtons: [
             { label: 'Фото', image: 'stories_button_images/nature_places/Kremlevskie_vali/1.jpg', link: 'stories.html?cat=nature&place=Kremlevskie_vali.Photo' }
@@ -70,7 +70,7 @@ const NATURE_PLACES = {
         title: 'Смотровая у Спасо-Евфимиева монастыря',
         heading: 'Смотровая у Спасо-Евфимиева',
          headingSize: 'clamp(28px, 9vw, 56px)',
-        video: { src: 'videos/nature_places/smotrovaya_SpasoEvfimiev.mp4', poster: null },
+        video: { src: 'videos/nature_places/smotrovaya_SpasoEvfimiev.mp4', poster: null, loop: false  },
         paidEntry: null,
         photoButtons: [
             { label: 'Фото', image: 'stories_button_images/nature_places/smotrovaya_SpasoEvfimiev/1.jpg', link: 'stories.html?cat=nature&place=smotrovaya_SpasoEvfimiev.Photo' }
@@ -96,7 +96,7 @@ const NATURE_PLACES = {
    'skver_Pozharskogo': {
         title: 'Сквер имени Д.М. Пожарского',
         heading: 'Сквер имени<br>Пожарского',
-        video: { src: 'videos/nature_places/skver_Pozharskogo.mp4', poster: null },
+        video: { src: 'videos/nature_places/skver_Pozharskogo.mp4', poster: null, loop: false  },
         paidEntry: null,
         photoButtons: [
             { label: 'Фото', image: 'stories_button_images/nature_places/skver_Pozharskogo/1.jpg', link: 'stories.html?cat=nature&place=skver_Pozharskogo.Photo' }
