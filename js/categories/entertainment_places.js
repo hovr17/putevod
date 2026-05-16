@@ -85,7 +85,7 @@ const ENTERTAINMENT_PLACES = {
         title: 'Торговые лавки в центре города',
         heading: 'Торговые лавки в центре города',
         headingSize: 'clamp(28px, 9vw, 56px)',
-        video: { src: 'videos/entertainment_places/torgovie_lavki_centre.mp4', poster: null },
+        video: { src: 'videos/entertainment_places/torgovie_lavki_centre.mp4', poster: null, loop: false  },
         paidEntry: null,
         photoButtons: [
             { label: 'Фото', image: 'stories_button_images/entertainment_places/torgovie_lavki_centre/1.jpg', link: 'stories.html?cat=entertainment&place=torgovie_lavki_centre.photo' }
@@ -165,7 +165,7 @@ const ENTERTAINMENT_PLACES = {
         'podvorye_masterov': {
         title: 'Подворье мастеров',
         heading: 'Подворье<br>мастеров',
-        video: { src: 'videos/entertainment_places/podvorye_masterov.mp4', poster: null },
+        video: { src: 'videos/entertainment_places/podvorye_masterov.mp4', poster: null, loop: false  },
           paidEntry: null,
         photoButtons: [
             { label: 'Фото', image: 'stories_button_images/entertainment_places/podvorye_masterov/1.jpg', link: 'stories.html?cat=entertainment&place=podvorye_masterov.photo' }
@@ -277,7 +277,7 @@ const ENTERTAINMENT_PLACES = {
       'galki': {
         title: 'Галки',
         heading: '<br>Галки',
-        video: { src: 'videos/entertainment_places/galki.mp4', poster: null },
+        video: { src: 'videos/entertainment_places/galki.mp4', poster: null, loop: false  },
           paidEntry: null,
         photoButtons: [
             { label: 'Туча из галок', image: 'stories_button_images/entertainment_places/galki/1.jpg', link: 'stories.html?cat=entertainment&place=galki.tucha' }
