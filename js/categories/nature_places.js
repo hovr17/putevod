@@ -3,7 +3,7 @@ const NATURE_PLACES = {
        'smotrovaya_zaradye': {
         title: 'Смотровая у Зарядья',
         heading: 'Смотровая<br>у Зарядья',
-        video: { src: 'videos/nature_places/smotrovaya_zaradye.mp4', poster: null, loop: false  },
+        video: { src: 'videos/nature_places/smotrovaya_zaradye.mp4', poster: null },
         paidEntry: null,
         photoButtons: [
             { label: 'Фото', image: 'stories_button_images/nature_places/smotrovaya_zaradye/1.jpg', link: 'stories.html?cat=nature&place=smotrovaya_zaradye.Photo' }
