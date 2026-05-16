@@ -30,7 +30,7 @@ const RELIGIOUS_PLACES = {
         title: 'Спасо-Евфимиев монастырь',
         heading: 'Спасо-Евфимиев <br> монастырь',
       headingSize: 'clamp(28px, 10vw, 56px)',
-        video: { src: 'videos/religious_places/SpasoEvfimiev_monastery.mp4', poster: null, loop: false },
+        video: { src: 'videos/religious_places/SpasoEvfimiev_monastery.mp4', poster: null },
         paidEntry: { text: 'вход платный', enabled: true },
         photoButtons: [
             { label: 'О монастыре', image: 'stories_button_images/religious_places/SpasoEvfimiev_monastery/1.jpg', link: 'stories.html?cat=religious&place=SpasoEvfimiev_monastery.o_territorii' },
